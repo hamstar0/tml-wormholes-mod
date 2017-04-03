@@ -1,0 +1,4 @@
+Adds wormholes for two-way fast travel between remote locations. Be warned: It's a bumpy ride, and there's no telling where you might end up!
+
+Also, Town Portal Scrolls let you create your own personal wormhole (Wormhole Potion + Book + Mana Crystal).
+- Config file: Documents/My Games/Terraria/ModLoader/Mod Configs/Wormholes.json

@@ -1,0 +1,77 @@
+v2
+-	Add dynamic wormholes (a special type)
+-	Add colored teleporters
+-	Ensure ghosts can't use wormholes (and fix FX)
+-	Add Dimensional Waypoint
+	-	@Plan
+		-	Crafted from 1 Chaos Bomb + Town Portal Scroll + Angel Statue
+		-	Creates a placeable object to act as town portal destination
+		-	Right-click selects for use
+		-	Appears as a glowing angel statue
+-	Add portal explode FX
+
+v1.6
+-	Add Chaos Bomb
+	-	Implement explosion effect
+		-	Add explode sound
+		-	Scatter tiles
+		-	Destroy town portals
+		-	Destroy wormholes
+	-	Define item
+	-	@Plan
+		-	Crafted from 1 of each gem + recall potion + bomb
+		-	Teleports non-boss entities to random locations near the player
+		-	Has a 20% chance to relocate an existing wormhole
+-	Set town portals to persist with saves
+-	Add config for disabling wormholes
+-	Fix camera mode failing to render wormholes
+-	Set town portals to be craftable from recall potions
+-	Add particle effects to wormholes
+-	Reduce wormhole light radius + increase sound
+-	Move config file to Mod Config
+v1.3
+-	Release!
+-	Animate portal deployment
+-	Add dust spew from player exiting a portal
+-	Set portal to animate under players (remove dust)
+-	Add wormhole link duration (for town portals)
+-	Clarify function of town portal in tooltip
+v1.2
+-	Improve portal animation (add bounce + phasing)
+-	Add debuffs distorted (164) and chaos state (88) + hurt when re-entering during state
+-	Set town portal to render on the map
+-	Add a cooldown before reentry into portals
+v1.1
+-	Improve portal graphic (add 2x pixelation/mosaic)
+-	Convey settings to clients
+-	Prevent portals from spawning in lava or the dungeonW
+-	Failsafe against portal rendering fail
+-	Fix multiplayer
+v1
+-	Release
+-	Implement Town Portal Scroll
+	-	@Audio options
+		-	Item_46
+		-	Item_82
+		-	Item_113
+		-	Item_117
+		-	Item_122
+-	Scale portal on map
+-	Transmit portal locations to clients on connect
+-	Save portals with map
+-	Get configs from server
+-	Pulsate light source
+-	Render portals only when discovered (player traverses them)
+-	Implement minimap sprites (requires uncovering)
+-	Revise sprite
+-	Implement coloration
+-	Randomize pair locations
+-	Implement linked pair behavior
+-	Implement audio loop
+	-	@Options
+		-	!NPC_Killed_58
+		-	Item_24
+		-	!!Item_93
+		-	!!Item_113
+-	Deploy custom dust at player's start position
+-	Setup project
