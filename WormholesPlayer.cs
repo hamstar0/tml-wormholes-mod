@@ -154,39 +154,5 @@ namespace Wormholes {
 
 			modworld.Wormholes.RunAll( mymod, this.player );
 		}
-
-		////////////////
-
-		private bool IsWarping = false;
-
-		public override bool PreItemCheck() {
-			Item item = this.player.inventory[this.player.selectedItem];
-			
-			if( item != null && !item.IsAir ) {
-				// Delay teleportation items
-				switch( item.type ) {
-				case 50:    // Magic Mirror
-				case 3124:  // Cell Phone
-				case 3199:  // Ice Mirror
-				//case 2997:	// Wormhole Potion
-				case 2350:  // Recall Potion
-				case 2351:  // Teleportation Potion
-					if( !this.IsWarping ) {
-						if( this.player.itemTime > 0 ) {
-							var mymod = (WormholesMod)this.mod;
-							this.IsWarping = true;
-							this.player.itemTime = (int)((float)this.player.itemTime * mymod.Config.Data.TeleportItemDelayMultiplier);
-						}
-					} else {
-						if( this.player.itemTime == 0 ) {
-							this.IsWarping = false;
-						}
-					}
-					break;
-				}
-			}
-
-			return base.PreItemCheck();
-		}
 	}
 }
