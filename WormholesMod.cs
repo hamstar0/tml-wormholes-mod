@@ -24,12 +24,13 @@ namespace Wormholes {
 		public int ChaosBombWormholeCloseOdds = 5;
 		public int ChaosBombRadius = 4;
 		public int ChaosBombScatterRadius = 32;
+		public int DEBUGFLAGS = 0;
 	}
 
 
 
 	public class WormholesMod : Mod {
-		public static readonly Version ConfigVersion = new Version( 1, 6, 0 );
+		public static readonly Version ConfigVersion = new Version( 1, 6, 2 );
 		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 		private WormholesUI UI;
@@ -47,7 +48,7 @@ namespace Wormholes {
 		}
 
 		public override void Load() {
-			var old_config = new JsonConfig<ConfigurationData>( this.Config.FileName, "", new ConfigurationData() );
+			var old_config = new JsonConfig<ConfigurationData>( "Wormholes 1.3.12.json", "", new ConfigurationData() );
 			// Update old config to new location
 			if( old_config.LoadFile() ) {
 				old_config.DestroyFile();
@@ -55,28 +56,30 @@ namespace Wormholes {
 				this.Config = old_config;
 			} else if( !this.Config.LoadFile() ) {
 				this.Config.SaveFile();
+			} else {
+				Version vers_since = this.Config.Data.VersionSinceUpdate != "" ?
+					new Version( this.Config.Data.VersionSinceUpdate ) :
+					new Version();
+
+				if( vers_since < WormholesMod.ConfigVersion ) {
+					ErrorLogger.Log( "Wormholes config updated to " + WormholesMod.ConfigVersion.ToString() );
+
+					if( vers_since < new Version( 1, 5, 0 ) ) {
+						this.Config.Data.SmallWorldPortals = new ConfigurationData().SmallWorldPortals;
+						this.Config.Data.MediumWorldPortals = new ConfigurationData().MediumWorldPortals;
+						this.Config.Data.LargeWorldPortals = new ConfigurationData().LargeWorldPortals;
+						this.Config.Data.HugeWorldPortals = new ConfigurationData().HugeWorldPortals;
+					}
+					if( vers_since < new Version( 1, 6, 0 ) ) {
+						this.Config.Data.WormholeSoundVolume = new ConfigurationData().WormholeSoundVolume;
+					}
+
+					this.Config.Data.VersionSinceUpdate = WormholesMod.ConfigVersion.ToString();
+					this.Config.SaveFile();
+				}
 			}
 
-			Version vers_since = this.Config.Data.VersionSinceUpdate != "" ?
-				new Version( this.Config.Data.VersionSinceUpdate ) :
-				new Version();
-
-			if( vers_since < WormholesMod.ConfigVersion ) {
-				ErrorLogger.Log( "Wormholes config updated to " + WormholesMod.ConfigVersion.ToString() );
-
-				if( vers_since < new Version( 1, 5, 0 ) ) {
-					this.Config.Data.SmallWorldPortals = new ConfigurationData().SmallWorldPortals;
-					this.Config.Data.MediumWorldPortals = new ConfigurationData().MediumWorldPortals;
-					this.Config.Data.LargeWorldPortals = new ConfigurationData().LargeWorldPortals;
-					this.Config.Data.HugeWorldPortals = new ConfigurationData().HugeWorldPortals;
-				}
-				if( vers_since < new Version( 1, 6, 0 ) ) {
-					this.Config.Data.WormholeSoundVolume = new ConfigurationData().WormholeSoundVolume;
-				}
-
-				this.Config.Data.VersionSinceUpdate = WormholesMod.ConfigVersion.ToString();
-				this.Config.SaveFile();
-			}
+			DebugHelper.DEBUGMODE = this.Config.Data.DEBUGFLAGS;
 
 			// Clients and single only
 			if( Main.netMode != 2 ) {
@@ -108,8 +111,8 @@ namespace Wormholes {
 					this.DrawMiniMap( sb );
 				}
 
-				Debug.PrintToBatch( sb );
-				Debug.Once = false;
+				DebugHelper.PrintToBatch( sb );
+				DebugHelper.Once = false;
 			} catch( Exception e ) {
 				ErrorLogger.Log( "PostDrawInterface: " + e.ToString() );
 				throw e;

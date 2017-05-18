@@ -38,13 +38,17 @@ namespace Wormholes {
 
 		/////////////////
 
-		public void Load( WormholesMod mymod, TagCompound tags ) {
-			if( mymod.Config.Data.DisableNaturalWormholes ) { return; }
+		public bool Load( WormholesMod mymod, TagCompound tags ) {
+			if( mymod.Config.Data.DisableNaturalWormholes ) {
+				return false;
+			}
 
 			int holes = tags.GetInt( "wormhole_count" );
-			if( holes == 0 ) { return; }
+			if( holes == 0 ) {
+				return false;
+			}
 
-			if( Debug.DEBUGMODE ) {
+			if( (DebugHelper.DEBUGMODE & 1) > 0 ) {
 				ErrorLogger.Log( "Loading world ids (" + Main.netMode + "): " + holes );
 			}
 
@@ -59,7 +63,7 @@ namespace Wormholes {
 				}
 
 				string id = tags.GetString( "wormhole_id_" + i );
-				if( Debug.DEBUGMODE ) {
+				if( (DebugHelper.DEBUGMODE & 1) > 0 ) {
 					ErrorLogger.Log( "  world load id: " + id + " (" + i + ")" );
 				}
 
@@ -78,6 +82,7 @@ namespace Wormholes {
 
 				this.Links.Insert( i, link );
 			}
+			return true;
 		}
 
 
@@ -88,7 +93,7 @@ namespace Wormholes {
 			int[] worm_r_x = new int[WormholeManager.PortalCount];
 			int[] worm_r_y = new int[WormholeManager.PortalCount];
 
-			if( Debug.DEBUGMODE ) {
+			if( (DebugHelper.DEBUGMODE & 1) > 0 ) {
 				ErrorLogger.Log( "Save world ids (" + Main.netMode + "): " + WormholeManager.PortalCount );
 			}
 
@@ -104,8 +109,7 @@ namespace Wormholes {
 				worm_r_x[i] = (int)link.RightPortal.Pos.X;
 				worm_r_y[i] = (int)link.RightPortal.Pos.Y;
 			}
-
-
+			
 			var tags = new TagCompound {
 				{"wormhole_count", i},
 				{"wormhole_left_x", worm_l_x},
@@ -116,7 +120,7 @@ namespace Wormholes {
 
 			for( i = 0; i < this.Links.Count; i++ ) {
 				tags.Set( "wormhole_id_" + i, ids[i] );
-				if( Debug.DEBUGMODE ) {
+				if( (DebugHelper.DEBUGMODE & 1) > 0 ) {
 					ErrorLogger.Log( "  world save id: " + ids[i] + " (" + i + ") = "
 						+ worm_l_x[i] + "," + worm_l_y[i] + " | " + worm_r_x[i] + "," + worm_r_y[i] );
 				}
@@ -222,11 +226,9 @@ namespace Wormholes {
 			}
 
 			for( int i = 0; i < WormholeManager.PortalCount; i++ ) {
-				if( i < this.Links.Count && this.Links[i] != null ) {
-					continue;
-				}
+				if( i < this.Links.Count && this.Links[i] != null ) { continue; }
 
-				var link = this.CreateRandomWormholePair( mymod, WormholeLink.GetColor( i ) );
+				var link = this.CreateRandomWormholePair( mymod, WormholeLink.GetColor(i) );
 				if( i >= this.Links.Count ) {
 					this.Links.Add( link );
 				} else {

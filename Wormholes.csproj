@@ -52,7 +52,7 @@
     <Compile Include="Items\ChaosBombItem.cs" />
     <Compile Include="Items\TownPortalScrollItem.cs" />
     <Compile Include="Projectiles\ChaosBombProjectile.cs" />
-    <Compile Include="Utils\Debug.cs" />
+    <Compile Include="Utils\DebugHelper.cs" />
     <Compile Include="Utils\DustHelper.cs" />
     <Compile Include="Utils\JsonConfig.cs" />
     <Compile Include="Utils\PlayerHelper.cs" />

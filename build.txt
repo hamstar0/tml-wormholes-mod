@@ -1,5 +1,5 @@
 author = hamstar
-version = 1.6.1
+version = 1.6.2
 displayName = Wormholes
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
 includeSource = false

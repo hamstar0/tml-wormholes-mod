@@ -27,8 +27,9 @@ namespace Wormholes {
 			this.HasCorrectID = true;
 
 			var mymod = (WormholesMod)this.mod;
-			this.Wormholes.Load( mymod, tags );
-			this.Wormholes.SetupWormholes( mymod );
+			if( this.Wormholes.Load( mymod, tags ) ) {
+				this.Wormholes.SetupWormholes( mymod );
+			}
 
 			WormholeManager.ForceRegenWormholes = false;
 		}

@@ -11,7 +11,66 @@ namespace Wormholes {
 	public class WormholeLink {
 		static WormholeLink() {
 			WormholeLink.PortalColors = new Color[] {
-				Color.AliceBlue,			// R:240 G:248 B:255
+				new Color( 0xFF, 0x00, 0x00 ),
+				new Color( 0x00, 0xFF, 0x00 ),
+				new Color( 0xFF, 0xFF, 0x00 ),
+				new Color( 0x00, 0x00, 0xFF ),
+				new Color( 0xFF, 0x00, 0xFF ),
+				//new Color( 0x00, 0xFF, 0xFF ),	// Reserved for Town Portals
+
+				new Color( 0xFF, 0x3F, 0x00 ),
+				new Color( 0xFF, 0x00, 0x3F ),
+				new Color( 0x3F, 0xFF, 0x00 ),
+				new Color( 0x00, 0xFF, 0x3F ),
+				new Color( 0xFF, 0xFF, 0x3F ),
+				new Color( 0x3F, 0x00, 0xFF ),
+				new Color( 0x00, 0x3F, 0xFF ),
+				new Color( 0xFF, 0x3F, 0xFF ),
+				//new Color( 0x3F, 0xFF, 0xFF ),	// Too similar to Town Portals
+
+				new Color( 0xFF, 0x7F, 0x00 ),
+				new Color( 0xFF, 0x00, 0x7F ),
+				new Color( 0x7F, 0xFF, 0x00 ),
+				new Color( 0x00, 0xFF, 0x7F ),
+				new Color( 0x7F, 0x00, 0xFF ),
+				new Color( 0x00, 0x7F, 0xFF ),
+
+				new Color( 0xFF, 0x7F, 0x3F ),
+				new Color( 0xFF, 0x3F, 0x7F ),
+				new Color( 0x7F, 0xFF, 0x3F ),
+				new Color( 0x3F, 0xFF, 0x7F ),
+				new Color( 0xFF, 0xFF, 0x7F ),
+				new Color( 0x7F, 0x3F, 0xFF ),
+				new Color( 0x3F, 0x7F, 0xFF ),
+				new Color( 0xFF, 0x7F, 0xFF ),
+				//new Color( 0x7F, 0xFF, 0xFF ),	// Too similar to Town Portals
+
+				new Color( 0xFF, 0xBF, 0x00 ),
+				new Color( 0xFF, 0x00, 0xBF ),
+				new Color( 0xBF, 0xFF, 0x00 ),
+				new Color( 0x00, 0xFF, 0xBF ),
+				new Color( 0xBF, 0x00, 0xFF ),
+				new Color( 0x00, 0xBF, 0xFF ),
+
+				new Color( 0xFF, 0xBF, 0x3F ),
+				new Color( 0xFF, 0x3F, 0xBF ),
+				new Color( 0xBF, 0xFF, 0x3F ),
+				new Color( 0x3F, 0xFF, 0xBF ),
+				new Color( 0xBF, 0x3F, 0xFF ),
+				new Color( 0x3F, 0xBF, 0xFF ),
+
+				new Color( 0xFF, 0xBF, 0x7F ),
+				new Color( 0xFF, 0x7F, 0xBF ),
+				new Color( 0xBF, 0xFF, 0x7F ),
+				new Color( 0x7F, 0xFF, 0xBF ),
+				//new Color( 0xFF, 0xFF, 0xBF ),	// Too bright
+				new Color( 0xBF, 0x7F, 0xFF ),
+				new Color( 0x7F, 0xBF, 0xFF ),
+				//new Color( 0xFF, 0xBF, 0xFF ),	// Too bright
+				//new Color( 0xBF, 0xFF, 0xFF ),	// Too bright
+				new Color( 0xBF, 0xBF, 0xBF )
+
+				/*Color.AliceBlue,			// R:240 G:248 B:255
 				Color.AntiqueWhite,			// R:250 G:235 B:215
 				Color.Aqua,					// R:0 G:255 B:255
 				Color.Aquamarine,			// R:127 G:255 B:212
@@ -149,26 +208,28 @@ namespace Wormholes {
 				Color.White,				// R:255 G:255 B:255
 				Color.WhiteSmoke,			// R:245 G:245 B:245
 				Color.Yellow,				// R:255 G:255 B:0
-				Color.YellowGreen			// R:154 G:205 B:50
+				Color.YellowGreen			// R:154 G:205 B:50*/
 			};
 		}
 
 		////////////////
 
 		public static Color[] PortalColors { get; private set; }
-		private static bool IsShuffled = false;
+		//private static bool IsShuffled = false;
 
 
 
 		////////////////
 
 		public static Color GetColor( int i ) {
-			if( !WormholeLink.IsShuffled ) {
+			/*if( !WormholeLink.IsShuffled ) {
 				Random rnd = new Random( Main.worldID );
 				WormholeLink.PortalColors = WormholeLink.PortalColors.OrderBy( x => rnd.Next() ).ToArray();
 				WormholeLink.IsShuffled = true;
-			}
-			return WormholeLink.PortalColors[i % WormholeLink.PortalColors.Length];
+			}*/
+			Color color = WormholeLink.PortalColors[i % WormholeLink.PortalColors.Length];
+
+			return color;
 		}
 
 		////////////////
