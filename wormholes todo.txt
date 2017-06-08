@@ -1,7 +1,6 @@
 Future
--	Add dynamic wormholes (a special type)
+-	Add dynamic/chaos wormholes (a special type)
 -	Add colored teleporters
--	Ensure ghosts can't use wormholes (and fix FX)
 -	Add Dimensional Waypoint
 	-	@Plan
 		-	Crafted from 1 Chaos Bomb + Town Portal Scroll + Angel Statue
@@ -9,6 +8,8 @@ Future
 		-	Right-click selects for use
 		-	Appears as a glowing angel statue
 -	Add portal explode FX
+-	Set town portals to be server-wide
+-	Give wormholes a special FX/warning if they lead into dungeon
 
 
 v1.6.2

@@ -1,16 +1,19 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.TileHelpers;
+using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Utils;
 
 
 namespace Wormholes.Projectiles {
 	public class ChaosBombProjectile : ModProjectile {
+		public override void SetStaticDefaults() {
+			this.DisplayName.SetDefault( "Chaos Bomb" );
+		}
+
 		public override void SetDefaults() {
-			this.projectile.name = "Chaos Bomb";
 			this.projectile.width = 22;
 			this.projectile.height = 22;
 			this.projectile.aiStyle = 16;
@@ -126,7 +129,7 @@ namespace Wormholes.Projectiles {
 				this.ScatterTiles( tile_x, tile_y, radius, mymod.Config.Data.ChaosBombScatterRadius );
 				
 				if( Main.netMode != 0 ) {
-					NetMessage.SendData( MessageID.KillProjectile, -1, -1, "", proj.identity, (float)proj.owner, 0f, 0f, 0, 0, 0 );
+					NetMessage.SendData( MessageID.KillProjectile, -1, -1, null, proj.identity, (float)proj.owner, 0f, 0f, 0, 0, 0 );
 				}
 			}
 		}
@@ -143,13 +146,16 @@ namespace Wormholes.Projectiles {
 					if( Math.Sqrt( (x_dist*x_dist)+(y_dist*y_dist) ) > radius ) { continue; }	// Crude
 
 					fro_tile = Main.tile[i, j];
-					if( fro_tile == null || TileHelper.IsNonBlocking(fro_tile, true, false, false, true, true, true) ) { continue; }
-					if( TileHelper.IsNotBombable(i, j) ) { continue; }
+					if( fro_tile == null ) { continue; }
+					if( TileHelpers.IsSolid( fro_tile, true, true ) ) { continue; }
+					if( TileHelpers.IsWire( fro_tile ) ) { continue; }
+					if( fro_tile.lava() ) { continue; }
+					if( TileHelpers.IsNotBombable(i, j) ) { continue; }
 
 					var tile_data = TileObjectData.GetTileData( fro_tile );
 					if( tile_data != null && (tile_data.Width > 1 || tile_data.Height > 1) ) { continue; }
 					
-					if( !TileHelper.FindNearbyRandomAirTile( tile_x, tile_y, scatter_radius, out to_x, out to_y ) ) {
+					if( !TileHelpers.FindNearbyRandomAirTile( tile_x, tile_y, scatter_radius, out to_x, out to_y ) ) {
 						break;
 					}
 
@@ -164,10 +170,10 @@ namespace Wormholes.Projectiles {
 
 					if( Main.netMode != 0 ) {
 						if( !Main.tile[i, j].active() ) {
-							NetMessage.SendData( MessageID.TileChange, -1, -1, "", 0, (float)i, (float)j, 0f, 0, 0, 0 );
+							NetMessage.SendData( MessageID.TileChange, -1, -1, null, 0, (float)i, (float)j, 0f, 0, 0, 0 );
 						}
 						if( !Main.tile[to_x, to_y].active() ) {
-							NetMessage.SendData( MessageID.TileChange, -1, -1, "", 0, (float)to_x, (float)to_y, 0f, 0, 0, 0 );
+							NetMessage.SendData( MessageID.TileChange, -1, -1, null, 0, (float)to_x, (float)to_y, 0f, 0, 0, 0 );
 						}
 					}
 

@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.PlayerHelpers;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Utils;
 
 
 namespace Wormholes.Items {
@@ -21,8 +21,13 @@ namespace Wormholes.Items {
 		}
 
 
+		public override void SetStaticDefaults() {
+			this.DisplayName.SetDefault( "Scroll of Town Portal" );
+			this.Tooltip.SetDefault( "Creates a temporary portal between here and home"+'\n'+
+				"Still no cow level." );
+		}
+
 		public override void SetDefaults() {
-			this.item.name = "Scroll of Town Portal";
 			this.item.UseSound = SoundID.Item46;
 			this.item.useTurn = true;
 			this.item.useStyle = 4;
@@ -32,8 +37,6 @@ namespace Wormholes.Items {
 			this.item.consumable = true;
 			this.item.width = 35;
 			this.item.height = 14;
-			this.item.toolTip = "Creates a temporary portal between here and home";
-			this.item.toolTip2 = "Still no cow level.";
 			this.item.value = 10000;
 			this.item.rare = 1;
 		}
@@ -48,7 +51,7 @@ namespace Wormholes.Items {
 
 		public override bool ConsumeItem( Player player ) {
 			var player_pos = player.Center;
-			var home_pos = PlayerHelper.GetSpawnPoint( player );
+			var home_pos = PlayerHelpers.GetSpawnPoint( player );
 			player_pos.X -= WormholePortal.Width / 2;
 			player_pos.Y -= 128 + player.height + 1;
 			home_pos.X -= WormholePortal.Width / 2;
@@ -62,18 +65,18 @@ namespace Wormholes.Items {
 		public override void AddRecipes() {
 			ModRecipe recipe = new TownPortalScrollRecipe( this );
 			recipe.AddRecipe();
-			
+
 			/*ModRecipe alt_wormhole_pot = new ModRecipe( this.mod );
-			alt_wormhole_pot.AddIngredient( "Recall Potion", 1 );
-			alt_wormhole_pot.AddIngredient( "Blinkroot", 1 );
-			alt_wormhole_pot.SetResult( "Wormhole Potion" );
+			alt_wormhole_pot.AddIngredient( ItemID.RecallPotion, 1 );
+			alt_wormhole_pot.AddIngredient( ItemID.Blinkroot, 1 );
+			alt_wormhole_pot.SetResult( ItemID.WormholePotion" );
 			alt_wormhole_pot.AddTile( 13 ); // Bottle
 			alt_wormhole_pot.AddRecipe();
 
 			ModRecipe alt_recall_pot = new ModRecipe( this.mod );
-			alt_recall_pot.AddIngredient( "Wormhole Potion", 1 );
-			alt_recall_pot.AddIngredient( "Daybloom", 1 );
-			alt_recall_pot.SetResult( "Recall Potion" );
+			alt_recall_pot.AddIngredient( ItemID.WormholePotion, 1 );
+			alt_recall_pot.AddIngredient( ItemID.Daybloom, 1 );
+			alt_recall_pot.SetResult( ItemID.RecallPotion );
 			alt_recall_pot.AddTile( 13 ); // Bottle
 			alt_recall_pot.AddRecipe();*/
 		}
@@ -85,10 +88,10 @@ namespace Wormholes.Items {
 		public TownPortalScrollRecipe( TownPortalScrollItem moditem ) : base( moditem.mod ) {
 			this.AddTile( 18 );   // Crafting bench
 
-			this.AddIngredient( "Book", 1 );
 			this.AddRecipeGroup( "WormholesMod:EvacPotions", 1 );
-			//this.AddIngredient( "Wormhole Potion", 1 );
-			this.AddIngredient( "Mana Crystal", 1 );
+			this.AddIngredient( ItemID.Book, 1 );
+			//this.AddIngredient( ItemID.WormholePotion, 1 );
+			this.AddIngredient( ItemID.ManaCrystal, 1 );
 			this.SetResult( moditem, 1 );
 		}
 

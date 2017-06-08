@@ -6,8 +6,13 @@ using Wormholes.Projectiles;
 
 namespace Wormholes.Items {
 	class ChaosBombItem : ModItem {
+		public override void SetStaticDefaults() {
+			this.DisplayName.SetDefault( "Chaos Bomb" );
+			this.Tooltip.SetDefault( "Randomly scatters blocks within blast radius"+'\n'+
+				"20% chance to permanently relocate a wormholes" );
+		}
+
 		public override void SetDefaults() {
-			this.item.name = "Chaos Bomb";
 			this.item.useStyle = 1;
 			this.item.shootSpeed = 5f;
 			this.item.shoot = this.mod.ProjectileType<ChaosBombProjectile>();
@@ -21,8 +26,6 @@ namespace Wormholes.Items {
 			this.item.noUseGraphic = true;
 			this.item.noMelee = true;
 			this.item.damage = 0;
-			this.item.toolTip = "Randomly scatters blocks within blast radius";
-			this.item.toolTip2 = "20% chance to permanently relocate a wormholes";
 			this.item.value = Item.buyPrice( 0, 0, 20, 0 );
 			this.item.rare = 1;
 		}
@@ -39,16 +42,16 @@ namespace Wormholes.Items {
 		public ChaosBombRecipe( ChaosBombItem moditem ) : base( moditem.mod ) {
 			this.AddTile( 18 );   // Crafting bench
 
-			this.AddIngredient( "Bouncy Bomb", 5 );
 			this.AddRecipeGroup( "WormholesMod:EvacPotions", 1 );
-			this.AddIngredient( "Amethyst", 1 );
-			this.AddIngredient( "Topaz", 1 );
-			this.AddIngredient( "Sapphire", 1 );
-			this.AddIngredient( "Emerald", 1 );
-			this.AddIngredient( "Ruby", 1 );
-			this.AddIngredient( "Diamond", 1 );
-			this.AddIngredient( "Amber", 1 );
-			//this.AddIngredient( "Glass", 10 );
+			this.AddIngredient( ItemID.BouncyBomb, 5 );
+			this.AddIngredient( ItemID.Amethyst, 1 );
+			this.AddIngredient( ItemID.Topaz, 1 );
+			this.AddIngredient( ItemID.Sapphire, 1 );
+			this.AddIngredient( ItemID.Emerald, 1 );
+			this.AddIngredient( ItemID.Ruby, 1 );
+			this.AddIngredient( ItemID.Diamond, 1 );
+			this.AddIngredient( ItemID.Amber, 1 );
+			//this.AddIngredient( ItemID.Glass, 10 );
 			this.SetResult( moditem, 5 );
 		}
 

@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HamstarHelpers">
+      <HintPath>..\HamstarHelpers\bin\Release\HamstarHelpers.dll</HintPath>
+    </Reference>
     <Reference Include="Libraries.JSON.NET.Newtonsoft.Json">
       <HintPath>..\..\..\Reference\Libraries.JSON.NET.Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -47,18 +50,15 @@
     <Reference Include="Terraria">
       <HintPath>..\..\..\..\..\..\Program Files\Steam\steamapps\common\Terraria\Terraria.exe</HintPath>
     </Reference>
+    <Reference Include="Terraria.Libraries.ReLogic.ReLogic">
+      <HintPath>..\..\Reference\Terraria.Libraries.ReLogic.ReLogic.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Items\ChaosBombItem.cs" />
     <Compile Include="Items\TownPortalScrollItem.cs" />
     <Compile Include="Projectiles\ChaosBombProjectile.cs" />
-    <Compile Include="Utils\DebugHelper.cs" />
-    <Compile Include="Utils\DustHelper.cs" />
-    <Compile Include="Utils\JsonConfig.cs" />
-    <Compile Include="Utils\PlayerHelper.cs" />
     <Compile Include="Utils\SpriteAnimator.cs" />
-    <Compile Include="Utils\TileHelper.cs" />
-    <Compile Include="Utils\UIHelper.cs" />
     <Compile Include="Wormholes\WormholeManager.cs" />
     <Compile Include="Wormholes\WormholeLink.cs" />
     <Compile Include="WormholesMod.cs" />

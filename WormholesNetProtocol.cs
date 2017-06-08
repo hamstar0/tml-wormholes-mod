@@ -2,32 +2,32 @@
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
-using Utils;
+
 
 namespace Wormholes {
 	public enum WormholeNetProtocolTypes : byte {
-		RequestWormholesAndSettings,
+		RequestWormholesAndModSettings,
 		RequestWormholeReroll,
-		SendWormholesAndSettings,
-		BroadcastWormholeUpdate
+		WormholesAndModSettings,
+		WormholeUpdate
 	}
 	
 
-	public class WormholesNetProtocol {
+	public static class WormholesNetProtocol {
 		public static void RoutePacket( WormholesMod mymod, BinaryReader reader ) {
 			WormholeNetProtocolTypes protocol = (WormholeNetProtocolTypes)reader.ReadByte();
 
 			switch( protocol ) {
-			case WormholeNetProtocolTypes.RequestWormholesAndSettings:
+			case WormholeNetProtocolTypes.RequestWormholesAndModSettings:
 				WormholesNetProtocol.ReceiveWormholesAndSettingsRequestOnServer( mymod, reader );
 				break;
 			case WormholeNetProtocolTypes.RequestWormholeReroll:
 				WormholesNetProtocol.ReceiveWormholeRerollRequestOnServer( mymod, reader );
 				break;
-			case WormholeNetProtocolTypes.SendWormholesAndSettings:
+			case WormholeNetProtocolTypes.WormholesAndModSettings:
 				WormholesNetProtocol.ReceiveWormholesAndSettingsOnClient( mymod, reader );
 				break;
-			case WormholeNetProtocolTypes.BroadcastWormholeUpdate:
+			case WormholeNetProtocolTypes.WormholeUpdate:
 				WormholesNetProtocol.ReceiveWormholeUpdateOnClient( mymod, reader );
 				break;
 			default:
@@ -46,7 +46,7 @@ namespace Wormholes {
 			if( Main.netMode != 1 ) { return; } // Clients only
 
 			ModPacket packet = mymod.GetPacket();
-			packet.Write( (byte)WormholeNetProtocolTypes.RequestWormholesAndSettings );
+			packet.Write( (byte)WormholeNetProtocolTypes.RequestWormholesAndModSettings );
 			packet.Write( (int)player.whoAmI );
 			packet.Send();
 		}
@@ -74,7 +74,7 @@ namespace Wormholes {
 			// Be sure our wormholes are ready to send (if not already)
 			modworld.Wormholes.SetupWormholes( mymod );
 
-			packet.Write( (byte)WormholeNetProtocolTypes.SendWormholesAndSettings );
+			packet.Write( (byte)WormholeNetProtocolTypes.WormholesAndModSettings );
 			packet.Write( (string)mymod.Config.SerializeMe() );
 			packet.Write( (int)WormholeManager.PortalCount );
 
@@ -101,7 +101,7 @@ namespace Wormholes {
 				return;
 			}
 
-			packet.Write( (byte)WormholeNetProtocolTypes.BroadcastWormholeUpdate );
+			packet.Write( (byte)WormholeNetProtocolTypes.WormholeUpdate );
 			packet.Write( (string)id );
 			packet.Write( (float)link.RightPortal.Pos.X );
 			packet.Write( (float)link.RightPortal.Pos.Y );
@@ -124,7 +124,7 @@ namespace Wormholes {
 			string json = reader.ReadString();
 			int wormhole_count = reader.ReadInt32();
 
-			mymod.Config.DeserializeToMe( json );
+			mymod.Config.DeserializeMe( json );
 
 			for( int i = 0; i < wormhole_count; i++ ) {
 				string id = reader.ReadString();

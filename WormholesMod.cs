@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using HamstarHelpers.Utilities.Config;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
-using Utils;
 
 
 namespace Wormholes {
@@ -30,7 +30,7 @@ namespace Wormholes {
 
 
 	public class WormholesMod : Mod {
-		public static readonly Version ConfigVersion = new Version( 1, 6, 2 );
+		public static readonly Version ConfigVersion = new Version( 1, 6, 3 );
 		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 		private WormholesUI UI;
@@ -79,7 +79,7 @@ namespace Wormholes {
 				}
 			}
 
-			DebugHelper.DEBUGMODE = this.Config.Data.DEBUGFLAGS;
+			//DebugHelper.DEBUGMODE = this.Config.Data.DEBUGFLAGS;
 
 			// Clients and single only
 			if( Main.netMode != 2 ) {
@@ -110,9 +110,6 @@ namespace Wormholes {
 				if( !Main.mapFullscreen && (Main.mapStyle == 1 || Main.mapStyle == 2) ) {
 					this.DrawMiniMap( sb );
 				}
-
-				DebugHelper.PrintToBatch( sb );
-				DebugHelper.Once = false;
 			} catch( Exception e ) {
 				ErrorLogger.Log( "PostDrawInterface: " + e.ToString() );
 				throw e;

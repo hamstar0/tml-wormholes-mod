@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
 
-namespace Utils {
+namespace Wormholes.Utils {
 	public class SpriteAnimator {
 		private int FrameRate;
 		private int FrameCount;
@@ -38,10 +38,10 @@ namespace Utils {
 
 		////////////////
 
-		public void AnimateOpen( int amt=15 ) {
+		public void AnimateOpen( int amt = 15 ) {
 			this.AnimatingOpen = amt;
 		}
-		
+
 		////////////////
 
 		private void ApplyDistortion() {
@@ -80,10 +80,10 @@ namespace Utils {
 
 			return color;
 		}
-		
+
 		public Vector2 GetScale() {
 			if( this.AnimatingOpen > 0 ) {
-				return new Vector2( this.Scale/4, this.Scale/(((float)this.AnimatingOpen * 0.5f) + 1) );
+				return new Vector2( this.Scale / 4, this.Scale / (((float)this.AnimatingOpen * 0.5f) + 1) );
 			}
 
 			return new Vector2( this.Scale, this.Scale );

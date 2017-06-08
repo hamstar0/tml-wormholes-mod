@@ -1,10 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.PlayerHelpers;
+using Microsoft.Xna.Framework;
 using System;
-using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Utils;
 
 
 namespace Wormholes {
@@ -405,7 +404,7 @@ namespace Wormholes {
 				info.ChartedLinks.Add( this.ID );
 			}
 
-			PlayerHelper.Teleport( player, dest );
+			PlayerHelpers.Teleport( player, dest );
 
 			if( player.FindBuffIndex(88) != -1 ) {
 				int def = player.statDefense;

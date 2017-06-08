@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Utils;
+using Wormholes.Utils;
 
 namespace Wormholes {
 	public class WormholePortal {
