@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.MiscHelpers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
@@ -53,6 +54,7 @@ namespace Wormholes {
 
 			pos.X = MathHelper.Clamp( pos.X, 160, (Main.maxTilesX-10) * 16 );
 			pos.Y = MathHelper.Clamp( pos.Y, 160, (Main.maxTilesY-10) * 16 );
+//DebugHelpers.Log( "wall of "+color.ToString()+": "+Main.tile[(int)(pos.X/16f)+2, (int)(pos.Y/16f)+4].wall );
 
 			this._pos = pos;
 			this.BaseColor = color;

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.GameContent.Generation;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.World.Generation;
 
 
 namespace Wormholes {
@@ -15,48 +18,76 @@ namespace Wormholes {
 
 
 		public override void Initialize() {
-			this.Wormholes = new WormholeManager( (WormholesMod)this.mod );
+			var mymod = (WormholesMod)this.mod;
+
+			this.Wormholes = new WormholeManager( mymod );
 			this.ID = Guid.NewGuid().ToString( "D" );
-			this.HasCorrectID = false;	// 'Load()' decides if no pre-existing one is found
+			this.HasCorrectID = false;
+
+			if( (mymod.Config.Data.DEBUGFLAGS & 4) > 0 ) {
+				WormholeManager.ForceRegenWormholes = true;
+			}
 		}
 
 
 		public override void Load( TagCompound tags ) {
-			string id = tags.GetString( "world_id" );
-			if( id.Length > 0 ) { this.ID = id; }
-			this.HasCorrectID = true;
+			if( tags.ContainsKey( "world_id" ) ) {
+				string id = tags.GetString( "world_id" );
+				this.ID = id;
 
-			var mymod = (WormholesMod)this.mod;
-			if( this.Wormholes.Load( mymod, tags ) ) {
-				this.Wormholes.SetupWormholes( mymod );
+				var mymod = (WormholesMod)this.mod;
+				if( this.Wormholes.Load( mymod, tags ) ) {
+					this.Wormholes.FinishSettingUpWormholes( mymod );
+				}
 			}
 
+			this.HasCorrectID = true;
 			WormholeManager.ForceRegenWormholes = false;
 		}
 
-
 		public override TagCompound Save() {
 			var tags = this.Wormholes.Save();
-			tags.Set( "world_id", this.ID );
+			if( this.HasCorrectID ) {
+				tags.Set( "world_id", this.ID );
+			}
 			return tags;
 		}
 
 
 		public override void NetSend( BinaryWriter writer ) {
+			writer.Write( this.HasCorrectID );
 			writer.Write( this.ID );
 		}
 
 		public override void NetReceive( BinaryReader reader ) {
-			this.ID = reader.ReadString();
-			this.HasCorrectID = true;
+			bool has_correct_id = reader.ReadBoolean();
+			string id = reader.ReadString();
 
-			var modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this.mod );
-			
-			if( modplayer.HasEnteredWorld && !modplayer.HasLoadedTownPortals ) {
-				modplayer.ReopenTownPortal();
+			if( has_correct_id ) {
+				this.HasCorrectID = has_correct_id;
+				this.ID = id;
+
+				var modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this.mod );
+				if( modplayer.HasEnteredWorld && !modplayer.HasLoadedTownPortals ) {
+					modplayer.ReopenTownPortal();
+				}
 			}
 		}
 
+		////////////////
+
+		public void SetupWormholes() {
+			this.Wormholes.FinishSettingUpWormholes( (WormholesMod)this.mod );
+			this.HasCorrectID = true;
+		}
+
+		public override void ModifyWorldGenTasks( List<GenPass> tasks, ref float totalWeight ) {
+			tasks.Add( new PassLegacy( "Place Wormholes", delegate ( GenerationProgress progress ) {
+				this.SetupWormholes();
+			} ) );
+		}
+
+		////////////////
 
 		public override void PostDrawTiles() {
 			if( this.Wormholes == null ) { return; }

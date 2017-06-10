@@ -23,7 +23,7 @@ namespace Wormholes {
 		
 
 		public void DrawMiniMap( WormholeLink link, SpriteBatch sb ) {
-			if( /*(DebugHelper.DEBUGMODE & 2) == 0 &&*/ !link.IsCharted( Main.player[Main.myPlayer] ) ) { return; }
+			if( (WormholesMod.DEBUGMODE & 2) == 0 && !link.IsCharted( Main.player[Main.myPlayer] ) ) { return; }
 			float scale = Main.mapMinimapScale / 1.5f;
 
 			Rectangle l_rect = new Rectangle( (int)link.LeftPortal.Pos.X, (int)link.LeftPortal.Pos.Y, this.Tex.Width, this.Tex.Height );
@@ -43,7 +43,7 @@ namespace Wormholes {
 		}
 
 		public void DrawOverlayMap( WormholeLink link, SpriteBatch sb ) {
-			if( /*(DebugHelper.DEBUGMODE & 2) == 0 &&*/ !link.IsCharted( Main.player[Main.myPlayer] ) ) { return; }
+			if( (WormholesMod.DEBUGMODE & 2) == 0 && !link.IsCharted( Main.player[Main.myPlayer] ) ) { return; }
 			float scale = Main.mapOverlayScale / 1.5f;
 
 			Rectangle l_rect = new Rectangle( (int)link.LeftPortal.Pos.X, (int)link.LeftPortal.Pos.Y, this.Tex.Width, this.Tex.Height );
@@ -63,7 +63,7 @@ namespace Wormholes {
 		}
 
 		public void DrawFullscreenMap( WormholeLink link, SpriteBatch sb ) {
-			if( /*(DebugHelper.DEBUGMODE & 2) == 0 &&*/ !link.IsCharted( Main.player[Main.myPlayer] ) ) { return; }
+			if( (WormholesMod.DEBUGMODE & 2) == 0 && !link.IsCharted( Main.player[Main.myPlayer] ) ) { return; }
 			float scale = Main.mapFullscreenScale / 1.5f;
 
 			Rectangle l_rect = new Rectangle( (int)link.LeftPortal.Pos.X, (int)link.LeftPortal.Pos.Y, this.Tex.Width, this.Tex.Height );

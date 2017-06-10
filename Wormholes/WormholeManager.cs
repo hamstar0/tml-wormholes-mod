@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.TileHelpers;
+using HamstarHelpers.MiscHelpers;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -39,18 +40,15 @@ namespace Wormholes {
 		/////////////////
 
 		public bool Load( WormholesMod mymod, TagCompound tags ) {
-			if( mymod.Config.Data.DisableNaturalWormholes ) {
-				return false;
-			}
+			if( mymod.Config.Data.DisableNaturalWormholes ) { return false; }
+			if( !tags.ContainsKey("wormhole_count") ) { return false; }
 
 			int holes = tags.GetInt( "wormhole_count" );
-			if( holes == 0 ) {
-				return false;
-			}
+			if( holes == 0 ) { return false; }
 
-			//if( (DebugHelper.DEBUGMODE & 1) > 0 ) {
-			//	ErrorLogger.Log( "Loading world ids (" + Main.netMode + "): " + holes );
-			//}
+			if( (WormholesMod.DEBUGMODE & 1) > 0 ) {
+				DebugHelpers.Log( "Loading world ids (" + Main.netMode + "): " + holes );
+			}
 
 			int[] worm_l_x = tags.GetIntArray( "wormhole_left_x" );
 			int[] worm_l_y = tags.GetIntArray( "wormhole_left_y" );
@@ -63,9 +61,9 @@ namespace Wormholes {
 				}
 
 				string id = tags.GetString( "wormhole_id_" + i );
-				//if( (DebugHelper.DEBUGMODE & 1) > 0 ) {
-				//	ErrorLogger.Log( "  world load id: " + id + " (" + i + ")" );
-				//}
+				if( (WormholesMod.DEBUGMODE & 1) > 0 ) {
+					DebugHelpers.Log( "  world load id: " + id + " (" + i + ")" );
+				}
 
 				Vector2 pos_l = new Vector2( worm_l_x[i], worm_l_y[i] );
 				Vector2 pos_r = new Vector2( worm_r_x[i], worm_r_y[i] );
@@ -93,9 +91,9 @@ namespace Wormholes {
 			int[] worm_r_x = new int[WormholeManager.PortalCount];
 			int[] worm_r_y = new int[WormholeManager.PortalCount];
 
-			//if( (DebugHelper.DEBUGMODE & 1) > 0 ) {
-			//	ErrorLogger.Log( "Save world ids (" + Main.netMode + "): " + WormholeManager.PortalCount );
-			//}
+			if( (WormholesMod.DEBUGMODE & 1) > 0 ) {
+				DebugHelpers.Log( "Save world ids (" + Main.netMode + "): " + WormholeManager.PortalCount );
+			}
 
 			int i;
 			for( i = 0; i < this.Links.Count; i++ ) {
@@ -120,10 +118,10 @@ namespace Wormholes {
 
 			for( i = 0; i < this.Links.Count; i++ ) {
 				tags.Set( "wormhole_id_" + i, ids[i] );
-				//if( (DebugHelper.DEBUGMODE & 1) > 0 ) {
-				//	ErrorLogger.Log( "  world save id: " + ids[i] + " (" + i + ") = "
-				//		+ worm_l_x[i] + "," + worm_l_y[i] + " | " + worm_r_x[i] + "," + worm_r_y[i] );
-				//}
+				if( (WormholesMod.DEBUGMODE & 1) > 0 ) {
+					DebugHelpers.Log( "  world save id: " + ids[i] + " (" + i + ") = "
+						+ worm_l_x[i] + "," + worm_l_y[i] + " | " + worm_r_x[i] + "," + worm_r_y[i] );
+				}
 			}
 
 			return tags;
@@ -168,9 +166,12 @@ namespace Wormholes {
 					is_empty = true;
 					for( int i=world_x; i<world_x+6; i++ ) {
 						for( int j=world_y; j<world_y+8; j++ ) {
-							is_empty = TileHelpers.IsSolid( Main.tile[i, j], true, true );
+							Tile tile = Framing.GetTileSafely( i, j );
+
+							is_empty = !TileHelpers.IsSolid( tile, true, true ) && !tile.lava() && !TileHelpers.IsDungeon(tile);
 							if( !is_empty ) { break; }
 						}
+						if( !is_empty ) { break; }
 					}
 				} while( !is_empty );
 				//} while( Collision.SolidCollision( new Vector2(world_x*16f, world_y*16f), WormholePortal.Width, WormholePortal.Height ) );
@@ -217,7 +218,7 @@ namespace Wormholes {
 		//}
 
 		
-		public void SetupWormholes( WormholesMod mymod ) {
+		public void FinishSettingUpWormholes( WormholesMod mymod ) {
 			if( this.WormholesSpawned ) { return; }
 
 			if( WormholeManager.ForceRegenWormholes ) {
@@ -226,16 +227,13 @@ namespace Wormholes {
 			}
 
 			for( int i = 0; i < WormholeManager.PortalCount; i++ ) {
+				// Skip already-loaded wormholes
 				if( i < this.Links.Count && this.Links[i] != null ) { continue; }
 
 				var link = this.CreateRandomWormholePair( mymod, WormholeLink.GetColor(i) );
-				if( i >= this.Links.Count ) {
-					this.Links.Add( link );
-				} else {
-					this.Links.Insert( i, link );
-				}
+				this.Links.Add( link );
 			}
-
+			
 			this.WormholesSpawned = true;
 		}
 

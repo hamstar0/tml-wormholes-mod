@@ -72,7 +72,7 @@ namespace Wormholes {
 			ModPacket packet = mymod.GetPacket();
 
 			// Be sure our wormholes are ready to send (if not already)
-			modworld.Wormholes.SetupWormholes( mymod );
+			modworld.SetupWormholes();
 
 			packet.Write( (byte)WormholeNetProtocolTypes.WormholesAndModSettings );
 			packet.Write( (string)mymod.Config.SerializeMe() );
