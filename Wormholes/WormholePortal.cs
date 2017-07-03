@@ -1,10 +1,10 @@
-﻿using HamstarHelpers.MiscHelpers;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Wormholes.Utils;
+
 
 namespace Wormholes {
 	public class WormholePortal {

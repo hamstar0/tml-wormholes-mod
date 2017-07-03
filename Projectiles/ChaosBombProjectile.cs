@@ -11,6 +11,9 @@ namespace Wormholes.Projectiles {
 	public class ChaosBombProjectile : ModProjectile {
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Chaos Bomb" );
+
+			this.drawOriginOffsetX = 0;
+			this.drawOriginOffsetY = -8;
 		}
 
 		public override void SetDefaults() {
@@ -147,7 +150,7 @@ namespace Wormholes.Projectiles {
 
 					fro_tile = Main.tile[i, j];
 					if( fro_tile == null ) { continue; }
-					if( TileHelpers.IsSolid( fro_tile, true, true ) ) { continue; }
+					if( !TileHelpers.IsSolid( fro_tile, true, true ) ) { continue; }
 					if( TileHelpers.IsWire( fro_tile ) ) { continue; }
 					if( fro_tile.lava() ) { continue; }
 					if( TileHelpers.IsNotBombable(i, j) ) { continue; }
@@ -164,17 +167,14 @@ namespace Wormholes.Projectiles {
 					} catch( Exception _ ) {
 						style = 0;
 					}
-					
+
+					int old_type = fro_tile.type;
 					WorldGen.KillTile( i, j, false, false, true );
-					WorldGen.PlaceTile( to_x, to_y, fro_tile.type, true, true, this.projectile.owner, style );
+					WorldGen.PlaceTile( to_x, to_y, old_type, true, true, this.projectile.owner, style );
 
 					if( Main.netMode != 0 ) {
-						if( !Main.tile[i, j].active() ) {
-							NetMessage.SendData( MessageID.TileChange, -1, -1, null, 0, (float)i, (float)j, 0f, 0, 0, 0 );
-						}
-						if( !Main.tile[to_x, to_y].active() ) {
-							NetMessage.SendData( MessageID.TileChange, -1, -1, null, 0, (float)to_x, (float)to_y, 0f, 0, 0, 0 );
-						}
+						NetMessage.SendData( MessageID.TileChange, -1, -1, null, 0, (float)i, (float)j, 0f, 0, 0, 0 );
+						NetMessage.SendData( MessageID.TileChange, -1, -1, null, 0, (float)to_x, (float)to_y, 0f, 0, 0, 0 );
 					}
 
 					Dust.NewDust( new Vector2(i*16, j*16), 0, 0, 15, 0, 0, 150, Color.Cyan, 1f );
