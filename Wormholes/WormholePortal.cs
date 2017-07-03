@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.MiscHelpers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
@@ -104,23 +105,26 @@ namespace Wormholes {
 
 		public void DrawForMe() {
 			if( this.IsClosed ) { return; }
-
-			var screen_rect = new Rectangle( (int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight );
+			
+			int screen_wid = (int)((float)Main.screenWidth / Main.GameZoomTarget);
+			int screen_hei = (int)((float)Main.screenHeight / Main.GameZoomTarget);
+			int screen_x = (int)Main.screenPosition.X + ((Main.screenWidth - screen_wid) / 2);
+			int screen_y = (int)Main.screenPosition.Y + ((Main.screenHeight - screen_hei) / 2);
+			var screen_pos = new Vector2( screen_x, screen_y );
+			var screen_rect = new Rectangle( screen_x, screen_y, screen_wid, screen_hei );
 			if( !this.Rect.Intersects(screen_rect) ) { return; }
 
 			this.Animator.Animate();
 
 			var offset = this.Animator.GetPositionOffset();
-			var pos = (this.Pos - Main.screenPosition) + offset;
+			var pos = ((this.Pos - screen_pos) + offset) * Main.GameZoomTarget;
 			//var color = this.Animator.GetColorFlicker();
 			var color = this.BaseColor;
-			var scale = this.Animator.GetScale();
-
-			//pos.X -= WormholePortal.Width / 2;
+			var scale = this.Animator.GetScale() * Main.GameZoomTarget;
 
 			Main.spriteBatch.Draw( WormholePortal.Tex, pos, this.Animator.Frame, color, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
 			
-			Dust.NewDust( Main.screenPosition + pos, this.Rect.Width, this.Rect.Height, 15, 0, 0, 150, color, 1f );
+			Dust.NewDust( this.Pos, this.Rect.Width, this.Rect.Height, 15, 0, 0, 150, color, 1f );
 		}
 
 		public void SoundFX() {
