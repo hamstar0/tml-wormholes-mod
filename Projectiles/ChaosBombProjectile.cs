@@ -62,7 +62,7 @@ namespace Wormholes.Projectiles {
 				if( link.DetectCollision(rect) != 0 ) {
 					proj.Kill();
 					if( rand == 0 ) {
-						link.ApplyChaosHit();
+						link.ApplyChaosHit( mymod );
 						return;
 					}
 				}
@@ -72,10 +72,8 @@ namespace Wormholes.Projectiles {
 			if( modplayer.MyPortal != null && !modplayer.MyPortal.IsClosed ) {
 				if( modplayer.MyPortal.DetectCollision(rect) != 0 ) {
 					proj.Kill();
-					if( rand == 0 ) {
-						modplayer.MyPortal.Close(); // Town portals only close; never re-randomize (for the current version)
-						return;
-					}
+					modplayer.MyPortal.Close(); // Town portals only close; never re-randomize (for the current version)
+					return;
 				}
 			}
 		}

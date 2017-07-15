@@ -353,8 +353,13 @@ namespace Wormholes {
 			return on_portal;
 		}
 		
-		public void ApplyChaosHit() {
-			WormholesNetProtocol.SendWormholeRerollRequestViaClient( this.MyMod, this.ID );
+		public void ApplyChaosHit( WormholesMod mymod ) {
+			if( Main.netMode == 0 ) {	// Single
+				var mngr = mymod.GetModWorld<WormholesWorld>().Wormholes;
+				mngr.Reroll( this );
+			} else {	// Non-single
+				WormholesNetProtocol.SendWormholeRerollRequestViaClient( this.MyMod, this.ID );
+			}
 		}
 
 		////////////////
