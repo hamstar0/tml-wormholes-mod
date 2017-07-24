@@ -1,5 +1,4 @@
-﻿using HamstarHelpers.MiscHelpers;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -39,8 +38,12 @@ namespace Wormholes {
 
 
 		public override void Load( TagCompound tag ) {
+			var modworld = this.mod.GetModWorld<WormholesWorld>();
 			int wormholes = tag.GetInt( "wormholes_count" );
-			
+
+			this.TownPortalRightPositions = new Dictionary<string, Vector2>();
+			this.TownPortalLeftPositions = new Dictionary<string, Vector2>();
+
 			for( int i = 0; i < wormholes; i++ ) {
 				string id = tag.GetString( "wormhole_id_"+i );
 				if( id == "" ) { continue; }
@@ -54,9 +57,11 @@ namespace Wormholes {
 				float right_y = tag.GetFloat( "my_town_right_portal_y_" + i );
 				float left_x = tag.GetFloat( "my_town_left_portal_x_" + i );
 				float left_y = tag.GetFloat( "my_town_left_portal_y_" + i );
+				var right = new Vector2( right_x, right_y );
+				var left = new Vector2( left_x, left_y );
 
-				this.TownPortalRightPositions[ world_id ] = new Vector2( right_x, right_y );
-				this.TownPortalLeftPositions[ world_id ] = new Vector2( left_x, left_y );
+				this.TownPortalRightPositions[ world_id ] = right;
+				this.TownPortalLeftPositions[ world_id ] = left;
 			}
 		}
 
@@ -95,6 +100,7 @@ namespace Wormholes {
 				tags.Set( "my_town_right_portal_y_" + i, this.TownPortalRightPositions[id].Y );
 				tags.Set( "my_town_left_portal_x_" + i, this.TownPortalLeftPositions[id].X );
 				tags.Set( "my_town_left_portal_y_" + i, this.TownPortalLeftPositions[id].Y );
+//ErrorLogger.Log( "save for "+id+": "+this.TownPortalLeftPositions[id]+", "+this.TownPortalRightPositions[id] );
 				i++;
 			}
 

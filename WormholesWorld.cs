@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -95,7 +96,10 @@ namespace Wormholes {
 			var myplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this.mod );
 			var mymod = (WormholesMod)this.mod;
 
-			Main.spriteBatch.Begin();
+			//Main.spriteBatch.Begin();
+			RasterizerState rasterizer = Main.gameMenu || (double)Main.player[Main.myPlayer].gravDir == 1.0 ? RasterizerState.CullCounterClockwise : RasterizerState.CullClockwise;
+			Main.spriteBatch.Begin( SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, rasterizer, (Effect)null, Main.GameViewMatrix.TransformationMatrix );
+
 			try {
 				this.Wormholes.DrawAll( mymod, myplayer.MyPortal );
 			} catch( Exception e ) {

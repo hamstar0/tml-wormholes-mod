@@ -1,5 +1,5 @@
 author = hamstar
-version = 1.6.4.3
+version = 1.6.4.4
 displayName = Wormholes
 modReferences = HamstarHelpers
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*

@@ -105,24 +105,28 @@ namespace Wormholes {
 
 		public void DrawForMe() {
 			if( this.IsClosed ) { return; }
-			
-			int screen_wid = (int)((float)Main.screenWidth / Main.GameZoomTarget);
-			int screen_hei = (int)((float)Main.screenHeight / Main.GameZoomTarget);
-			int screen_x = (int)Main.screenPosition.X + ((Main.screenWidth - screen_wid) / 2);
-			int screen_y = (int)Main.screenPosition.Y + ((Main.screenHeight - screen_hei) / 2);
-			var screen_pos = new Vector2( screen_x, screen_y );
-			var screen_rect = new Rectangle( screen_x, screen_y, screen_wid, screen_hei );
-			if( !this.Rect.Intersects(screen_rect) ) { return; }
+
+			//float zoom = Main.GameZoomTarget;
+			//float zoom_scr_wid = (float)Main.screenWidth / zoom;
+			//float zoom_scr_hei = (float)Main.screenHeight / zoom;
+			//float zoom_world_scr_x = Main.screenPosition.X + ((Main.screenWidth - zoom_scr_wid) / 2);
+			//float zoom_world_scr_y = Main.screenPosition.Y + ((Main.screenHeight - zoom_scr_hei) / 2);
+			//var zoom_world_scr_pos = new Vector2( zoom_world_scr_x, zoom_world_scr_y );
+			//var zoom_world_scr_rect = new Rectangle( (int)zoom_world_scr_x, (int)zoom_world_scr_y, (int)zoom_scr_wid, (int)zoom_scr_hei );
+
+			var world_scr_rect = new Rectangle( (int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight );
+			if( !this.Rect.Intersects( world_scr_rect ) ) { return; }
+			Vector2 world_scr_pos = Main.screenPosition;
 
 			this.Animator.Animate();
 
-			var offset = this.Animator.GetPositionOffset();
-			var pos = ((this.Pos - screen_pos) + offset) * Main.GameZoomTarget;
-			//var color = this.Animator.GetColorFlicker();
-			var color = this.BaseColor;
-			var scale = this.Animator.GetScale() * Main.GameZoomTarget;
+			Vector2 offset = this.Animator.GetPositionOffset();
+			Vector2 scr_scr_pos = ((this.Pos - world_scr_pos) + offset);//* zoom;
+			//Color color = this.Animator.GetColorFlicker();
+			Color color = this.BaseColor;
+			Vector2 scale = this.Animator.GetScale();//* zoom;
 
-			Main.spriteBatch.Draw( WormholePortal.Tex, pos, this.Animator.Frame, color, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
+			Main.spriteBatch.Draw( WormholePortal.Tex, scr_scr_pos, this.Animator.Frame, color, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
 			
 			Dust.NewDust( this.Pos, this.Rect.Width, this.Rect.Height, 15, 0, 0, 150, color, 1f );
 		}
