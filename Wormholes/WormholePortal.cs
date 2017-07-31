@@ -1,5 +1,4 @@
-﻿using HamstarHelpers.MiscHelpers;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
@@ -77,6 +76,7 @@ namespace Wormholes {
 
 		public void ChangePosition( Vector2 pos ) {
 			this._pos = pos;
+			this.Rect = new Rectangle( (int)pos.X, (int)pos.Y, this.Rect.Width, this.Rect.Height );
 		}
 
 		////////////////
