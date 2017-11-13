@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 using Wormholes.Utils;
 
 
@@ -13,7 +12,24 @@ namespace Wormholes {
 		public static int Width { get; private set; }
 		public static int Height { get; private set; }
 
-		private WormholesMod MyMod;
+
+		////////////////
+
+		static WormholePortal() {
+			WormholePortal.FrameCount = 4;
+			WormholePortal.Width = 74;  //WormholePortal.Tex.Width;
+			WormholePortal.Height = 128; //WormholePortal.Tex.Height / WormholePortal.FrameCount;
+		}
+
+		internal static void Initialize() {
+			// Clients and single only
+			if( Main.netMode != 2 ) {
+				WormholePortal.Tex = WormholesMod.Instance.GetTexture( "Wormholes/Wormhole" );
+			}
+		}
+
+		
+		////////////////
 
 		private Vector2 _pos;
 		
@@ -33,22 +49,7 @@ namespace Wormholes {
 
 		////////////////
 
-		static WormholePortal() {
-			// Clients and single only
-			if( Main.netMode != 2 ) {
-				Mod mod = ModLoader.GetMod( "Wormholes" );
-				WormholePortal.Tex = mod.GetTexture( "Wormholes/Wormhole" );
-			}
-
-			WormholePortal.FrameCount = 4;
-			WormholePortal.Width = 74;  //WormholePortal.Tex.Width;
-			WormholePortal.Height = 128; //WormholePortal.Tex.Height / WormholePortal.FrameCount;
-		}
-
-		////////////////
-
-		public WormholePortal( WormholesMod mymod, Vector2 pos, Color color ) {
-			this.MyMod = mymod;
+		public WormholePortal( Vector2 pos, Color color ) {
 			this.IsMisplaced = (pos.X / 16f) < 64f || (pos.X / 16f) > (Main.maxTilesX - 64)
 				|| (pos.Y / 16f) < Main.worldSurface || (pos.Y / 16f) > (Main.maxTilesY - 220);
 
@@ -103,7 +104,8 @@ namespace Wormholes {
 		
 		////////////////
 
-		public void DrawForMe() {
+		public void DrawForMe( WormholesMod mymod ) {
+			if( Main.netMode == 2 ) { return; }
 			if( this.IsClosed ) { return; }
 
 			//float zoom = Main.GameZoomTarget;
@@ -131,24 +133,24 @@ namespace Wormholes {
 			Dust.NewDust( this.Pos, this.Rect.Width, this.Rect.Height, 15, 0, 0, 150, color, 1f );
 		}
 
-		public void SoundFX() {
+		public void SoundFX( WormholesMod mymod ) {
 			if( this.IsClosed ) { return; }
 
 			// Loop audio
 			if( this.SoundLoopTimer++ > 12 ) {
-				Main.PlaySound( SoundID.Item24.WithVolume(this.MyMod.Config.Data.WormholeSoundVolume), this.Pos );
+				Main.PlaySound( SoundID.Item24.WithVolume(mymod.Config.Data.WormholeSoundVolume), this.Pos );
 				this.SoundLoopTimer = 0;
 			}
 		}
 		
-		public void LightFX() {
+		public void LightFX( WormholesMod mymod ) {
 			if( this.IsClosed ) { return; }
 			if( Main.rand == null ) { return; }
 
 			int x = (int)((this.Pos.X + (WormholePortal.Width / 2)) / 16f);
 			int y = (int)((this.Pos.Y + (WormholePortal.Height / 2)) / 16f);
 
-			float flicker_scale = 0.5f + this.MyMod.Config.Data.WormholeLightScale * Main.rand.NextFloat();
+			float flicker_scale = 0.5f + mymod.Config.Data.WormholeLightScale * Main.rand.NextFloat();
 			float r = flicker_scale * this.BaseColor.R / 255f;
 			float g = flicker_scale * this.BaseColor.G / 255f;
 			float b = flicker_scale * this.BaseColor.B / 255f;

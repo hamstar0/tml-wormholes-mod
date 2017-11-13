@@ -6,8 +6,9 @@ using Terraria.ModLoader.IO;
 using Wormholes.Items;
 using Wormholes.NetProtocol;
 
+
 namespace Wormholes {
-	public class WormholesPlayer : ModPlayer {
+	class MyPlayer : ModPlayer {
 		public WormholeLink MyPortal;
 		public ISet<string> ChartedLinks { get; private set; }
 
@@ -26,7 +27,7 @@ namespace Wormholes {
 
 		public override void clientClone( ModPlayer clone ) {
 			base.clientClone( clone );
-			var myclone = (WormholesPlayer)clone;
+			var myclone = (MyPlayer)clone;
 			
 			myclone.MyPortal = this.MyPortal;
 			myclone.ChartedLinks = this.ChartedLinks;
@@ -38,7 +39,7 @@ namespace Wormholes {
 
 
 		public override void Load( TagCompound tag ) {
-			var modworld = this.mod.GetModWorld<WormholesWorld>();
+			var modworld = this.mod.GetModWorld<MyWorld>();
 			int wormholes = tag.GetInt( "wormholes_count" );
 
 			this.TownPortalRightPositions = new Dictionary<string, Vector2>();
@@ -66,7 +67,7 @@ namespace Wormholes {
 		}
 
 		public override TagCompound Save() {
-			var modworld = this.mod.GetModWorld<WormholesWorld>();
+			var modworld = this.mod.GetModWorld<MyWorld>();
 			string world_id = modworld.ID;
 			var tags = new TagCompound {
 				{ "wormholes_count", (int)this.ChartedLinks.Count }
@@ -114,7 +115,7 @@ namespace Wormholes {
 
 			if( player.whoAmI == this.player.whoAmI ) { // Current player
 				var mymod = (WormholesMod)this.mod;
-				var modworld = this.mod.GetModWorld<WormholesWorld>();
+				var modworld = this.mod.GetModWorld<MyWorld>();
 
 				if( !mymod.Config.LoadFile() ) {
 					mymod.Config.SaveFile();
@@ -138,7 +139,7 @@ namespace Wormholes {
 
 		public void ReopenTownPortal() {
 			var mymod = (WormholesMod)this.mod;
-			var modworld = this.mod.GetModWorld<WormholesWorld>();
+			var modworld = this.mod.GetModWorld<MyWorld>();
 			string world_id = modworld.ID;
 
 			if( this.TownPortalRightPositions.Keys.Contains( world_id ) ) {
@@ -156,7 +157,7 @@ namespace Wormholes {
 			if( Main.netMode == 2 ) { return; } // Not server
 
 			var mymod = (WormholesMod)this.mod;
-			WormholesWorld modworld = mymod.GetModWorld<WormholesWorld>();
+			MyWorld modworld = mymod.GetModWorld<MyWorld>();
 			if( modworld.Wormholes == null ) { return; }
 
 			modworld.Wormholes.RunAll( mymod, this.player );

@@ -30,7 +30,7 @@ namespace Wormholes.NetProtocol {
 		public static void SendWormholesAndSettingsViaServer( WormholesMod mymod, Player player ) {
 			if( Main.netMode != 2 ) { return; } // Server only
 
-			WormholesWorld modworld = mymod.GetModWorld<WormholesWorld>();
+			MyWorld modworld = mymod.GetModWorld<MyWorld>();
 			ModPacket packet = mymod.GetPacket();
 
 			// Be sure our wormholes are ready to send (if not already)
@@ -54,7 +54,7 @@ namespace Wormholes.NetProtocol {
 		public static void BroadcastWormholeUpdateViaServer( WormholesMod mymod, string id ) {
 			if( Main.netMode != 2 ) { return; } // Server only
 
-			WormholesWorld modworld = mymod.GetModWorld<WormholesWorld>();
+			MyWorld modworld = mymod.GetModWorld<MyWorld>();
 			WormholeLink link = modworld.Wormholes.GetLinkById( id );
 			ModPacket packet = mymod.GetPacket();
 
@@ -87,7 +87,7 @@ namespace Wormholes.NetProtocol {
 				return;
 			}
 
-			var mngr = mymod.GetModWorld<WormholesWorld>().Wormholes;
+			var mngr = mymod.GetModWorld<MyWorld>().Wormholes;
 			var link = mngr.GetLinkById( id );
 			mngr.Reroll( link );
 

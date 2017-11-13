@@ -1,6 +1,7 @@
 ﻿using HamstarHelpers.Utilities.Config;
 using System;
 
+
 namespace Wormholes {
 	public class WormholesConfigData : ConfigurationDataBase {
 		public static readonly Version ConfigVersion = new Version( 1, 6, 4 );

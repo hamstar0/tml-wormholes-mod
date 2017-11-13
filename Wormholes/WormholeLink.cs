@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Wormholes.NetProtocol;
 
+
 namespace Wormholes {
 	public class WormholeLink {
 		static WormholeLink() {
@@ -236,7 +237,6 @@ namespace Wormholes {
 
 		
 		public string ID { get; private set; }
-		private WormholesMod MyMod;
 		private Color NodeColor;
 		public WormholePortal LeftPortal { get; private set; }
 		public WormholePortal RightPortal { get; private set; }
@@ -248,22 +248,20 @@ namespace Wormholes {
 
 		////////////////
 
-		public WormholeLink( WormholesMod mymod, Color color, Vector2 left_node_pos, Vector2 right_node_pos ) {
+		public WormholeLink( Color color, Vector2 left_node_pos, Vector2 right_node_pos ) {
 			this.ID = Guid.NewGuid().ToString("D");
-			this.MyMod = mymod;
 			this.NodeColor = color;
-			this.LeftPortal = new WormholePortal( mymod, left_node_pos, color );
-			this.RightPortal = new WormholePortal( mymod, right_node_pos, color );
+			this.LeftPortal = new WormholePortal( left_node_pos, color );
+			this.RightPortal = new WormholePortal( right_node_pos, color );
 
 			this.IsMisplaced = this.LeftPortal.IsMisplaced || this.RightPortal.IsMisplaced;
 		}
 
-		public WormholeLink( string id, WormholesMod mymod, Color color, Vector2 left_node_pos, Vector2 right_node_pos ) {
+		public WormholeLink( string id, Color color, Vector2 left_node_pos, Vector2 right_node_pos ) {
 			this.ID = id;
-			this.MyMod = mymod;
 			this.NodeColor = color;
-			this.LeftPortal = new WormholePortal( mymod, left_node_pos, color );
-			this.RightPortal = new WormholePortal( mymod, right_node_pos, color );
+			this.LeftPortal = new WormholePortal( left_node_pos, color );
+			this.RightPortal = new WormholePortal( right_node_pos, color );
 
 			this.IsMisplaced = this.LeftPortal.IsMisplaced || this.RightPortal.IsMisplaced;
 		}
@@ -288,7 +286,7 @@ namespace Wormholes {
 
 		////////////////
 
-		public void UpdateInteractions( Player player, bool is_obstructed, out bool is_upon_portal ) {
+		public void UpdateInteractions( WormholesMod mymod, Player player, bool is_obstructed, out bool is_upon_portal ) {
 			is_upon_portal = false;
 			if( this.IsClosed ) { return; }
 			
@@ -296,16 +294,16 @@ namespace Wormholes {
 
 			if( !is_obstructed ) {
 				if( which == 1 ) {
-					this.TeleportToLeft( player );
+					this.TeleportToLeft( mymod, player );
 				} else if( which == -1 ) {
-					this.TeleportToRight( player );
+					this.TeleportToRight( mymod, player );
 				}
 			}
 
 			is_upon_portal = which != 0;
 		}
 
-		public void UpdateBehavior( Player player ) {
+		public void UpdateBehavior( WormholesMod mymod, Player player ) {
 			if( this.IsClosed ) { return; }
 			if( Main.myPlayer != player.whoAmI ) { return; }
 
@@ -318,17 +316,17 @@ namespace Wormholes {
 					this.RightPortal.AnimateOpen( l_open_anim );
 				}
 				
-				this.LeftPortal.SoundFX();
-				this.RightPortal.SoundFX();
+				this.LeftPortal.SoundFX( mymod );
+				this.RightPortal.SoundFX( mymod );
 			}
 		}
 
 		////////////////
 
-		public bool IsCharted( Player player ) {
+		public bool IsCharted( WormholesMod mymod, Player player ) {
 			if( this.IsClosed ) { return false; }
 
-			WormholesPlayer modplayer = player.GetModPlayer<WormholesPlayer>( this.MyMod );
+			MyPlayer modplayer = player.GetModPlayer<MyPlayer>( mymod );
 
 			if( modplayer.MyPortal != null && this.ID == modplayer.MyPortal.ID ) {
 				return true;
@@ -355,30 +353,30 @@ namespace Wormholes {
 		
 		public void ApplyChaosHit( WormholesMod mymod ) {
 			if( Main.netMode == 0 ) {	// Single
-				var mngr = mymod.GetModWorld<WormholesWorld>().Wormholes;
+				var mngr = mymod.GetModWorld<MyWorld>().Wormholes;
 				mngr.Reroll( this );
 			} else {	// Non-single
-				ClientPacketHandlers.SendWormholeRerollRequestViaClient( this.MyMod, this.ID );
+				ClientPacketHandlers.SendWormholeRerollRequestViaClient( mymod, this.ID );
 			}
 		}
 
 		////////////////
 
-		public void DrawForMe() {
+		public void DrawForMe( WormholesMod mymod ) {
 			// Clients and single only
 			if( Main.netMode == 2 ) { return; }
 			if( this.IsClosed ) { return; }
 
-			this.LeftPortal.DrawForMe();
-			this.RightPortal.DrawForMe();
+			this.LeftPortal.DrawForMe( mymod );
+			this.RightPortal.DrawForMe( mymod );
 
-			this.LeftPortal.LightFX();
-			this.RightPortal.LightFX();
+			this.LeftPortal.LightFX( mymod );
+			this.RightPortal.LightFX( mymod );
 		}
 
 		////////////////
 
-		public void TeleportToLeft( Player player ) {
+		public void TeleportToLeft( WormholesMod mymod, Player player ) {
 			// Clients and single only
 			if( Main.netMode == 2 ) { return; }
 			if( this.IsClosed ) { return; }
@@ -387,10 +385,10 @@ namespace Wormholes {
 				this.LeftPortal.Pos.X + (WormholePortal.Width / 2) - player.width,
 				this.LeftPortal.Pos.Y + (WormholePortal.Height / 2) - player.height );
 			
-			this.Teleport( player, dest );
+			this.Teleport( mymod, player, dest );
 		}
 
-		public void TeleportToRight( Player player ) {
+		public void TeleportToRight( WormholesMod mymod, Player player ) {
 			// Clients and single only
 			if( Main.netMode == 2 ) { return; }
 			if( this.IsClosed ) { return; }
@@ -399,12 +397,12 @@ namespace Wormholes {
 				this.RightPortal.Pos.X + (WormholePortal.Width / 2) - player.width,
 				this.RightPortal.Pos.Y + (WormholePortal.Height / 2) - player.height );
 
-			this.Teleport( player, dest );
+			this.Teleport( mymod, player, dest );
 		}
 
 
-		private void Teleport( Player player, Vector2 dest ) {
-			WormholesPlayer info = player.GetModPlayer<WormholesPlayer>( this.MyMod );
+		private void Teleport( WormholesMod mymod, Player player, Vector2 dest ) {
+			MyPlayer info = player.GetModPlayer<MyPlayer>( mymod );
 			if( info.MyPortal == null || (info.MyPortal != null && this.ID != info.MyPortal.ID) ) {
 				info.ChartedLinks.Add( this.ID );
 			}
@@ -434,7 +432,7 @@ namespace Wormholes {
 			}
 
 			//Main.PlaySound( 2, player.position, 100 );
-			var snd = SoundID.Item100.WithVolume( this.MyMod.Config.Data.WormholeEntrySoundVolume );
+			var snd = SoundID.Item100.WithVolume( mymod.Config.Data.WormholeEntrySoundVolume );
 			Main.PlaySound( snd, player.position );
 		}
 	}

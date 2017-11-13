@@ -62,14 +62,15 @@
     <Compile Include="NetProtocols\ClientPacketHandlers.cs" />
     <Compile Include="Projectiles\ChaosBombProjectile.cs" />
     <Compile Include="Utils\SpriteAnimator.cs" />
+    <Compile Include="WormholesAPI.cs" />
     <Compile Include="Wormholes\WormholeManager.cs" />
     <Compile Include="Wormholes\WormholeLink.cs" />
     <Compile Include="WormholesMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NetProtocols\NetProtocolTypes.cs" />
-    <Compile Include="WormholesPlayer.cs" />
+    <Compile Include="MyPlayer.cs" />
     <Compile Include="WormholesUI.cs" />
-    <Compile Include="WormholesWorld.cs" />
+    <Compile Include="MyWorld.cs" />
     <Compile Include="Wormholes\WormholePortal.cs" />
   </ItemGroup>
   <ItemGroup>

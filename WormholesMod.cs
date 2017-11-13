@@ -1,5 +1,4 @@
-﻿using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.Utilities.Config;
+﻿using HamstarHelpers.Utilities.Config;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
@@ -10,6 +9,8 @@ using Wormholes.NetProtocol;
 
 namespace Wormholes {
 	public class WormholesMod : Mod {
+		public static WormholesMod Instance { get; private set; }
+
 		public static string GithubUserName { get { return "hamstar0"; } }
 		public static string GithubProjectName { get { return "tml-wormholes-mod"; } }
 
@@ -24,8 +25,6 @@ namespace Wormholes {
 				WormholesMod.Instance.Config.LoadFile();
 			}
 		}
-
-		public static WormholesMod Instance { get; private set; }
 
 
 		////////////////
@@ -62,7 +61,10 @@ namespace Wormholes {
 
 			// Clients and single only
 			if( Main.netMode != 2 ) {
-				this.UI = new WormholesUI( this );
+				WormholePortal.Initialize();
+				WormholesUI.Initialize();
+
+				this.UI = new WormholesUI();
 			}
 		}
 
@@ -88,6 +90,13 @@ namespace Wormholes {
 		public override void Unload() {
 			WormholesMod.Instance = null;
 		}
+		
+		////////////////
+
+		public override void AddRecipeGroups() {
+			RecipeGroup group = new RecipeGroup( () => Lang.misc[37] + " Evac Potion", new int[] { 2350, 2997 } );
+			RecipeGroup.RegisterGroup( "WormholesMod:EvacPotions", group );
+		}
 
 
 		////////////////
@@ -100,10 +109,6 @@ namespace Wormholes {
 			}
 		}
 
-		public override void AddRecipeGroups() {
-			RecipeGroup group = new RecipeGroup( () => Lang.misc[37] + " Evac Potion", new int[] { 2350, 2997 } );
-			RecipeGroup.RegisterGroup( "WormholesMod:EvacPotions", group );
-		}
 
 		////////////////
 
@@ -139,8 +144,8 @@ namespace Wormholes {
 		private void DrawMiniMap( SpriteBatch sb ) {
 			this.UI.Update();
 
-			WormholesWorld modworld = this.GetModWorld<WormholesWorld>();
-			WormholesPlayer curr_modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this );
+			MyWorld modworld = this.GetModWorld<MyWorld>();
+			MyPlayer curr_modplayer = Main.player[Main.myPlayer].GetModPlayer<MyPlayer>( this );
 
 			if( !this.Config.Data.DisableNaturalWormholes ) {
 				if( modworld.Wormholes != null ) {
@@ -149,9 +154,9 @@ namespace Wormholes {
 						if( link == null ) { break; }
 
 						if( Main.mapStyle == 1 ) {
-							this.UI.DrawMiniMap( link, sb );
+							this.UI.DrawMiniMap( this, link, sb );
 						} else {
-							this.UI.DrawOverlayMap( link, sb );
+							this.UI.DrawOverlayMap( this, link, sb );
 						}
 					}
 				}
@@ -159,9 +164,9 @@ namespace Wormholes {
 			
 			if( curr_modplayer.MyPortal != null ) {
 				if( Main.mapStyle == 1 ) {
-					this.UI.DrawMiniMap( curr_modplayer.MyPortal, sb );
+					this.UI.DrawMiniMap( this, curr_modplayer.MyPortal, sb );
 				} else {
-					this.UI.DrawOverlayMap( curr_modplayer.MyPortal, sb );
+					this.UI.DrawOverlayMap( this, curr_modplayer.MyPortal, sb );
 				}
 			}
 		}
@@ -170,8 +175,8 @@ namespace Wormholes {
 		private void DrawFullMap( SpriteBatch sb ) {
 			this.UI.Update();
 
-			WormholesWorld modworld = this.GetModWorld<WormholesWorld>();
-			WormholesPlayer curr_modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this );
+			MyWorld modworld = this.GetModWorld<MyWorld>();
+			MyPlayer curr_modplayer = Main.player[Main.myPlayer].GetModPlayer<MyPlayer>( this );
 
 			if( !this.Config.Data.DisableNaturalWormholes ) {
 				if( modworld.Wormholes != null ) {
@@ -179,13 +184,13 @@ namespace Wormholes {
 						WormholeLink link = modworld.Wormholes.Links[i];
 						if( link == null ) { break; }
 
-						this.UI.DrawFullscreenMap( link, sb );
+						this.UI.DrawFullscreenMap( this, link, sb );
 					}
 				}
 			}
 
 			if( curr_modplayer.MyPortal != null ) {
-				this.UI.DrawFullscreenMap( curr_modplayer.MyPortal, sb );
+				this.UI.DrawFullscreenMap( this, curr_modplayer.MyPortal, sb );
 			}
 		}
 

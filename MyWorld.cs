@@ -10,7 +10,7 @@ using Terraria.World.Generation;
 
 
 namespace Wormholes {
-	public class WormholesWorld : ModWorld {
+	class MyWorld : ModWorld {
 		public WormholeManager Wormholes { get; private set; }
 		public string ID { get; private set; }
 
@@ -38,7 +38,7 @@ namespace Wormholes {
 
 				var mymod = (WormholesMod)this.mod;
 				if( this.Wormholes.Load( mymod, tags ) ) {
-					this.Wormholes.FinishSettingUpWormholes( mymod );
+					this.Wormholes.FinishSettingUpWormholes();
 				}
 			}
 
@@ -68,7 +68,7 @@ namespace Wormholes {
 				this.HasCorrectID = has_correct_id;
 				this.ID = id;
 
-				var modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this.mod );
+				var modplayer = Main.player[Main.myPlayer].GetModPlayer<MyPlayer>( this.mod );
 				if( modplayer.HasEnteredWorld && !modplayer.HasLoadedTownPortals ) {
 					modplayer.ReopenTownPortal();
 				}
@@ -78,7 +78,7 @@ namespace Wormholes {
 		////////////////
 
 		public void SetupWormholes() {
-			this.Wormholes.FinishSettingUpWormholes( (WormholesMod)this.mod );
+			this.Wormholes.FinishSettingUpWormholes();
 			this.HasCorrectID = true;
 		}
 
@@ -93,7 +93,7 @@ namespace Wormholes {
 		public override void PostDrawTiles() {
 			if( this.Wormholes == null ) { return; }
 			
-			var myplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this.mod );
+			var myplayer = Main.player[Main.myPlayer].GetModPlayer<MyPlayer>( this.mod );
 			var mymod = (WormholesMod)this.mod;
 
 			//Main.spriteBatch.Begin();
