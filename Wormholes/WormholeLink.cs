@@ -4,7 +4,7 @@ using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
-
+using Wormholes.NetProtocol;
 
 namespace Wormholes {
 	public class WormholeLink {
@@ -358,7 +358,7 @@ namespace Wormholes {
 				var mngr = mymod.GetModWorld<WormholesWorld>().Wormholes;
 				mngr.Reroll( this );
 			} else {	// Non-single
-				WormholesNetProtocol.SendWormholeRerollRequestViaClient( this.MyMod, this.ID );
+				ClientPacketHandlers.SendWormholeRerollRequestViaClient( this.MyMod, this.ID );
 			}
 		}
 

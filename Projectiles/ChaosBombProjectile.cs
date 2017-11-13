@@ -156,7 +156,7 @@ namespace Wormholes.Projectiles {
 					var tile_data = TileObjectData.GetTileData( fro_tile );
 					if( tile_data != null && (tile_data.Width > 1 || tile_data.Height > 1) ) { continue; }
 					
-					if( !TileHelpers.FindNearbyRandomAirTile( tile_x, tile_y, scatter_radius, out to_x, out to_y ) ) {
+					if( !TileFinderHelpers.FindNearbyRandomAirTile( tile_x, tile_y, scatter_radius, out to_x, out to_y ) ) {
 						break;
 					}
 

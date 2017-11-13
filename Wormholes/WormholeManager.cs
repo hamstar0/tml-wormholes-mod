@@ -1,5 +1,5 @@
-﻿using HamstarHelpers.TileHelpers;
-using HamstarHelpers.MiscHelpers;
+﻿using HamstarHelpers.DebugHelpers;
+using HamstarHelpers.TileHelpers;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -46,7 +46,7 @@ namespace Wormholes {
 			int holes = tags.GetInt( "wormhole_count" );
 			if( holes == 0 ) { return false; }
 
-			if( (WormholesMod.DEBUGMODE & 1) > 0 ) {
+			if( mymod.IsDebugInfoMode() ) {
 				DebugHelpers.Log( "Loading world ids (" + Main.netMode + "): " + holes );
 			}
 
@@ -61,7 +61,7 @@ namespace Wormholes {
 				}
 
 				string id = tags.GetString( "wormhole_id_" + i );
-				if( (WormholesMod.DEBUGMODE & 1) > 0 ) {
+				if( mymod.IsDebugInfoMode() ) {
 					DebugHelpers.Log( "  world load id: " + id + " (" + i + ")" );
 				}
 
@@ -91,7 +91,7 @@ namespace Wormholes {
 			int[] worm_r_x = new int[WormholeManager.PortalCount];
 			int[] worm_r_y = new int[WormholeManager.PortalCount];
 
-			if( (WormholesMod.DEBUGMODE & 1) > 0 ) {
+			if( WormholesMod.Instance.IsDebugInfoMode() ) {
 				DebugHelpers.Log( "Save world ids (" + Main.netMode + "): " + WormholeManager.PortalCount );
 			}
 
@@ -118,7 +118,7 @@ namespace Wormholes {
 
 			for( i = 0; i < this.Links.Count; i++ ) {
 				tags.Set( "wormhole_id_" + i, ids[i] );
-				if( (WormholesMod.DEBUGMODE & 1) > 0 ) {
+				if( WormholesMod.Instance.IsDebugInfoMode() ) {
 					DebugHelpers.Log( "  world save id: " + ids[i] + " (" + i + ") = "
 						+ worm_l_x[i] + "," + worm_l_y[i] + " | " + worm_r_x[i] + "," + worm_r_y[i] );
 				}
@@ -168,7 +168,7 @@ namespace Wormholes {
 						for( int j=world_y; j<world_y+8; j++ ) {
 							Tile tile = Framing.GetTileSafely( i, j );
 
-							is_empty = !TileHelpers.IsSolid( tile, true, true ) && !tile.lava() && !TileHelpers.IsDungeon(tile);
+							is_empty = !TileHelpers.IsSolid( tile, true, true ) && !tile.lava() && !TileWallHelpers.IsDungeon(tile);
 							if( !is_empty ) { break; }
 						}
 						if( !is_empty ) { break; }

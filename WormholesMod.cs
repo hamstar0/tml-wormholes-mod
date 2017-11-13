@@ -1,55 +1,40 @@
-﻿using HamstarHelpers.MiscHelpers;
+﻿using HamstarHelpers.DebugHelpers;
 using HamstarHelpers.Utilities.Config;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
+using Wormholes.NetProtocol;
 
 
 namespace Wormholes {
-	public class ConfigurationData {
-		public string VersionSinceUpdate = "";
-
-		public int TinyWorldPortals = 4;    // SmallWorldPortals / 2
-		public int SmallWorldPortals = 8;  // 4200 x 1200 = 5040000
-		public int MediumWorldPortals = 14; // 6400 x 1800 = 11520000
-		public int LargeWorldPortals = 20;  // 8400 x 2400 = 20160000
-		public int HugeWorldPortals = 27;
-
-		public bool CraftableTownPortalScrolls = true;
-		public int TownPortalDuration = 60 * 60;    // 1 hour
-
-		public float WormholeSoundVolume = 0.45f;
-		public float WormholeLightScale = 1.25f;
-		public float WormholeEntrySoundVolume = 0.9f;
-
-		public bool DisableNaturalWormholes = false;
-
-		public int ChaosBombWormholeCloseOdds = 5;
-		public int ChaosBombRadius = 4;
-		public int ChaosBombScatterRadius = 32;
-
-		public int DEBUGFLAGS = 0;	// 1: Info;  2: View wormholes on map;  4: Reset wormholes
-	}
-
-
-
 	public class WormholesMod : Mod {
-		public static int DEBUGMODE { get; private set; }
+		public static string GithubUserName { get { return "hamstar0"; } }
+		public static string GithubProjectName { get { return "tml-psycho-mod"; } }
 
-		public static readonly Version ConfigVersion = new Version( 1, 6, 4 );
-		public JsonConfig<ConfigurationData> Config { get; private set; }
+		public static string ConfigRelativeFilePath {
+			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + WormholesConfigData.ConfigFileName; }
+		}
+		public static void ReloadConfigFromFile() {
+			if( Main.netMode != 0 ) {
+				throw new Exception( "Cannot reload configs outside of single player." );
+			}
+			if( WormholesMod.Instance != null ) {
+				WormholesMod.Instance.Config.LoadFile();
+			}
+		}
 
+		public static WormholesMod Instance { get; private set; }
+
+
+		////////////////
+		
+		public JsonConfig<WormholesConfigData> Config { get; private set; }
 		private WormholesUI UI;
 
 
-
-		static WormholesMod() {
-			WormholesMod.DEBUGMODE = 0;
-		}
-
-
+		////////////////
 
 		public WormholesMod() : base() {
 			this.Properties = new ModProperties() {
@@ -58,46 +43,21 @@ namespace Wormholes {
 				AutoloadSounds = true
 			};
 			
-			string filename = "Wormholes Config.json";
-			this.Config = new JsonConfig<ConfigurationData>( filename, "Mod Configs", new ConfigurationData() );
+			this.Config = new JsonConfig<WormholesConfigData>( WormholesConfigData.ConfigFileName,
+				ConfigurationDataBase.RelativePath, new WormholesConfigData() );
 		}
 
+		////////////////
+
 		public override void Load() {
-			var old_config = new JsonConfig<ConfigurationData>( "Wormholes 1.3.12.json", "", new ConfigurationData() );
-			// Update old config to new location
-			if( old_config.LoadFile() ) {
-				old_config.DestroyFile();
-				old_config.SetFilePath( this.Config.FileName, "Mod Configs" );
-				this.Config = old_config;
-			} else if( !this.Config.LoadFile() ) {
-				this.Config.SaveFile();
-			} else {
-				Version vers_since = this.Config.Data.VersionSinceUpdate != "" ?
-					new Version( this.Config.Data.VersionSinceUpdate ) :
-					new Version();
+			var hamhelpmod = ModLoader.GetMod( "HamstarHelpers" );
+			var min_vers = new Version( 1, 2, 0 );
 
-				if( vers_since < WormholesMod.ConfigVersion ) {
-					ErrorLogger.Log( "Wormholes config updated to " + WormholesMod.ConfigVersion.ToString() );
-
-					if( vers_since < new Version( 1, 5, 0 ) ) {
-						this.Config.Data.SmallWorldPortals = new ConfigurationData().SmallWorldPortals;
-						this.Config.Data.MediumWorldPortals = new ConfigurationData().MediumWorldPortals;
-						this.Config.Data.LargeWorldPortals = new ConfigurationData().LargeWorldPortals;
-						this.Config.Data.HugeWorldPortals = new ConfigurationData().HugeWorldPortals;
-					}
-					if( vers_since < new Version( 1, 6, 0 ) ) {
-						this.Config.Data.WormholeSoundVolume = new ConfigurationData().WormholeSoundVolume;
-					}
-					if( vers_since < new Version( 1, 6, 4 ) ) {
-						WormholeManager.ForceRegenWormholes = true;
-					}
-
-					this.Config.Data.VersionSinceUpdate = WormholesMod.ConfigVersion.ToString();
-					this.Config.SaveFile();
-				}
+			if( hamhelpmod.Version < min_vers ) {
+				throw new Exception( "Hamstar Helpers must be version " + min_vers.ToString() + " or greater." );
 			}
 
-			WormholesMod.DEBUGMODE = this.Config.Data.DEBUGFLAGS;
+			this.LoadConfig();
 
 			// Clients and single only
 			if( Main.netMode != 2 ) {
@@ -105,12 +65,34 @@ namespace Wormholes {
 			}
 		}
 
+		private void LoadConfig() {
+			var old_config = new JsonConfig<WormholesConfigData>( "Wormholes 1.3.12.json", "", new WormholesConfigData() );
+			// Update old config to new location
+			if( old_config.LoadFile() ) {
+				old_config.DestroyFile();
+				old_config.SetFilePath( this.Config.FileName, ConfigurationDataBase.RelativePath );
+				this.Config = old_config;
+			}
+			
+			if( !this.Config.LoadFile() ) {
+				this.Config.SaveFile();
+			}
+
+			if( this.Config.Data.UpdateToLatestVersion() ) {
+				ErrorLogger.Log( "Wormholes updated to " + WormholesConfigData.ConfigVersion.ToString() );
+				this.Config.SaveFile();
+			}
+		}
 
 
 		////////////////
 
-		public override void HandlePacket( BinaryReader reader, int whoAmI ) {
-			WormholesNetProtocol.RoutePacket( this, reader );
+		public override void HandlePacket( BinaryReader reader, int player_who ) {
+			if( Main.netMode == 1 ) {   // Client
+				ClientPacketHandlers.HandlePacket( this, reader );
+			} else if( Main.netMode == 2 ) {    // Server
+				ServerPacketHandlers.HandlePacket( this, reader, player_who );
+			}
 		}
 
 		public override void AddRecipeGroups() {
@@ -197,6 +179,21 @@ namespace Wormholes {
 			if( curr_modplayer.MyPortal != null ) {
 				this.UI.DrawFullscreenMap( curr_modplayer.MyPortal, sb );
 			}
+		}
+
+
+		////////////////
+
+		public bool IsDebugInfoMode() {
+			return (this.Config.Data.DEBUGFLAGS & 1) != 0;
+		}
+
+		public bool IsDebugWormholeViewMode() {
+			return (this.Config.Data.DEBUGFLAGS & 2) != 0;
+		}
+
+		public bool IsDebuResetMode() {
+			return (this.Config.Data.DEBUGFLAGS & 4) != 0;
 		}
 	}
 }

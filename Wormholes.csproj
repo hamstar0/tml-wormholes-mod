@@ -55,15 +55,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigDefaults.cs" />
     <Compile Include="Items\ChaosBombItem.cs" />
     <Compile Include="Items\TownPortalScrollItem.cs" />
+    <Compile Include="NetProtocols\ServerPacketHandlers.cs" />
+    <Compile Include="NetProtocols\ClientPacketHandlers.cs" />
     <Compile Include="Projectiles\ChaosBombProjectile.cs" />
     <Compile Include="Utils\SpriteAnimator.cs" />
     <Compile Include="Wormholes\WormholeManager.cs" />
     <Compile Include="Wormholes\WormholeLink.cs" />
     <Compile Include="WormholesMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WormholesNetProtocol.cs" />
+    <Compile Include="NetProtocols\NetProtocolTypes.cs" />
     <Compile Include="WormholesPlayer.cs" />
     <Compile Include="WormholesUI.cs" />
     <Compile Include="WormholesWorld.cs" />
@@ -72,11 +75,16 @@
   <ItemGroup>
     <Content Include="build.txt" />
     <Content Include="description.txt" />
+    <Content Include="icon.png" />
     <Content Include="Items\ChaosBombItem.png" />
     <Content Include="Projectiles\ChaosBombProjectile.png" />
     <Content Include="Wormholes\Wormhole.png" />
     <Content Include="Items\TownPortalScrollItem.png" />
     <Content Include="Wormholes\MiniWormhole.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LICENSE" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -23,19 +23,19 @@ namespace Wormholes {
 		
 
 		public void DrawMiniMap( WormholeLink link, SpriteBatch sb ) {
-			if( (WormholesMod.DEBUGMODE & 2) == 0 && !link.IsCharted( Main.player[Main.myPlayer] ) ) { return; }
+			if( WormholesMod.Instance.IsDebugWormholeViewMode() && !link.IsCharted( Main.player[Main.myPlayer] ) ) { return; }
 			float scale = Main.mapMinimapScale / 1.5f;
 
 			Rectangle l_rect = new Rectangle( (int)link.LeftPortal.Pos.X, (int)link.LeftPortal.Pos.Y, this.Tex.Width, this.Tex.Height );
 			Rectangle r_rect = new Rectangle( (int)link.RightPortal.Pos.X, (int)link.RightPortal.Pos.Y, this.Tex.Width, this.Tex.Height );
 				
-			Vector2? l_pos = MapHelpers.GetMiniMapPosition( l_rect );
+			Vector2? l_pos = HudMapHelpers.GetMiniMapPosition( l_rect );
 			if( l_pos != null ) {
 				Color l_color = link.LeftPortal.BaseColor * Main.mapMinimapAlpha;
 				sb.Draw( this.Tex, (Vector2)l_pos, this.TexAnim.Frame, l_color, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
 			}
 
-			Vector2? r_pos = MapHelpers.GetMiniMapPosition( r_rect );
+			Vector2? r_pos = HudMapHelpers.GetMiniMapPosition( r_rect );
 			if( r_pos != null ) {
 				Color r_color = link.RightPortal.BaseColor * Main.mapMinimapAlpha;
 				sb.Draw( this.Tex, (Vector2)r_pos, this.TexAnim.Frame, r_color, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
@@ -43,19 +43,19 @@ namespace Wormholes {
 		}
 
 		public void DrawOverlayMap( WormholeLink link, SpriteBatch sb ) {
-			if( (WormholesMod.DEBUGMODE & 2) == 0 && !link.IsCharted( Main.player[Main.myPlayer] ) ) { return; }
+			if( WormholesMod.Instance.IsDebugWormholeViewMode() && !link.IsCharted( Main.player[Main.myPlayer] ) ) { return; }
 			float scale = Main.mapOverlayScale / 1.5f;
 
 			Rectangle l_rect = new Rectangle( (int)link.LeftPortal.Pos.X, (int)link.LeftPortal.Pos.Y, this.Tex.Width, this.Tex.Height );
 			Rectangle r_rect = new Rectangle( (int)link.RightPortal.Pos.X, (int)link.RightPortal.Pos.Y, this.Tex.Width, this.Tex.Height );
 
-			Vector2? l_pos = MapHelpers.GetOverlayMapPosition( l_rect );
+			Vector2? l_pos = HudMapHelpers.GetOverlayMapPosition( l_rect );
 			if( l_pos != null ) {
 				Color l_color = link.LeftPortal.BaseColor * Main.mapOverlayAlpha;
 				sb.Draw( this.Tex, (Vector2)l_pos, this.TexAnim.Frame, l_color, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
 			}
 
-			Vector2? r_pos = MapHelpers.GetOverlayMapPosition( r_rect );
+			Vector2? r_pos = HudMapHelpers.GetOverlayMapPosition( r_rect );
 			if( r_pos != null ) {
 				Color r_color = link.RightPortal.BaseColor * Main.mapOverlayAlpha;
 				sb.Draw( this.Tex, (Vector2)r_pos, this.TexAnim.Frame, r_color, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
@@ -63,15 +63,15 @@ namespace Wormholes {
 		}
 
 		public void DrawFullscreenMap( WormholeLink link, SpriteBatch sb ) {
-			if( (WormholesMod.DEBUGMODE & 2) == 0 && !link.IsCharted( Main.player[Main.myPlayer] ) ) { return; }
+			if( WormholesMod.Instance.IsDebugWormholeViewMode() && !link.IsCharted( Main.player[Main.myPlayer] ) ) { return; }
 			float scale = Main.mapFullscreenScale / 1.5f;
 
 			Rectangle l_rect = new Rectangle( (int)link.LeftPortal.Pos.X, (int)link.LeftPortal.Pos.Y, this.Tex.Width, this.Tex.Height );
-			Vector2 l_pos = MapHelpers.GetFullMapPosition( l_rect );
+			Vector2 l_pos = HudMapHelpers.GetFullMapPosition( l_rect );
 			sb.Draw( this.Tex, l_pos, this.TexAnim.Frame, link.LeftPortal.BaseColor, 0f, new Vector2 { }, scale, SpriteEffects.None, 1f );
 
 			Rectangle r_rect = new Rectangle( (int)link.RightPortal.Pos.X, (int)link.RightPortal.Pos.Y, this.Tex.Width, this.Tex.Height );
-			Vector2 r_pos = MapHelpers.GetFullMapPosition( r_rect );
+			Vector2 r_pos = HudMapHelpers.GetFullMapPosition( r_rect );
 			sb.Draw( this.Tex, r_pos, this.TexAnim.Frame, link.RightPortal.BaseColor, 0f, new Vector2 { }, scale, SpriteEffects.None, 1f );
 		}
 	}

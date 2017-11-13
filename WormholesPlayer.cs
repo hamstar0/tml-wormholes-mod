@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Wormholes.Items;
-
+using Wormholes.NetProtocol;
 
 namespace Wormholes {
 	public class WormholesPlayer : ModPlayer {
@@ -127,7 +127,7 @@ namespace Wormholes {
 				}
 
 				if( Main.netMode == 1 ) {    // Client
-					WormholesNetProtocol.SendWormholesAndSettingsRequestViaClient( mymod, player );
+					ClientPacketHandlers.SendWormholesAndSettingsRequestViaClient( mymod, player );
 				} else if( Main.netMode == 0 ) {  // Single
 					modworld.SetupWormholes();
 				}
