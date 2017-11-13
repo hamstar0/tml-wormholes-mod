@@ -1,7 +1,9 @@
 ﻿using HamstarHelpers.HudHelpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
+using Terraria.ModLoader;
 using Wormholes.Utils;
 
 
@@ -28,7 +30,7 @@ namespace Wormholes {
 
 			Rectangle l_rect = new Rectangle( (int)link.LeftPortal.Pos.X, (int)link.LeftPortal.Pos.Y, this.Tex.Width, this.Tex.Height );
 			Rectangle r_rect = new Rectangle( (int)link.RightPortal.Pos.X, (int)link.RightPortal.Pos.Y, this.Tex.Width, this.Tex.Height );
-				
+
 			Vector2? l_pos = HudMapHelpers.GetMiniMapPosition( l_rect );
 			if( l_pos != null ) {
 				Color l_color = link.LeftPortal.BaseColor * Main.mapMinimapAlpha;

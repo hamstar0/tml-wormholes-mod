@@ -11,7 +11,7 @@ using Wormholes.NetProtocol;
 namespace Wormholes {
 	public class WormholesMod : Mod {
 		public static string GithubUserName { get { return "hamstar0"; } }
-		public static string GithubProjectName { get { return "tml-psycho-mod"; } }
+		public static string GithubProjectName { get { return "tml-wormholes-mod"; } }
 
 		public static string ConfigRelativeFilePath {
 			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + WormholesConfigData.ConfigFileName; }
@@ -50,9 +50,10 @@ namespace Wormholes {
 		////////////////
 
 		public override void Load() {
+			WormholesMod.Instance = this;
+
 			var hamhelpmod = ModLoader.GetMod( "HamstarHelpers" );
 			var min_vers = new Version( 1, 2, 0 );
-
 			if( hamhelpmod.Version < min_vers ) {
 				throw new Exception( "Hamstar Helpers must be version " + min_vers.ToString() + " or greater." );
 			}
@@ -82,6 +83,10 @@ namespace Wormholes {
 				ErrorLogger.Log( "Wormholes updated to " + WormholesConfigData.ConfigVersion.ToString() );
 				this.Config.SaveFile();
 			}
+		}
+
+		public override void Unload() {
+			WormholesMod.Instance = null;
 		}
 
 
@@ -153,8 +158,11 @@ namespace Wormholes {
 			}
 			
 			if( curr_modplayer.MyPortal != null ) {
-				if( Main.mapStyle == 1 ) { this.UI.DrawMiniMap( curr_modplayer.MyPortal, sb ); }
-				else { this.UI.DrawOverlayMap( curr_modplayer.MyPortal, sb ); }
+				if( Main.mapStyle == 1 ) {
+					this.UI.DrawMiniMap( curr_modplayer.MyPortal, sb );
+				} else {
+					this.UI.DrawOverlayMap( curr_modplayer.MyPortal, sb );
+				}
 			}
 		}
 
