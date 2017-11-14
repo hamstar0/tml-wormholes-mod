@@ -133,7 +133,7 @@ namespace Wormholes {
 			Dust.NewDust( this.Pos, this.Rect.Width, this.Rect.Height, 15, 0, 0, 150, color, 1f );
 		}
 
-		public void SoundFX( WormholeContext ctx ) {
+		public void SoundFX( WormholeModContext ctx ) {
 			if( this.IsClosed ) { return; }
 
 			// Loop audio
@@ -143,7 +143,7 @@ namespace Wormholes {
 			}
 		}
 		
-		public void LightFX( WormholeContext ctx ) {
+		public void LightFX( WormholeModContext ctx ) {
 			if( this.IsClosed ) { return; }
 			if( Main.rand == null ) { return; }
 

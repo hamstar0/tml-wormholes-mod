@@ -8,9 +8,9 @@ using Wormholes.NetProtocol;
 
 
 namespace Wormholes {
-	public class WormholeContext {
+	public class WormholeModContext {
 		internal WormholesMod MyMod;
-		internal WormholeContext( WormholesMod mymod ) { this.MyMod = mymod; }
+		internal WormholeModContext( WormholesMod mymod ) { this.MyMod = mymod; }
 	}
 
 
@@ -34,7 +34,7 @@ namespace Wormholes {
 
 		////////////////
 
-		public WormholeContext Context { get; private set; }
+		public WormholeModContext Context { get; private set; }
 		public JsonConfig<WormholesConfigData> Config { get; private set; }
 		private WormholesUI UI;
 
@@ -42,7 +42,7 @@ namespace Wormholes {
 		////////////////
 
 		public WormholesMod() : base() {
-			this.Context = new WormholeContext( this );
+			this.Context = new WormholeModContext( this );
 
 			this.Properties = new ModProperties() {
 				Autoload = true,

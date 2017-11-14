@@ -286,7 +286,7 @@ namespace Wormholes {
 
 		////////////////
 
-		public void UpdateInteractions( WormholeContext ctx, Player player, bool is_obstructed, out bool is_upon_portal ) {
+		public void UpdateInteractions( WormholeModContext ctx, Player player, bool is_obstructed, out bool is_upon_portal ) {
 			is_upon_portal = false;
 			if( this.IsClosed ) { return; }
 			
@@ -303,7 +303,7 @@ namespace Wormholes {
 			is_upon_portal = which != 0;
 		}
 
-		public void UpdateBehavior( WormholeContext ctx, Player player ) {
+		public void UpdateBehavior( WormholeModContext ctx, Player player ) {
 			if( this.IsClosed ) { return; }
 			if( Main.myPlayer != player.whoAmI ) { return; }
 
@@ -323,7 +323,7 @@ namespace Wormholes {
 
 		////////////////
 
-		public bool IsCharted( WormholeContext ctx, Player player ) {
+		public bool IsCharted( WormholeModContext ctx, Player player ) {
 			if( this.IsClosed ) { return false; }
 
 			MyPlayer modplayer = player.GetModPlayer<MyPlayer>( ctx.MyMod );
@@ -351,7 +351,7 @@ namespace Wormholes {
 			return on_portal;
 		}
 		
-		public void ApplyChaosHit( WormholeContext ctx ) {
+		public void ApplyChaosHit( WormholeModContext ctx ) {
 			if( Main.netMode == 0 ) {	// Single
 				var mngr = ctx.MyMod.GetModWorld<MyWorld>().Wormholes;
 				mngr.Reroll( this );
@@ -362,7 +362,7 @@ namespace Wormholes {
 
 		////////////////
 
-		public void DrawForMe( WormholeContext ctx ) {
+		public void DrawForMe( WormholeModContext ctx ) {
 			// Clients and single only
 			if( Main.netMode == 2 ) { return; }
 			if( this.IsClosed ) { return; }
@@ -376,7 +376,7 @@ namespace Wormholes {
 
 		////////////////
 
-		public void TeleportToLeft( WormholeContext ctx, Player player ) {
+		public void TeleportToLeft( WormholeModContext ctx, Player player ) {
 			// Clients and single only
 			if( Main.netMode == 2 ) { return; }
 			if( this.IsClosed ) { return; }
@@ -388,7 +388,7 @@ namespace Wormholes {
 			this.Teleport( ctx, player, dest );
 		}
 
-		public void TeleportToRight( WormholeContext ctx, Player player ) {
+		public void TeleportToRight( WormholeModContext ctx, Player player ) {
 			// Clients and single only
 			if( Main.netMode == 2 ) { return; }
 			if( this.IsClosed ) { return; }
@@ -401,7 +401,7 @@ namespace Wormholes {
 		}
 
 
-		private void Teleport( WormholeContext ctx, Player player, Vector2 dest ) {
+		private void Teleport( WormholeModContext ctx, Player player, Vector2 dest ) {
 			MyPlayer myplayer = player.GetModPlayer<MyPlayer>( ctx.MyMod );
 			if( myplayer.MyPortal == null || (myplayer.MyPortal != null && this.ID != myplayer.MyPortal.ID) ) {
 				myplayer.ChartedLinks.Add( this.ID );

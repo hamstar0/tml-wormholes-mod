@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace Wormholes {
 	public static class WormholesAPI {
+		public static WormholeModContext GetModContext() {
+			return WormholesMod.Instance.Context;
+		}
+
 		public static WormholesConfigData GetModSettings() {
 			return WormholesMod.Instance.Config.Data;
 		}

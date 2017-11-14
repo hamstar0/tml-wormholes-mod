@@ -243,7 +243,7 @@ namespace Wormholes {
 
 		/////////////////
 
-		public void RunAll( WormholeContext ctx, Player player ) {
+		public void RunAll( WormholeModContext ctx, Player player ) {
 			int who = player.whoAmI;
 			if( !this.BlockPortalCountdown.Keys.Contains( who ) ) {
 				this.BlockPortalCountdown[who] = 0;
@@ -279,7 +279,7 @@ namespace Wormholes {
 			}
 		}
 
-		public void DrawAll( WormholeContext ctx, WormholeLink town_portal ) {
+		public void DrawAll( WormholeModContext ctx, WormholeLink town_portal ) {
 			if( !ctx.MyMod.Config.Data.DisableNaturalWormholes ) {
 				for( int i = 0; i < this.Links.Count; i++ ) {
 					WormholeLink link = this.Links[i];
