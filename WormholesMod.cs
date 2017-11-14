@@ -8,7 +8,14 @@ using Wormholes.NetProtocol;
 
 
 namespace Wormholes {
-	public class WormholesMod : Mod {
+	public class WormholeContext {
+		internal WormholesMod MyMod;
+		internal WormholeContext( WormholesMod mymod ) { this.MyMod = mymod; }
+	}
+
+
+
+	class WormholesMod : Mod {
 		public static WormholesMod Instance { get; private set; }
 
 		public static string GithubUserName { get { return "hamstar0"; } }
@@ -21,14 +28,13 @@ namespace Wormholes {
 			if( Main.netMode != 0 ) {
 				throw new Exception( "Cannot reload configs outside of single player." );
 			}
-			if( WormholesMod.Instance != null ) {
-				WormholesMod.Instance.Config.LoadFile();
-			}
+			WormholesMod.Instance.Config.LoadFile();
 		}
 
 
 		////////////////
-		
+
+		public WormholeContext Context { get; private set; }
 		public JsonConfig<WormholesConfigData> Config { get; private set; }
 		private WormholesUI UI;
 
@@ -36,6 +42,8 @@ namespace Wormholes {
 		////////////////
 
 		public WormholesMod() : base() {
+			this.Context = new WormholeContext( this );
+
 			this.Properties = new ModProperties() {
 				Autoload = true,
 				AutoloadGores = true,
@@ -154,9 +162,9 @@ namespace Wormholes {
 						if( link == null ) { break; }
 
 						if( Main.mapStyle == 1 ) {
-							this.UI.DrawMiniMap( this, link, sb );
+							this.UI.DrawMiniMap( this.Context, link, sb );
 						} else {
-							this.UI.DrawOverlayMap( this, link, sb );
+							this.UI.DrawOverlayMap( this.Context, link, sb );
 						}
 					}
 				}
@@ -164,9 +172,9 @@ namespace Wormholes {
 			
 			if( curr_modplayer.MyPortal != null ) {
 				if( Main.mapStyle == 1 ) {
-					this.UI.DrawMiniMap( this, curr_modplayer.MyPortal, sb );
+					this.UI.DrawMiniMap( this.Context, curr_modplayer.MyPortal, sb );
 				} else {
-					this.UI.DrawOverlayMap( this, curr_modplayer.MyPortal, sb );
+					this.UI.DrawOverlayMap( this.Context, curr_modplayer.MyPortal, sb );
 				}
 			}
 		}
@@ -184,13 +192,13 @@ namespace Wormholes {
 						WormholeLink link = modworld.Wormholes.Links[i];
 						if( link == null ) { break; }
 
-						this.UI.DrawFullscreenMap( this, link, sb );
+						this.UI.DrawFullscreenMap( this.Context, link, sb );
 					}
 				}
 			}
 
 			if( curr_modplayer.MyPortal != null ) {
-				this.UI.DrawFullscreenMap( this, curr_modplayer.MyPortal, sb );
+				this.UI.DrawFullscreenMap( this.Context, curr_modplayer.MyPortal, sb );
 			}
 		}
 

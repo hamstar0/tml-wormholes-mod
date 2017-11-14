@@ -8,7 +8,7 @@ using Terraria.ModLoader.IO;
 
 
 namespace Wormholes {
-	public class WormholeManager {
+	class WormholeManager {
 		public static bool ForceRegenWormholes = false;
 		public static int PortalCount { get; private set; }
 
@@ -17,7 +17,7 @@ namespace Wormholes {
 
 		private IDictionary<int, int> BlockPortalCountdown = new Dictionary<int, int>();
 		public IList<WormholeLink> Links { get; private set; }
-		public bool WormholesSpawned { get; private set; }
+		public bool WormholesFinishedSpawning { get; private set; }
 
 		
 		////////////////
@@ -203,7 +203,7 @@ namespace Wormholes {
 		}
 
 
-		private WormholeLink CreateRandomWormholePair( Color color ) {
+		public WormholeLink CreateRandomWormholePair( Color color ) {
 			Vector2 rand_pos1, rand_pos2;
 
 			do {
@@ -222,7 +222,7 @@ namespace Wormholes {
 
 		
 		public void FinishSettingUpWormholes() {
-			if( this.WormholesSpawned ) { return; }
+			if( this.WormholesFinishedSpawning ) { return; }
 
 			if( WormholeManager.ForceRegenWormholes ) {
 				ErrorLogger.Log( "  Regenerating ALL portals." );
@@ -237,13 +237,13 @@ namespace Wormholes {
 				this.Links.Add( link );
 			}
 			
-			this.WormholesSpawned = true;
+			this.WormholesFinishedSpawning = true;
 		}
 
 
 		/////////////////
 
-		public void RunAll( WormholesMod mymod, Player player ) {
+		public void RunAll( WormholeContext ctx, Player player ) {
 			int who = player.whoAmI;
 			if( !this.BlockPortalCountdown.Keys.Contains( who ) ) {
 				this.BlockPortalCountdown[who] = 0;
@@ -252,23 +252,23 @@ namespace Wormholes {
 			bool is_upon_a_portal = false;
 			bool is_upon_my_portal = false;
 			int block_countdown = this.BlockPortalCountdown[who];
-			WormholeLink town_portal = player.GetModPlayer<MyPlayer>( mymod ).MyPortal;
+			WormholeLink town_portal = player.GetModPlayer<MyPlayer>( ctx.MyMod ).MyPortal;
 
-			if( !mymod.Config.Data.DisableNaturalWormholes ) {
+			if( !ctx.MyMod.Config.Data.DisableNaturalWormholes ) {
 				for( int i = 0; i < this.Links.Count; i++ ) {
 					WormholeLink link = this.Links[i];
 					if( link == null ) { break; }
 
-					link.UpdateInteractions( mymod, player, (block_countdown > 0), out is_upon_a_portal );
-					link.UpdateBehavior( mymod, player );
+					link.UpdateInteractions( ctx, player, (block_countdown > 0), out is_upon_a_portal );
+					link.UpdateBehavior( ctx, player );
 
 					if( is_upon_a_portal ) { break; }
 				}
 			}
 
 			if( town_portal != null ) {
-				town_portal.UpdateInteractions( mymod, player, (block_countdown > 0 || is_upon_a_portal), out is_upon_my_portal );
-				town_portal.UpdateBehavior( mymod, player );
+				town_portal.UpdateInteractions( ctx, player, (block_countdown > 0 || is_upon_a_portal), out is_upon_my_portal );
+				town_portal.UpdateBehavior( ctx, player );
 			}
 
 			if( (is_upon_a_portal || is_upon_my_portal) && block_countdown == 0 ) {
@@ -279,17 +279,17 @@ namespace Wormholes {
 			}
 		}
 
-		public void DrawAll( WormholesMod mymod, WormholeLink town_portal ) {
-			if( !mymod.Config.Data.DisableNaturalWormholes ) {
+		public void DrawAll( WormholeContext ctx, WormholeLink town_portal ) {
+			if( !ctx.MyMod.Config.Data.DisableNaturalWormholes ) {
 				for( int i = 0; i < this.Links.Count; i++ ) {
 					WormholeLink link = this.Links[i];
 					if( link == null ) { break; }
 
-					link.DrawForMe( mymod );
+					link.DrawForMe( ctx );
 				}
 			}
 			if( town_portal != null ) {
-				town_portal.DrawForMe( mymod );
+				town_portal.DrawForMe( ctx );
 			}
 		}
 	}

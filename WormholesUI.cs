@@ -40,8 +40,8 @@ namespace Wormholes {
 
 		////////////////
 
-		public void DrawMiniMap( WormholesMod mymod, WormholeLink link, SpriteBatch sb ) {
-			if( WormholesMod.Instance.IsDebugWormholeViewMode() && !link.IsCharted( mymod, Main.player[Main.myPlayer] ) ) { return; }
+		public void DrawMiniMap( WormholeContext ctx, WormholeLink link, SpriteBatch sb ) {
+			if( WormholesMod.Instance.IsDebugWormholeViewMode() && !link.IsCharted( ctx, Main.player[Main.myPlayer] ) ) { return; }
 			float scale = Main.mapMinimapScale / 1.5f;
 			Texture2D tex = WormholesUI.Tex;
 
@@ -61,8 +61,8 @@ namespace Wormholes {
 			}
 		}
 
-		public void DrawOverlayMap( WormholesMod mymod, WormholeLink link, SpriteBatch sb ) {
-			if( WormholesMod.Instance.IsDebugWormholeViewMode() && !link.IsCharted( mymod, Main.player[Main.myPlayer] ) ) { return; }
+		public void DrawOverlayMap( WormholeContext ctx, WormholeLink link, SpriteBatch sb ) {
+			if( WormholesMod.Instance.IsDebugWormholeViewMode() && !link.IsCharted( ctx, Main.player[Main.myPlayer] ) ) { return; }
 			float scale = Main.mapOverlayScale / 1.5f;
 			Texture2D tex = WormholesUI.Tex;
 
@@ -82,8 +82,8 @@ namespace Wormholes {
 			}
 		}
 
-		public void DrawFullscreenMap( WormholesMod mymod, WormholeLink link, SpriteBatch sb ) {
-			if( WormholesMod.Instance.IsDebugWormholeViewMode() && !link.IsCharted( mymod, Main.player[Main.myPlayer] ) ) { return; }
+		public void DrawFullscreenMap( WormholeContext ctx, WormholeLink link, SpriteBatch sb ) {
+			if( WormholesMod.Instance.IsDebugWormholeViewMode() && !link.IsCharted( ctx, Main.player[Main.myPlayer] ) ) { return; }
 			float scale = Main.mapFullscreenScale / 1.5f;
 			Texture2D tex = WormholesUI.Tex;
 

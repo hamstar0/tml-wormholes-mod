@@ -160,7 +160,7 @@ namespace Wormholes {
 			MyWorld modworld = mymod.GetModWorld<MyWorld>();
 			if( modworld.Wormholes == null ) { return; }
 
-			modworld.Wormholes.RunAll( mymod, this.player );
+			modworld.Wormholes.RunAll( mymod.Context, this.player );
 		}
 	}
 }
