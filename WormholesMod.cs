@@ -21,7 +21,7 @@ namespace Wormholes {
 		public static string GithubUserName { get { return "hamstar0"; } }
 		public static string GithubProjectName { get { return "tml-wormholes-mod"; } }
 
-		public static string ConfigRelativeFilePath {
+		public static string ConfigFileRelativePath {
 			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + WormholesConfigData.ConfigFileName; }
 		}
 		public static void ReloadConfigFromFile() {

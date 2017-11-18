@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.DebugHelpers;
 using HamstarHelpers.TileHelpers;
+using HamstarHelpers.WorldHelpers;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -23,18 +24,22 @@ namespace Wormholes {
 		////////////////
 
 		public WormholeManager( WormholesMod mymod ) {
-			int size = Main.maxTilesX * Main.maxTilesY;
-
-			if( size <= (4200 * 1200) / 2 ) {
+			switch( WorldHelpers.GetSize() ) {
+			case WorldSize.SubSmall:
 				WormholeManager.PortalCount = mymod.Config.Data.TinyWorldPortals;
-			} else if( size <= 4200 * 1200 + 1000 ) {
+				break;
+			case WorldSize.Small:
 				WormholeManager.PortalCount = mymod.Config.Data.SmallWorldPortals;
-			} else if( size <= 6400 * 1800 + 1000 ) {
+				break;
+			case WorldSize.Medium:
 				WormholeManager.PortalCount = mymod.Config.Data.MediumWorldPortals;
-			} else if( size <= 8400 * 2400 + 1000 ) {
+				break;
+			case WorldSize.Large:
 				WormholeManager.PortalCount = mymod.Config.Data.LargeWorldPortals;
-			} else {
+				break;
+			case WorldSize.SuperLarge:
 				WormholeManager.PortalCount = mymod.Config.Data.HugeWorldPortals;
+				break;
 			}
 
 			this.Links = new List<WormholeLink>( WormholeManager.PortalCount );
