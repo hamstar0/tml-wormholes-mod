@@ -152,8 +152,8 @@ namespace Wormholes {
 		private void DrawMiniMap( SpriteBatch sb ) {
 			this.UI.Update();
 
-			MyWorld modworld = this.GetModWorld<MyWorld>();
-			MyPlayer curr_modplayer = Main.player[Main.myPlayer].GetModPlayer<MyPlayer>( this );
+			WormholesWorld modworld = this.GetModWorld<WormholesWorld>();
+			WormholesPlayer curr_modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this );
 
 			if( !this.Config.Data.DisableNaturalWormholes ) {
 				if( modworld.Wormholes != null ) {
@@ -183,8 +183,8 @@ namespace Wormholes {
 		private void DrawFullMap( SpriteBatch sb ) {
 			this.UI.Update();
 
-			MyWorld modworld = this.GetModWorld<MyWorld>();
-			MyPlayer curr_modplayer = Main.player[Main.myPlayer].GetModPlayer<MyPlayer>( this );
+			WormholesWorld modworld = this.GetModWorld<WormholesWorld>();
+			WormholesPlayer curr_modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this );
 
 			if( !this.Config.Data.DisableNaturalWormholes ) {
 				if( modworld.Wormholes != null ) {

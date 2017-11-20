@@ -37,8 +37,8 @@ namespace Wormholes.Projectiles {
 
 		public override void AI() {
 			var mymod = (WormholesMod)this.mod;
-			var modworld = this.mod.GetModWorld<MyWorld>();
-			var modplayer = Main.player[Main.myPlayer].GetModPlayer<MyPlayer>( this.mod );
+			var modworld = this.mod.GetModWorld<WormholesWorld>();
+			var modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this.mod );
 			var rect = this.projectile.getRect();
 			int rand = Main.rand.Next( mymod.Config.Data.ChaosBombWormholeCloseOdds );
 			var proj = this.projectile;

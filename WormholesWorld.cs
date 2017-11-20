@@ -10,7 +10,7 @@ using Terraria.World.Generation;
 
 
 namespace Wormholes {
-	class MyWorld : ModWorld {
+	class WormholesWorld : ModWorld {
 		public WormholeManager Wormholes { get; private set; }
 		public string ID { get; private set; }
 
@@ -68,7 +68,7 @@ namespace Wormholes {
 				this.HasCorrectID = has_correct_id;
 				this.ID = id;
 
-				var modplayer = Main.player[Main.myPlayer].GetModPlayer<MyPlayer>( this.mod );
+				var modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this.mod );
 				if( modplayer.HasEnteredWorld && !modplayer.HasLoadedTownPortals ) {
 					modplayer.ReopenTownPortal();
 				}
@@ -93,7 +93,7 @@ namespace Wormholes {
 		public override void PostDrawTiles() {
 			if( this.Wormholes == null ) { return; }
 			
-			var myplayer = Main.player[Main.myPlayer].GetModPlayer<MyPlayer>( this.mod );
+			var myplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this.mod );
 			var mymod = (WormholesMod)this.mod;
 
 			//Main.spriteBatch.Begin();

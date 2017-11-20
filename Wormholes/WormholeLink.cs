@@ -326,7 +326,7 @@ namespace Wormholes {
 		public bool IsCharted( WormholeModContext ctx, Player player ) {
 			if( this.IsClosed ) { return false; }
 
-			MyPlayer modplayer = player.GetModPlayer<MyPlayer>( ctx.MyMod );
+			WormholesPlayer modplayer = player.GetModPlayer<WormholesPlayer>( ctx.MyMod );
 
 			if( modplayer.MyPortal != null && this.ID == modplayer.MyPortal.ID ) {
 				return true;
@@ -353,7 +353,7 @@ namespace Wormholes {
 		
 		public void ApplyChaosHit( WormholeModContext ctx ) {
 			if( Main.netMode == 0 ) {	// Single
-				var mngr = ctx.MyMod.GetModWorld<MyWorld>().Wormholes;
+				var mngr = ctx.MyMod.GetModWorld<WormholesWorld>().Wormholes;
 				mngr.Reroll( this );
 			} else {	// Non-single
 				ClientPacketHandlers.SendWormholeRerollRequestViaClient( ctx.MyMod, this.ID );
@@ -402,7 +402,7 @@ namespace Wormholes {
 
 
 		private void Teleport( WormholeModContext ctx, Player player, Vector2 dest ) {
-			MyPlayer myplayer = player.GetModPlayer<MyPlayer>( ctx.MyMod );
+			WormholesPlayer myplayer = player.GetModPlayer<WormholesPlayer>( ctx.MyMod );
 			if( myplayer.MyPortal == null || (myplayer.MyPortal != null && this.ID != myplayer.MyPortal.ID) ) {
 				myplayer.ChartedLinks.Add( this.ID );
 			}

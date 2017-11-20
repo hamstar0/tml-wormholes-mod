@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace Wormholes.Items {
 	class TownPortalScrollItem : ModItem {
 		public static void OpenPortal( WormholesMod mymod, Player player, Vector2 to, Vector2 fro ) {
-			MyPlayer modplayer = player.GetModPlayer<MyPlayer>( mymod );
+			WormholesPlayer modplayer = player.GetModPlayer<WormholesPlayer>( mymod );
 			if( modplayer.MyPortal != null ) {
 				modplayer.MyPortal.Close();
 			}

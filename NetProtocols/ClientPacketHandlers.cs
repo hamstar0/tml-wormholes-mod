@@ -53,7 +53,7 @@ namespace Wormholes.NetProtocol {
 		private static void ReceiveWormholesAndSettingsOnClient( WormholesMod mymod, BinaryReader reader ) {
 			if( Main.netMode != 1 ) { return; } // Clients only
 
-			MyWorld modworld = mymod.GetModWorld<MyWorld>();
+			WormholesWorld modworld = mymod.GetModWorld<WormholesWorld>();
 			string json = reader.ReadString();
 			int wormhole_count = reader.ReadInt32();
 
@@ -86,7 +86,7 @@ namespace Wormholes.NetProtocol {
 			Vector2 pos_l = new Vector2( worm_r_x, worm_l_y );
 			Vector2 pos_r = new Vector2( worm_l_x, worm_r_y );
 
-			var mngr = mymod.GetModWorld<MyWorld>().Wormholes;
+			var mngr = mymod.GetModWorld<WormholesWorld>().Wormholes;
 			var link = mngr.GetLinkById( id );
 			link.ChangePosition( pos_r, pos_l );
 		}

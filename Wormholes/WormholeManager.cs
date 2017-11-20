@@ -257,7 +257,7 @@ namespace Wormholes {
 			bool is_upon_a_portal = false;
 			bool is_upon_my_portal = false;
 			int block_countdown = this.BlockPortalCountdown[who];
-			WormholeLink town_portal = player.GetModPlayer<MyPlayer>( ctx.MyMod ).MyPortal;
+			WormholeLink town_portal = player.GetModPlayer<WormholesPlayer>( ctx.MyMod ).MyPortal;
 
 			if( !ctx.MyMod.Config.Data.DisableNaturalWormholes ) {
 				for( int i = 0; i < this.Links.Count; i++ ) {
