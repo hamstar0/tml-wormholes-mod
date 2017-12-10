@@ -41,7 +41,9 @@ namespace Wormholes {
 		////////////////
 
 		public void DrawMiniMap( WormholeModContext ctx, WormholeLink link, SpriteBatch sb ) {
-			if( WormholesMod.Instance.IsDebugWormholeViewMode() && !link.IsCharted( ctx, Main.player[Main.myPlayer] ) ) { return; }
+			var mymod = ctx.MyMod;
+			if( !link.IsCharted( Main.LocalPlayer ) && !mymod.IsDebugWormholeViewMode() ) { return; }
+
 			float scale = Main.mapMinimapScale / 1.5f;
 			Texture2D tex = WormholesUI.Tex;
 
@@ -62,7 +64,9 @@ namespace Wormholes {
 		}
 
 		public void DrawOverlayMap( WormholeModContext ctx, WormholeLink link, SpriteBatch sb ) {
-			if( WormholesMod.Instance.IsDebugWormholeViewMode() && !link.IsCharted( ctx, Main.player[Main.myPlayer] ) ) { return; }
+			var mymod = ctx.MyMod;
+			if( !link.IsCharted( Main.LocalPlayer ) && !mymod.IsDebugWormholeViewMode() ) { return; }
+
 			float scale = Main.mapOverlayScale / 1.5f;
 			Texture2D tex = WormholesUI.Tex;
 
@@ -83,7 +87,9 @@ namespace Wormholes {
 		}
 
 		public void DrawFullscreenMap( WormholeModContext ctx, WormholeLink link, SpriteBatch sb ) {
-			if( WormholesMod.Instance.IsDebugWormholeViewMode() && !link.IsCharted( ctx, Main.player[Main.myPlayer] ) ) { return; }
+			var mymod = ctx.MyMod;
+			if( !link.IsCharted( Main.LocalPlayer ) && !mymod.IsDebugWormholeViewMode() ) { return; }
+
 			float scale = Main.mapFullscreenScale / 1.5f;
 			Texture2D tex = WormholesUI.Tex;
 

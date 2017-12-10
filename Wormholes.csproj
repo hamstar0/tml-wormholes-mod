@@ -33,9 +33,6 @@
     <Reference Include="HamstarHelpers">
       <HintPath>..\HamstarHelpers\bin\Release\HamstarHelpers.dll</HintPath>
     </Reference>
-    <Reference Include="Libraries.JSON.NET.Newtonsoft.Json">
-      <HintPath>..\..\..\Reference\Libraries.JSON.NET.Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

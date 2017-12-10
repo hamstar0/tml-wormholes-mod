@@ -290,17 +290,17 @@ namespace Wormholes {
 			is_upon_portal = false;
 			if( this.IsClosed ) { return; }
 			
-			int which = this.DetectCollision( player.getRect() );
+			int side = this.DetectCollision( player.getRect() );
 
 			if( !is_obstructed ) {
-				if( which == 1 ) {
+				if( side == 1 ) {
 					this.TeleportToLeft( ctx, player );
-				} else if( which == -1 ) {
+				} else if( side == -1 ) {
 					this.TeleportToRight( ctx, player );
 				}
 			}
 
-			is_upon_portal = which != 0;
+			is_upon_portal = side != 0;
 		}
 
 		public void UpdateBehavior( WormholeModContext ctx, Player player ) {
@@ -323,10 +323,10 @@ namespace Wormholes {
 
 		////////////////
 
-		public bool IsCharted( WormholeModContext ctx, Player player ) {
+		public bool IsCharted( Player player ) {
 			if( this.IsClosed ) { return false; }
 
-			WormholesPlayer modplayer = player.GetModPlayer<WormholesPlayer>( ctx.MyMod );
+			var modplayer = player.GetModPlayer<WormholesPlayer>();
 
 			if( modplayer.MyPortal != null && this.ID == modplayer.MyPortal.ID ) {
 				return true;
