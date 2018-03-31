@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Wormholes.NetProtocol;
 
@@ -102,8 +103,15 @@ namespace Wormholes {
 		////////////////
 
 		public override void AddRecipeGroups() {
-			RecipeGroup group = new RecipeGroup( () => Lang.misc[37] + " Evac Potion", new int[] { 2350, 2997 } );
-			RecipeGroup.RegisterGroup( "WormholesMod:EvacPotions", group );
+			RecipeGroup evac_grp = new RecipeGroup( () => Lang.misc[37] + " Evac Potion", new int[] {
+				ItemID.RecallPotion, ItemID.WormholePotion
+			} );
+			RecipeGroup book_grp = new RecipeGroup( () => Lang.misc[37] + " Basic Book", new int[] {
+				ItemID.Book, ItemID.SpellTome
+			} );
+
+			RecipeGroup.RegisterGroup( "WormholesMod:EvacPotions", evac_grp );
+			RecipeGroup.RegisterGroup( "WormholesMod:BasicBooks", book_grp );
 		}
 
 

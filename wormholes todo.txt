@@ -12,6 +12,11 @@ Future
 -	Give wormholes a special FX/warning if they lead into dungeon
 
 
+v1.8.0
+-	Add server command to reset all wormholes
+-	Add town portal book
+-	Add item to relocate native portals (also removes debuffs on traversal)
+
 v1.6.2
 -	Remove old config (Wormholes 1.3.12.json)
 -	Prevent wormholes from generating before terrain

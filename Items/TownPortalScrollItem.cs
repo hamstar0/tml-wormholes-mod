@@ -87,12 +87,12 @@ namespace Wormholes.Items {
 	class TownPortalScrollRecipe : ModRecipe {
 		public TownPortalScrollRecipe( TownPortalScrollItem moditem ) : base( moditem.mod ) {
 			this.AddTile( 18 );   // Crafting bench
-
-			this.AddRecipeGroup( "WormholesMod:EvacPotions", 1 );
-			this.AddIngredient( ItemID.Book, 1 );
+			
+			this.AddRecipeGroup( "WormholesMod:EvacPotions", 3 );
+			this.AddRecipeGroup( "WormholesMod:BasicBooks", 1 );
 			//this.AddIngredient( ItemID.WormholePotion, 1 );
 			this.AddIngredient( ItemID.ManaCrystal, 1 );
-			this.SetResult( moditem, 1 );
+			this.SetResult( moditem, 3 );
 		}
 
 		public override bool RecipeAvailable() {
