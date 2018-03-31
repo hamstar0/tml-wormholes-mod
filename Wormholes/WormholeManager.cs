@@ -55,7 +55,7 @@ namespace Wormholes {
 			if( holes == 0 ) { return false; }
 
 			if( mymod.IsDebugInfoMode() ) {
-				DebugHelpers.Log( "Loading world ids (" + Main.netMode + "): " + holes );
+				LogHelpers.Log( "Loading world ids (" + Main.netMode + "): " + holes );
 			}
 
 			int[] worm_l_x = tags.GetIntArray( "wormhole_left_x" );
@@ -70,7 +70,7 @@ namespace Wormholes {
 
 				string id = tags.GetString( "wormhole_id_" + i );
 				if( mymod.IsDebugInfoMode() ) {
-					DebugHelpers.Log( "  world load id: " + id + " (" + i + ")" );
+					LogHelpers.Log( "  world load id: " + id + " (" + i + ")" );
 				}
 
 				Vector2 pos_l = new Vector2( worm_l_x[i], worm_l_y[i] );
@@ -100,7 +100,7 @@ namespace Wormholes {
 			int[] worm_r_y = new int[WormholeManager.PortalCount];
 
 			if( WormholesMod.Instance.IsDebugInfoMode() ) {
-				DebugHelpers.Log( "Save world ids (" + Main.netMode + "): " + WormholeManager.PortalCount );
+				LogHelpers.Log( "Save world ids (" + Main.netMode + "): " + WormholeManager.PortalCount );
 			}
 
 			int i;
@@ -127,7 +127,7 @@ namespace Wormholes {
 			for( i = 0; i < this.Links.Count; i++ ) {
 				tags.Set( "wormhole_id_" + i, ids[i] );
 				if( WormholesMod.Instance.IsDebugInfoMode() ) {
-					DebugHelpers.Log( "  world save id: " + ids[i] + " (" + i + ") = "
+					LogHelpers.Log( "  world save id: " + ids[i] + " (" + i + ") = "
 						+ worm_l_x[i] + "," + worm_l_y[i] + " | " + worm_r_x[i] + "," + worm_r_y[i] );
 				}
 			}
