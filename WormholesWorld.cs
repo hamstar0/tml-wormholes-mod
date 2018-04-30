@@ -25,7 +25,7 @@ namespace Wormholes {
 			this.ID = Guid.NewGuid().ToString( "D" );
 			this.HasCorrectID = false;
 
-			if( (mymod.Config.Data.DEBUGFLAGS & 4) > 0 ) {
+			if( mymod.Config.DebugModeReset ) {
 				WormholeManager.ForceRegenWormholes = true;
 			}
 		}

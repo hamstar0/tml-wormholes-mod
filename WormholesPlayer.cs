@@ -117,8 +117,8 @@ namespace Wormholes {
 				var mymod = (WormholesMod)this.mod;
 				var modworld = this.mod.GetModWorld<WormholesWorld>();
 
-				if( !mymod.Config.LoadFile() ) {
-					mymod.Config.SaveFile();
+				if( !mymod.JsonConfig.LoadFile() ) {
+					mymod.JsonConfig.SaveFile();
 				}
 				
 				if( modworld.HasCorrectID ) {

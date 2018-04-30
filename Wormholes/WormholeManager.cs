@@ -26,19 +26,19 @@ namespace Wormholes {
 		public WormholeManager( WormholesMod mymod ) {
 			switch( WorldHelpers.GetSize() ) {
 			case WorldSize.SubSmall:
-				WormholeManager.PortalCount = mymod.Config.Data.TinyWorldPortals;
+				WormholeManager.PortalCount = mymod.Config.TinyWorldPortals;
 				break;
 			case WorldSize.Small:
-				WormholeManager.PortalCount = mymod.Config.Data.SmallWorldPortals;
+				WormholeManager.PortalCount = mymod.Config.SmallWorldPortals;
 				break;
 			case WorldSize.Medium:
-				WormholeManager.PortalCount = mymod.Config.Data.MediumWorldPortals;
+				WormholeManager.PortalCount = mymod.Config.MediumWorldPortals;
 				break;
 			case WorldSize.Large:
-				WormholeManager.PortalCount = mymod.Config.Data.LargeWorldPortals;
+				WormholeManager.PortalCount = mymod.Config.LargeWorldPortals;
 				break;
 			case WorldSize.SuperLarge:
-				WormholeManager.PortalCount = mymod.Config.Data.HugeWorldPortals;
+				WormholeManager.PortalCount = mymod.Config.HugeWorldPortals;
 				break;
 			}
 
@@ -48,7 +48,7 @@ namespace Wormholes {
 		/////////////////
 
 		public bool Load( WormholesMod mymod, TagCompound tags ) {
-			if( mymod.Config.Data.DisableNaturalWormholes ) { return false; }
+			if( mymod.Config.DisableNaturalWormholes ) { return false; }
 			if( !tags.ContainsKey("wormhole_count") ) { return false; }
 
 			int holes = tags.GetInt( "wormhole_count" );
@@ -259,7 +259,7 @@ namespace Wormholes {
 			int block_countdown = this.BlockPortalCountdown[who];
 			WormholeLink town_portal = player.GetModPlayer<WormholesPlayer>( ctx.MyMod ).MyPortal;
 
-			if( !ctx.MyMod.Config.Data.DisableNaturalWormholes ) {
+			if( !ctx.MyMod.Config.DisableNaturalWormholes ) {
 				for( int i = 0; i < this.Links.Count; i++ ) {
 					WormholeLink link = this.Links[i];
 					if( link == null ) { break; }
@@ -285,7 +285,7 @@ namespace Wormholes {
 		}
 
 		public void DrawAll( WormholeModContext ctx, WormholeLink town_portal ) {
-			if( !ctx.MyMod.Config.Data.DisableNaturalWormholes ) {
+			if( !ctx.MyMod.Config.DisableNaturalWormholes ) {
 				for( int i = 0; i < this.Links.Count; i++ ) {
 					WormholeLink link = this.Links[i];
 					if( link == null ) { break; }

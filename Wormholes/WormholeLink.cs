@@ -432,7 +432,7 @@ namespace Wormholes {
 			}
 
 			//Main.PlaySound( 2, player.position, 100 );
-			var snd = SoundID.Item100.WithVolume( ctx.MyMod.Config.Data.WormholeEntrySoundVolume );
+			var snd = SoundID.Item100.WithVolume( ctx.MyMod.Config.WormholeEntrySoundVolume );
 			Main.PlaySound( snd, player.position );
 		}
 	}

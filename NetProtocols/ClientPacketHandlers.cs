@@ -57,7 +57,7 @@ namespace Wormholes.NetProtocol {
 			string json = reader.ReadString();
 			int wormhole_count = reader.ReadInt32();
 
-			mymod.Config.DeserializeMe( json );
+			mymod.JsonConfig.DeserializeMe( json );
 
 			for( int i = 0; i < wormhole_count; i++ ) {
 				string id = reader.ReadString();

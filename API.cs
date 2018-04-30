@@ -9,7 +9,7 @@ namespace Wormholes {
 		}
 
 		public static WormholesConfigData GetModSettings() {
-			return WormholesMod.Instance.Config.Data;
+			return WormholesMod.Instance.Config;
 		}
 
 		////////////////

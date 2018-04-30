@@ -40,7 +40,7 @@ namespace Wormholes.Projectiles {
 			var modworld = this.mod.GetModWorld<WormholesWorld>();
 			var modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this.mod );
 			var rect = this.projectile.getRect();
-			int rand = Main.rand.Next( mymod.Config.Data.ChaosBombWormholeCloseOdds );
+			int rand = Main.rand.Next( mymod.Config.ChaosBombWormholeCloseOdds );
 			var proj = this.projectile;
 			
 			if( proj.owner == Main.myPlayer && proj.timeLeft <= 3 ) {
@@ -126,8 +126,8 @@ namespace Wormholes.Projectiles {
 			if( time_left == 0 && proj.owner == Main.myPlayer ) {
 				int tile_x = (int)this.projectile.Center.X / 16;
 				int tile_y = (int)this.projectile.Center.Y / 16;
-				int radius = mymod.Config.Data.ChaosBombRadius;
-				this.ScatterTiles( tile_x, tile_y, radius, mymod.Config.Data.ChaosBombScatterRadius );
+				int radius = mymod.Config.ChaosBombRadius;
+				this.ScatterTiles( tile_x, tile_y, radius, mymod.Config.ChaosBombScatterRadius );
 				
 				if( Main.netMode != 0 ) {
 					NetMessage.SendData( MessageID.KillProjectile, -1, -1, null, proj.identity, (float)proj.owner, 0f, 0f, 0, 0, 0 );

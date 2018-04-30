@@ -97,7 +97,7 @@ namespace Wormholes.Items {
 
 		public override bool RecipeAvailable() {
 			var mymod = (WormholesMod)this.mod;
-			return mymod.Config.Data.CraftableTownPortalScrolls;
+			return mymod.Config.CraftableTownPortalScrolls;
 		}
 	}
 }

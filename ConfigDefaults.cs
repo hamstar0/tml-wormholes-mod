@@ -4,7 +4,7 @@ using System;
 
 namespace Wormholes {
 	public class WormholesConfigData : ConfigurationDataBase {
-		public static readonly Version ConfigVersion = new Version( 1, 6, 4 );
+		public static readonly Version ConfigVersion = new Version( 1, 7, 2 );
 		public readonly static string ConfigFileName = "Wormholes Config.json";
 
 
@@ -12,7 +12,9 @@ namespace Wormholes {
 
 		public string VersionSinceUpdate = "";
 
-		public int DEBUGFLAGS = 0;  // 1: Info;  2: View wormholes on map;  4: Reset wormholes
+		public bool DebugModeInfo = false;
+		public bool DebugModeMapCheat = false;
+		public bool DebugModeReset = false;
 
 		public int TinyWorldPortals = 4;    // SmallWorldPortals / 2
 		public int SmallWorldPortals = 8;  // 4200 x 1200 = 5040000
@@ -29,9 +31,20 @@ namespace Wormholes {
 
 		public bool DisableNaturalWormholes = false;
 
+		public int ChaosBombRecipeBouncyBombCost = 5;
+		public int ChaosBombRecipeQuantity = 25;
 		public int ChaosBombWormholeCloseOdds = 5;
 		public int ChaosBombRadius = 4;
 		public int ChaosBombScatterRadius = 32;
+
+
+
+		////////
+
+		public string _OLD_SETTINGS_BELOW_ = "";
+
+		[Obsolete("Use the DebugMode series of settings", true)]
+		public int DEBUGFLAGS = 0;  // 1: Info;  2: View wormholes on map;  4: Reset wormholes
 
 
 		////////////////

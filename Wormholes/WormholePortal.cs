@@ -138,7 +138,7 @@ namespace Wormholes {
 
 			// Loop audio
 			if( this.SoundLoopTimer++ > 12 ) {
-				Main.PlaySound( SoundID.Item24.WithVolume( ctx.MyMod.Config.Data.WormholeSoundVolume), this.Pos );
+				Main.PlaySound( SoundID.Item24.WithVolume( ctx.MyMod.Config.WormholeSoundVolume), this.Pos );
 				this.SoundLoopTimer = 0;
 			}
 		}
@@ -150,7 +150,7 @@ namespace Wormholes {
 			int x = (int)((this.Pos.X + (WormholePortal.Width / 2)) / 16f);
 			int y = (int)((this.Pos.Y + (WormholePortal.Height / 2)) / 16f);
 
-			float flicker_scale = 0.5f + ctx.MyMod.Config.Data.WormholeLightScale * Main.rand.NextFloat();
+			float flicker_scale = 0.5f + ctx.MyMod.Config.WormholeLightScale * Main.rand.NextFloat();
 			float r = flicker_scale * this.BaseColor.R / 255f;
 			float g = flicker_scale * this.BaseColor.G / 255f;
 			float b = flicker_scale * this.BaseColor.B / 255f;

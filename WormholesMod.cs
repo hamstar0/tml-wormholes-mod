@@ -29,14 +29,15 @@ namespace Wormholes {
 			if( Main.netMode != 0 ) {
 				throw new Exception( "Cannot reload configs outside of single player." );
 			}
-			WormholesMod.Instance.Config.LoadFile();
+			WormholesMod.Instance.JsonConfig.LoadFile();
 		}
 
 
 		////////////////
 
 		public WormholeModContext Context { get; private set; }
-		public JsonConfig<WormholesConfigData> Config { get; private set; }
+		public JsonConfig<WormholesConfigData> JsonConfig { get; private set; }
+		public WormholesConfigData Config { get { return this.JsonConfig.Data; } }
 		private WormholesUI UI;
 
 
@@ -51,7 +52,7 @@ namespace Wormholes {
 				AutoloadSounds = true
 			};
 			
-			this.Config = new JsonConfig<WormholesConfigData>( WormholesConfigData.ConfigFileName,
+			this.JsonConfig = new JsonConfig<WormholesConfigData>( WormholesConfigData.ConfigFileName,
 				ConfigurationDataBase.RelativePath, new WormholesConfigData() );
 		}
 
@@ -82,17 +83,17 @@ namespace Wormholes {
 			// Update old config to new location
 			if( old_config.LoadFile() ) {
 				old_config.DestroyFile();
-				old_config.SetFilePath( this.Config.FileName, ConfigurationDataBase.RelativePath );
-				this.Config = old_config;
+				old_config.SetFilePath( this.JsonConfig.FileName, ConfigurationDataBase.RelativePath );
+				this.JsonConfig = old_config;
 			}
 			
-			if( !this.Config.LoadFile() ) {
-				this.Config.SaveFile();
+			if( !this.JsonConfig.LoadFile() ) {
+				this.JsonConfig.SaveFile();
 			}
 
-			if( this.Config.Data.UpdateToLatestVersion() ) {
+			if( this.Config.UpdateToLatestVersion() ) {
 				ErrorLogger.Log( "Wormholes updated to " + WormholesConfigData.ConfigVersion.ToString() );
-				this.Config.SaveFile();
+				this.JsonConfig.SaveFile();
 			}
 		}
 
@@ -163,7 +164,7 @@ namespace Wormholes {
 			WormholesWorld modworld = this.GetModWorld<WormholesWorld>();
 			WormholesPlayer curr_modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this );
 
-			if( !this.Config.Data.DisableNaturalWormholes ) {
+			if( !this.Config.DisableNaturalWormholes ) {
 				if( modworld.Wormholes != null ) {
 					for( int i = 0; i < modworld.Wormholes.Links.Count; i++ ) {
 						WormholeLink link = modworld.Wormholes.Links[i];
@@ -194,7 +195,7 @@ namespace Wormholes {
 			WormholesWorld modworld = this.GetModWorld<WormholesWorld>();
 			WormholesPlayer curr_modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this );
 
-			if( !this.Config.Data.DisableNaturalWormholes ) {
+			if( !this.Config.DisableNaturalWormholes ) {
 				if( modworld.Wormholes != null ) {
 					for( int i = 0; i < modworld.Wormholes.Links.Count; i++ ) {
 						WormholeLink link = modworld.Wormholes.Links[i];
@@ -214,15 +215,15 @@ namespace Wormholes {
 		////////////////
 
 		public bool IsDebugInfoMode() {
-			return (this.Config.Data.DEBUGFLAGS & 1) != 0;
+			return this.Config.DebugModeInfo;
 		}
 
 		public bool IsDebugWormholeViewMode() {
-			return (this.Config.Data.DEBUGFLAGS & 2) != 0;
+			return this.Config.DebugModeMapCheat;
 		}
 
 		public bool IsDebuResetMode() {
-			return (this.Config.Data.DEBUGFLAGS & 4) != 0;
+			return this.Config.DebugModeReset;
 		}
 	}
 }

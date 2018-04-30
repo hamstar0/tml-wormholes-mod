@@ -37,7 +37,7 @@ namespace Wormholes.NetProtocol {
 			modworld.SetupWormholes();
 
 			packet.Write( (byte)WormholeNetProtocolTypes.WormholesAndModSettings );
-			packet.Write( (string)mymod.Config.SerializeMe() );
+			packet.Write( (string)mymod.JsonConfig.SerializeMe() );
 			packet.Write( (int)WormholeManager.PortalCount );
 
 			for( int i = 0; i < WormholeManager.PortalCount; i++ ) {
