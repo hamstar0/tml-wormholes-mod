@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.Utilities.Network;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Wormholes.Items;
-using Wormholes.NetProtocol;
-
+using Wormholes.NetProtocols;
 
 namespace Wormholes {
 	class WormholesPlayer : ModPlayer {
@@ -128,7 +128,7 @@ namespace Wormholes {
 				}
 
 				if( Main.netMode == 1 ) {    // Client
-					ClientPacketHandlers.SendWormholesAndSettingsRequestViaClient( mymod, player );
+					PacketProtocol.QuickRequestFromServer<SettingsAndWormholesProtocol>();
 				} else if( Main.netMode == 0 ) {  // Single
 					modworld.SetupWormholes();
 				}

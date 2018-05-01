@@ -1,10 +1,11 @@
 ﻿using HamstarHelpers.PlayerHelpers;
+using HamstarHelpers.Utilities.Network;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Wormholes.NetProtocol;
+using Wormholes.NetProtocols;
 
 
 namespace Wormholes {
@@ -355,8 +356,8 @@ namespace Wormholes {
 			if( Main.netMode == 0 ) {	// Single
 				var mngr = ctx.MyMod.GetModWorld<WormholesWorld>().Wormholes;
 				mngr.Reroll( this );
-			} else {	// Non-single
-				ClientPacketHandlers.SendWormholeRerollRequestViaClient( ctx.MyMod, this.ID );
+			} else {    // Non-single
+				WormholeRerollProtocol.ClientRequestReroll( this.ID );
 			}
 		}
 

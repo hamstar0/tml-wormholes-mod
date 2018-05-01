@@ -5,7 +5,6 @@ using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Wormholes.NetProtocol;
 
 
 namespace Wormholes {
@@ -36,8 +35,10 @@ namespace Wormholes {
 		////////////////
 
 		public WormholeModContext Context { get; private set; }
+
 		public JsonConfig<WormholesConfigData> JsonConfig { get; private set; }
 		public WormholesConfigData Config { get { return this.JsonConfig.Data; } }
+
 		private WormholesUI UI;
 
 
@@ -113,17 +114,6 @@ namespace Wormholes {
 
 			RecipeGroup.RegisterGroup( "WormholesMod:EvacPotions", evac_grp );
 			RecipeGroup.RegisterGroup( "WormholesMod:BasicBooks", book_grp );
-		}
-
-
-		////////////////
-
-		public override void HandlePacket( BinaryReader reader, int player_who ) {
-			if( Main.netMode == 1 ) {   // Client
-				ClientPacketHandlers.HandlePacket( this, reader );
-			} else if( Main.netMode == 2 ) {    // Server
-				ServerPacketHandlers.HandlePacket( this, reader, player_who );
-			}
 		}
 
 

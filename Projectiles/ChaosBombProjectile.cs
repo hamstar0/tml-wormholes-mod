@@ -162,7 +162,7 @@ namespace Wormholes.Projectiles {
 
 					try {
 						style = TileObjectData.GetTileStyle( fro_tile );
-					} catch( Exception _ ) {
+					} catch( Exception ) {
 						style = 0;
 					}
 

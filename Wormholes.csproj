@@ -56,8 +56,9 @@
     <Compile Include="Config.cs" />
     <Compile Include="Items\ChaosBombItem.cs" />
     <Compile Include="Items\TownPortalScrollItem.cs" />
-    <Compile Include="NetProtocols\ServerPacketHandlers.cs" />
-    <Compile Include="NetProtocols\ClientPacketHandlers.cs" />
+    <Compile Include="NetProtocols\WormholeRerollProtocol.cs" />
+    <Compile Include="NetProtocols\WormholeUpdateProtocol.cs" />
+    <Compile Include="NetProtocols\SettingsAndWormholesProtocol.cs" />
     <Compile Include="Projectiles\ChaosBombProjectile.cs" />
     <Compile Include="Utils\SpriteAnimator.cs" />
     <Compile Include="API.cs" />
@@ -65,7 +66,6 @@
     <Compile Include="Wormholes\WormholeLink.cs" />
     <Compile Include="WormholesMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="NetProtocols\NetProtocolTypes.cs" />
     <Compile Include="WormholesPlayer.cs" />
     <Compile Include="WormholesUI.cs" />
     <Compile Include="WormholesWorld.cs" />
