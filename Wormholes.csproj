@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API_Call.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Items\ChaosBombItem.cs" />
     <Compile Include="Items\TownPortalScrollItem.cs" />

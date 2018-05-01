@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace Wormholes {
-	public static class WormholesAPI {
+	public static partial class WormholesAPI {
 		public static WormholeModContext GetModContext() {
 			return WormholesMod.Instance.Context;
 		}
