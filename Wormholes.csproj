@@ -62,6 +62,7 @@
     <Compile Include="Projectiles\ChaosBombProjectile.cs" />
     <Compile Include="Utils\SpriteAnimator.cs" />
     <Compile Include="API.cs" />
+    <Compile Include="Wormholes\WormholeLink_Interact.cs" />
     <Compile Include="Wormholes\WormholeManager.cs" />
     <Compile Include="Wormholes\WormholeLink.cs" />
     <Compile Include="WormholesMod.cs" />

@@ -84,6 +84,7 @@ namespace Wormholes.Items {
 
 
 
+
 	class TownPortalScrollRecipe : ModRecipe {
 		public TownPortalScrollRecipe( TownPortalScrollItem moditem ) : base( moditem.mod ) {
 			this.AddTile( 18 );   // Crafting bench
