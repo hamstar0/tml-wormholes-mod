@@ -9,8 +9,6 @@ namespace Wormholes {
 			Color color;
 
 			switch( call_type ) {
-			case "GetModContext":
-				return WormholesAPI.GetModContext();
 			case "GetModSettings":
 				return WormholesAPI.GetModSettings();
 			case "WormholesFinishedSpawning":

@@ -101,7 +101,7 @@ namespace Wormholes {
 			Main.spriteBatch.Begin( SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, rasterizer, (Effect)null, Main.GameViewMatrix.TransformationMatrix );
 
 			try {
-				this.Wormholes.DrawAll( mymod.Context, myplayer.MyPortal );
+				this.Wormholes.DrawAll( myplayer.MyPortal );
 			} catch( Exception e ) {
 				ErrorLogger.Log( "PostDrawTiles: " + e.ToString() );
 				throw e;

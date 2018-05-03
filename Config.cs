@@ -4,7 +4,7 @@ using System;
 
 namespace Wormholes {
 	public class WormholesConfigData : ConfigurationDataBase {
-		public static readonly Version ConfigVersion = new Version( 1, 7, 2 );
+		public static readonly Version ConfigVersion = new Version( 1, 8, 0 );
 		public readonly static string ConfigFileName = "Wormholes Config.json";
 
 
@@ -23,7 +23,9 @@ namespace Wormholes {
 		public int HugeWorldPortals = 27;
 
 		public bool CraftableTownPortalScrolls = true;
+		public int TownPortalRecipeQuantity = 5;
 		public int TownPortalDuration = 60 * 60;    // 1 hour
+		public bool TownPortalConsumesOnReturn = true;
 
 		public float WormholeSoundVolume = 0.45f;
 		public float WormholeLightScale = 1.25f;

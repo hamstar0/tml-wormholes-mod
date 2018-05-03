@@ -133,24 +133,28 @@ namespace Wormholes {
 			Dust.NewDust( this.Pos, this.Rect.Width, this.Rect.Height, 15, 0, 0, 150, color, 1f );
 		}
 
-		public void SoundFX( WormholeModContext ctx ) {
+		public void SoundFX() {
 			if( this.IsClosed ) { return; }
+
+			var mymod = WormholesMod.Instance;
 
 			// Loop audio
 			if( this.SoundLoopTimer++ > 12 ) {
-				Main.PlaySound( SoundID.Item24.WithVolume( ctx.MyMod.Config.WormholeSoundVolume), this.Pos );
+				Main.PlaySound( SoundID.Item24.WithVolume( mymod.Config.WormholeSoundVolume), this.Pos );
 				this.SoundLoopTimer = 0;
 			}
 		}
 		
-		public void LightFX( WormholeModContext ctx ) {
+		public void LightFX() {
 			if( this.IsClosed ) { return; }
 			if( Main.rand == null ) { return; }
+
+			var mymod = WormholesMod.Instance;
 
 			int x = (int)((this.Pos.X + (WormholePortal.Width / 2)) / 16f);
 			int y = (int)((this.Pos.Y + (WormholePortal.Height / 2)) / 16f);
 
-			float flicker_scale = 0.5f + ctx.MyMod.Config.WormholeLightScale * Main.rand.NextFloat();
+			float flicker_scale = 0.5f + mymod.Config.WormholeLightScale * Main.rand.NextFloat();
 			float r = flicker_scale * this.BaseColor.R / 255f;
 			float g = flicker_scale * this.BaseColor.G / 255f;
 			float b = flicker_scale * this.BaseColor.B / 255f;

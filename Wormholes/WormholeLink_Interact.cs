@@ -8,7 +8,7 @@ using Wormholes.NetProtocols;
 
 namespace Wormholes {
 	public partial class WormholeLink {
-		public void UpdateInteractions( WormholeModContext ctx, Player player, bool is_obstructed, out bool is_upon_portal ) {
+		internal void UpdateInteractions( Player player, bool is_obstructed, out bool is_upon_portal ) {
 			is_upon_portal = false;
 			if( this.IsClosed ) { return; }
 			
@@ -16,16 +16,16 @@ namespace Wormholes {
 
 			if( !is_obstructed ) {
 				if( side == 1 ) {
-					this.TeleportToLeft( ctx, player );
+					this.TeleportToLeft( player );
 				} else if( side == -1 ) {
-					this.TeleportToRight( ctx, player );
+					this.TeleportToRight( player );
 				}
 			}
 
 			is_upon_portal = side != 0;
 		}
 
-		public void UpdateBehavior( WormholeModContext ctx, Player player ) {
+		internal void UpdateBehavior( Player player ) {
 			if( this.IsClosed ) { return; }
 			if( Main.myPlayer != player.whoAmI ) { return; }
 
@@ -38,8 +38,8 @@ namespace Wormholes {
 					this.RightPortal.AnimateOpen( l_open_anim );
 				}
 				
-				this.LeftPortal.SoundFX( ctx );
-				this.RightPortal.SoundFX( ctx );
+				this.LeftPortal.SoundFX();
+				this.RightPortal.SoundFX();
 			}
 		}
 
@@ -72,10 +72,12 @@ namespace Wormholes {
 
 			return on_portal;
 		}
-		
-		public void ApplyChaosHit( WormholeModContext ctx ) {
+
+		public virtual void ApplyChaosHit() {
+			var mymod = WormholesMod.Instance;
+
 			if( Main.netMode == 0 ) {	// Single
-				var mngr = ctx.MyMod.GetModWorld<WormholesWorld>().Wormholes;
+				var mngr = mymod.GetModWorld<WormholesWorld>().Wormholes;
 				mngr.Reroll( this );
 			} else {    // Non-single
 				WormholeRerollProtocol.ClientRequestReroll( this.ID );
@@ -84,7 +86,7 @@ namespace Wormholes {
 
 		////////////////
 
-		public void TeleportToLeft( WormholeModContext ctx, Player player ) {
+		protected virtual void TeleportToLeft( Player player ) {
 			// Clients and single only
 			if( Main.netMode == 2 ) { return; }
 			if( this.IsClosed ) { return; }
@@ -93,10 +95,10 @@ namespace Wormholes {
 				this.LeftPortal.Pos.X + (WormholePortal.Width / 2) - player.width,
 				this.LeftPortal.Pos.Y + (WormholePortal.Height / 2) - player.height );
 			
-			this.Teleport( ctx, player, dest );
+			this.Teleport( player, dest );
 		}
 
-		public void TeleportToRight( WormholeModContext ctx, Player player ) {
+		protected virtual void TeleportToRight( Player player ) {
 			// Clients and single only
 			if( Main.netMode == 2 ) { return; }
 			if( this.IsClosed ) { return; }
@@ -105,12 +107,14 @@ namespace Wormholes {
 				this.RightPortal.Pos.X + (WormholePortal.Width / 2) - player.width,
 				this.RightPortal.Pos.Y + (WormholePortal.Height / 2) - player.height );
 
-			this.Teleport( ctx, player, dest );
+			this.Teleport( player, dest );
 		}
 
 
-		private void Teleport( WormholeModContext ctx, Player player, Vector2 dest ) {
-			WormholesPlayer myplayer = player.GetModPlayer<WormholesPlayer>( ctx.MyMod );
+		protected virtual void Teleport( Player player, Vector2 dest ) {
+			var mymod = WormholesMod.Instance;
+			WormholesPlayer myplayer = player.GetModPlayer<WormholesPlayer>( mymod );
+
 			if( myplayer.MyPortal == null || (myplayer.MyPortal != null && this.ID != myplayer.MyPortal.ID) ) {
 				myplayer.ChartedLinks.Add( this.ID );
 			}
@@ -140,7 +144,7 @@ namespace Wormholes {
 			}
 
 			//Main.PlaySound( 2, player.position, 100 );
-			var snd = SoundID.Item100.WithVolume( ctx.MyMod.Config.WormholeEntrySoundVolume );
+			var snd = SoundID.Item100.WithVolume( mymod.Config.WormholeEntrySoundVolume );
 			Main.PlaySound( snd, player.position );
 		}
 	}

@@ -7,13 +7,13 @@ using Terraria.ModLoader;
 
 namespace Wormholes.Items {
 	class TownPortalScrollItem : ModItem {
-		public static void OpenPortal( WormholesMod mymod, Player player, Vector2 to, Vector2 fro ) {
+		public static void OpenPortal( WormholesMod mymod, Player player, Vector2 right_pos, Vector2 left_pos ) {
 			WormholesPlayer modplayer = player.GetModPlayer<WormholesPlayer>( mymod );
 			if( modplayer.MyPortal != null ) {
 				modplayer.MyPortal.Close();
 			}
 
-			var link = new WormholeLink( Color.Cyan, to, fro );
+			var link = new TownPortalLink( Color.Cyan, right_pos, left_pos );
 			link.LeftPortal.AnimateOpen();
 			link.RightPortal.AnimateOpen();
 
@@ -87,13 +87,15 @@ namespace Wormholes.Items {
 
 	class TownPortalScrollRecipe : ModRecipe {
 		public TownPortalScrollRecipe( TownPortalScrollItem moditem ) : base( moditem.mod ) {
+			var mymod = (WormholesMod)this.mod;
+
 			this.AddTile( 18 );   // Crafting bench
 			
 			this.AddRecipeGroup( "WormholesMod:EvacPotions", 3 );
 			this.AddRecipeGroup( "WormholesMod:BasicBooks", 1 );
 			//this.AddIngredient( ItemID.WormholePotion, 1 );
 			this.AddIngredient( ItemID.ManaCrystal, 1 );
-			this.SetResult( moditem, 3 );
+			this.SetResult( moditem, mymod.Config.TownPortalRecipeQuantity );
 		}
 
 		public override bool RecipeAvailable() {

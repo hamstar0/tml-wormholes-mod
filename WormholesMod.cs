@@ -8,13 +8,6 @@ using Terraria.ModLoader;
 
 
 namespace Wormholes {
-	public class WormholeModContext {
-		internal WormholesMod MyMod;
-		internal WormholeModContext( WormholesMod mymod ) { this.MyMod = mymod; }
-	}
-
-
-
 	class WormholesMod : Mod {
 		public static WormholesMod Instance { get; private set; }
 
@@ -33,9 +26,7 @@ namespace Wormholes {
 
 
 		////////////////
-
-		public WormholeModContext Context { get; private set; }
-
+		
 		public JsonConfig<WormholesConfigData> JsonConfig { get; private set; }
 		public WormholesConfigData Config { get { return this.JsonConfig.Data; } }
 
@@ -45,8 +36,6 @@ namespace Wormholes {
 		////////////////
 
 		public WormholesMod() : base() {
-			this.Context = new WormholeModContext( this );
-
 			this.Properties = new ModProperties() {
 				Autoload = true,
 				AutoloadGores = true,
@@ -176,9 +165,9 @@ namespace Wormholes {
 						if( link == null ) { break; }
 
 						if( Main.mapStyle == 1 ) {
-							this.UI.DrawMiniMap( this.Context, link, sb );
+							this.UI.DrawMiniMap( link, sb );
 						} else {
-							this.UI.DrawOverlayMap( this.Context, link, sb );
+							this.UI.DrawOverlayMap( link, sb );
 						}
 					}
 				}
@@ -186,9 +175,9 @@ namespace Wormholes {
 			
 			if( curr_modplayer.MyPortal != null ) {
 				if( Main.mapStyle == 1 ) {
-					this.UI.DrawMiniMap( this.Context, curr_modplayer.MyPortal, sb );
+					this.UI.DrawMiniMap( curr_modplayer.MyPortal, sb );
 				} else {
-					this.UI.DrawOverlayMap( this.Context, curr_modplayer.MyPortal, sb );
+					this.UI.DrawOverlayMap( curr_modplayer.MyPortal, sb );
 				}
 			}
 		}
@@ -206,29 +195,14 @@ namespace Wormholes {
 						WormholeLink link = modworld.Wormholes.Links[i];
 						if( link == null ) { break; }
 
-						this.UI.DrawFullscreenMap( this.Context, link, sb );
+						this.UI.DrawFullscreenMap( link, sb );
 					}
 				}
 			}
 
 			if( curr_modplayer.MyPortal != null ) {
-				this.UI.DrawFullscreenMap( this.Context, curr_modplayer.MyPortal, sb );
+				this.UI.DrawFullscreenMap( curr_modplayer.MyPortal, sb );
 			}
-		}
-
-
-		////////////////
-
-		public bool IsDebugInfoMode() {
-			return this.Config.DebugModeInfo;
-		}
-
-		public bool IsDebugWormholeViewMode() {
-			return this.Config.DebugModeMapCheat;
-		}
-
-		public bool IsDebuResetMode() {
-			return this.Config.DebugModeReset;
 		}
 	}
 }

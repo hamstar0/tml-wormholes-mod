@@ -282,7 +282,7 @@ namespace Wormholes {
 
 		////////////////
 
-		public void DrawForMe( WormholeModContext ctx ) {
+		public void DrawForMe() {
 			// Clients and single only
 			if( Main.netMode == 2 ) { return; }
 			if( this.IsClosed ) { return; }
@@ -290,8 +290,8 @@ namespace Wormholes {
 			this.LeftPortal.DrawForMe();
 			this.RightPortal.DrawForMe();
 
-			this.LeftPortal.LightFX( ctx );
-			this.RightPortal.LightFX( ctx );
+			this.LeftPortal.LightFX();
+			this.RightPortal.LightFX();
 		}
 	}
 }

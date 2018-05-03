@@ -54,7 +54,7 @@ namespace Wormholes {
 			int holes = tags.GetInt( "wormhole_count" );
 			if( holes == 0 ) { return false; }
 
-			if( mymod.IsDebugInfoMode() ) {
+			if( mymod.Config.DebugModeInfo ) {
 				LogHelpers.Log( "Loading world ids (" + Main.netMode + "): " + holes );
 			}
 
@@ -69,7 +69,7 @@ namespace Wormholes {
 				}
 
 				string id = tags.GetString( "wormhole_id_" + i );
-				if( mymod.IsDebugInfoMode() ) {
+				if( mymod.Config.DebugModeInfo ) {
 					LogHelpers.Log( "  world load id: " + id + " (" + i + ")" );
 				}
 
@@ -93,13 +93,14 @@ namespace Wormholes {
 
 
 		public TagCompound Save() {
+			var mymod = WormholesMod.Instance;
 			string[] ids = new string[WormholeManager.PortalCount];
 			int[] worm_l_x = new int[WormholeManager.PortalCount];
 			int[] worm_l_y = new int[WormholeManager.PortalCount];
 			int[] worm_r_x = new int[WormholeManager.PortalCount];
 			int[] worm_r_y = new int[WormholeManager.PortalCount];
 
-			if( WormholesMod.Instance.IsDebugInfoMode() ) {
+			if( mymod.Config.DebugModeInfo ) {
 				LogHelpers.Log( "Save world ids (" + Main.netMode + "): " + WormholeManager.PortalCount );
 			}
 
@@ -126,7 +127,8 @@ namespace Wormholes {
 
 			for( i = 0; i < this.Links.Count; i++ ) {
 				tags.Set( "wormhole_id_" + i, ids[i] );
-				if( WormholesMod.Instance.IsDebugInfoMode() ) {
+
+				if( mymod.Config.DebugModeInfo ) {
 					LogHelpers.Log( "  world save id: " + ids[i] + " (" + i + ") = "
 						+ worm_l_x[i] + "," + worm_l_y[i] + " | " + worm_r_x[i] + "," + worm_r_y[i] );
 				}
@@ -248,8 +250,10 @@ namespace Wormholes {
 
 		/////////////////
 
-		public void RunAll( WormholeModContext ctx, Player player ) {
+		public void RunAll( Player player ) {
+			var mymod = WormholesMod.Instance;
 			int who = player.whoAmI;
+
 			if( !this.BlockPortalCountdown.Keys.Contains( who ) ) {
 				this.BlockPortalCountdown[who] = 0;
 			}
@@ -257,23 +261,23 @@ namespace Wormholes {
 			bool is_upon_a_portal = false;
 			bool is_upon_my_portal = false;
 			int block_countdown = this.BlockPortalCountdown[who];
-			WormholeLink town_portal = player.GetModPlayer<WormholesPlayer>( ctx.MyMod ).MyPortal;
+			WormholeLink town_portal = player.GetModPlayer<WormholesPlayer>( mymod ).MyPortal;
 
-			if( !ctx.MyMod.Config.DisableNaturalWormholes ) {
+			if( !mymod.Config.DisableNaturalWormholes ) {
 				for( int i = 0; i < this.Links.Count; i++ ) {
 					WormholeLink link = this.Links[i];
 					if( link == null ) { break; }
 
-					link.UpdateInteractions( ctx, player, (block_countdown > 0), out is_upon_a_portal );
-					link.UpdateBehavior( ctx, player );
+					link.UpdateInteractions( player, (block_countdown > 0), out is_upon_a_portal );
+					link.UpdateBehavior( player );
 
 					if( is_upon_a_portal ) { break; }
 				}
 			}
 
 			if( town_portal != null ) {
-				town_portal.UpdateInteractions( ctx, player, (block_countdown > 0 || is_upon_a_portal), out is_upon_my_portal );
-				town_portal.UpdateBehavior( ctx, player );
+				town_portal.UpdateInteractions( player, (block_countdown > 0 || is_upon_a_portal), out is_upon_my_portal );
+				town_portal.UpdateBehavior( player );
 			}
 
 			if( (is_upon_a_portal || is_upon_my_portal) && block_countdown == 0 ) {
@@ -284,17 +288,19 @@ namespace Wormholes {
 			}
 		}
 
-		public void DrawAll( WormholeModContext ctx, WormholeLink town_portal ) {
-			if( !ctx.MyMod.Config.DisableNaturalWormholes ) {
+		public void DrawAll( WormholeLink town_portal ) {
+			var mymod = WormholesMod.Instance;
+
+			if( !mymod.Config.DisableNaturalWormholes ) {
 				for( int i = 0; i < this.Links.Count; i++ ) {
 					WormholeLink link = this.Links[i];
 					if( link == null ) { break; }
 
-					link.DrawForMe( ctx );
+					link.DrawForMe();
 				}
 			}
 			if( town_portal != null ) {
-				town_portal.DrawForMe( ctx );
+				town_portal.DrawForMe();
 			}
 		}
 	}

@@ -62,7 +62,7 @@ namespace Wormholes.Projectiles {
 				if( link.DetectCollision(rect) != 0 ) {
 					proj.Kill();
 					if( rand == 0 ) {
-						link.ApplyChaosHit( mymod.Context );
+						link.ApplyChaosHit();
 						return;
 					}
 				}

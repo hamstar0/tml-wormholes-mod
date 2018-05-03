@@ -7,9 +7,10 @@ using Terraria.ModLoader.IO;
 using Wormholes.Items;
 using Wormholes.NetProtocols;
 
+
 namespace Wormholes {
 	class WormholesPlayer : ModPlayer {
-		public WormholeLink MyPortal;
+		public WormholeLink MyPortal { get; internal set; }
 		public ISet<string> ChartedLinks { get; private set; }
 
 		private IDictionary<string, Vector2> TownPortalRightPositions = new Dictionary<string, Vector2>();
@@ -160,7 +161,7 @@ namespace Wormholes {
 			WormholesWorld modworld = mymod.GetModWorld<WormholesWorld>();
 			if( modworld.Wormholes == null ) { return; }
 
-			modworld.Wormholes.RunAll( mymod.Context, this.player );
+			modworld.Wormholes.RunAll( this.player );
 		}
 	}
 }
