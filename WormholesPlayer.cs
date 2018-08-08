@@ -41,6 +41,7 @@ namespace Wormholes {
 			myclone.HasLoadedTownPortals = this.HasLoadedTownPortals;
 		}
 
+
 		////////////////
 
 		public override void Load( TagCompound tag ) {
@@ -126,7 +127,8 @@ namespace Wormholes {
 		}
 
 		public override void OnEnterWorld( Player player ) {
-			if( player.whoAmI != this.player.whoAmI ) { return; }
+			if( player.whoAmI == Main.myPlayer ) { return; }
+			if( this.player.whoAmI == Main.myPlayer ) { return; }
 
 			var mymod = (WormholesMod)this.mod;
 
