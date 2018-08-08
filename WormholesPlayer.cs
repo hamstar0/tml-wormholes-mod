@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.Components.Network;
+using HamstarHelpers.Helpers.PlayerHelpers;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -40,6 +41,7 @@ namespace Wormholes {
 			myclone.HasLoadedTownPortals = this.HasLoadedTownPortals;
 		}
 
+		////////////////
 
 		public override void Load( TagCompound tag ) {
 			var modworld = this.mod.GetModWorld<WormholesWorld>();
@@ -113,32 +115,77 @@ namespace Wormholes {
 
 		////////////////
 		
-		public override void OnEnterWorld( Player player ) {
-			if( Main.netMode == 2 ) { return; }   // Not server
+		public override void SyncPlayer( int to_who, int from_who, bool new_player ) {
+			var mymod = (WormholesMod)this.mod;
 
-			if( player.whoAmI == this.player.whoAmI ) { // Current player
-				var mymod = (WormholesMod)this.mod;
-				var modworld = this.mod.GetModWorld<WormholesWorld>();
-
-				if( !mymod.ConfigJson.LoadFile() ) {
-					mymod.ConfigJson.SaveFile();
+			if( Main.netMode == 2 ) {
+				if( to_who == -1 && from_who == this.player.whoAmI ) {
+					this.OnServerConnect();
 				}
-				
-				if( modworld.HasCorrectID ) {
-					this.ReopenTownPortal();
-				} else {
-					this.HasLoadedTownPortals = false;
-				}
-
-				if( Main.netMode == 1 ) {    // Client
-					PacketProtocol.QuickRequestFromServer<SettingsAndWormholesProtocol>();
-				} else if( Main.netMode == 0 ) {  // Single
-					modworld.SetupWormholes();
-				}
-
-				this.HasEnteredWorld = true;
 			}
 		}
+
+		public override void OnEnterWorld( Player player ) {
+			if( player.whoAmI != this.player.whoAmI ) { return; }
+
+			var mymod = (WormholesMod)this.mod;
+
+			if( Main.netMode == 0 ) {
+				if( !mymod.ConfigJson.LoadFile() ) {
+					mymod.ConfigJson.SaveFile();
+					ErrorLogger.Log( "Wormholes config " + WormholesConfigData.ConfigVersion.ToString() + " created (ModPlayer.OnEnterWorld())." );
+				}
+			}
+
+			if( mymod.Config.DebugModeInfo ) {
+				bool _;
+				ErrorLogger.Log( "Wormholes.WormholesPlayer.OnEnterWorld - " + player.name + " joined (" + PlayerIdentityHelpers.GetUniqueId( player, out _ ) + ")" );
+			}
+
+			if( Main.netMode == 0 ) {
+				this.OnSingleConnect();
+			}
+			if( Main.netMode == 1 ) {
+				this.OnClientConnect();
+			}
+		}
+
+		////////////////
+
+		private void OnLocalConnect() {
+			var mymod = (WormholesMod)this.mod;
+			var myworld = this.mod.GetModWorld<WormholesWorld>();
+
+			if( myworld.HasCorrectID ) {
+				this.ReopenTownPortal();
+			} else {
+				this.HasLoadedTownPortals = false;
+			}
+		}
+
+
+		private void OnSingleConnect() {
+			var myworld = this.mod.GetModWorld<WormholesWorld>();
+
+			this.OnLocalConnect();
+
+			myworld.SetupWormholes();
+
+			this.HasEnteredWorld = true;
+		}
+
+		private void OnClientConnect() {
+			this.OnLocalConnect();
+
+			PacketProtocol.QuickRequestToServer<SettingsAndWormholesProtocol>();
+
+			this.HasEnteredWorld = true;
+		}
+
+		private void OnServerConnect() { }
+
+
+		////////////////
 
 		public void ReopenTownPortal() {
 			var mymod = (WormholesMod)this.mod;
@@ -153,7 +200,8 @@ namespace Wormholes {
 
 			this.HasLoadedTownPortals = true;
 		}
-			
+		
+
 		////////////////
 
 		public override void PreUpdate() {

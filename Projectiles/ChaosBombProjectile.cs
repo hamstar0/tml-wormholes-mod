@@ -151,7 +151,7 @@ namespace Wormholes.Projectiles {
 					if( !TileHelpers.IsSolid( fro_tile, true, true ) ) { continue; }
 					if( TileHelpers.IsWire( fro_tile ) ) { continue; }
 					if( fro_tile.lava() ) { continue; }
-					if( TileHelpers.IsNotBombable(i, j) ) { continue; }
+					if( TileHelpers.IsNotVanillaBombable(i, j) ) { continue; }
 
 					var tile_data = TileObjectData.GetTileData( fro_tile );
 					if( tile_data != null && (tile_data.Width > 1 || tile_data.Height > 1) ) { continue; }

@@ -6,9 +6,7 @@ using HamstarHelpers.Helpers.DebugHelpers;
 namespace Wormholes.NetProtocols {
 	class WormholeRerollProtocol : PacketProtocol {
 		public static void ClientRequestReroll( string id ) {
-			var protocol = new WormholeRerollProtocol {
-				Id = id
-			};
+			var protocol = new WormholeRerollProtocol( id );
 
 			protocol.SendToServer( false );
 		}
@@ -17,12 +15,16 @@ namespace Wormholes.NetProtocols {
 
 		////////////////
 
-		public string Id;
+		public string ID;
 
 
 		////////////////
 
-		private WormholeUpdateProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
+		private WormholeRerollProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
+
+		private WormholeRerollProtocol( string id ) {
+			this.ID = id;
+		}
 
 		////////////////
 
@@ -31,10 +33,10 @@ namespace Wormholes.NetProtocols {
 			var myworld = mymod.GetModWorld<WormholesWorld>();
 			var mngr = myworld.Wormholes;
 
-			var link = mngr.GetLinkById( this.Id );
+			var link = mngr.GetLinkById( this.ID );
 			mngr.Reroll( link );
 
-			WormholeUpdateProtocol.BroadcastToClients( this.Id );
+			WormholeUpdateProtocol.BroadcastToClients( this.ID );
 		}
 	}
 }
