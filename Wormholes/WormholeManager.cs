@@ -1,6 +1,6 @@
-﻿using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.TileHelpers;
-using HamstarHelpers.WorldHelpers;
+﻿using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.TileHelpers;
+using HamstarHelpers.Helpers.WorldHelpers;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;

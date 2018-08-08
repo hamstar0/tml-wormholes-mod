@@ -1,10 +1,10 @@
-﻿using HamstarHelpers.Utilities.Config;
+﻿using HamstarHelpers.Components.Config;
 using System;
 
 
 namespace Wormholes {
 	public class WormholesConfigData : ConfigurationDataBase {
-		public static readonly Version ConfigVersion = new Version( 1, 8, 0 );
+		public static readonly Version ConfigVersion = new Version( 1, 8, 1 );
 		public readonly static string ConfigFileName = "Wormholes Config.json";
 
 
@@ -40,15 +40,6 @@ namespace Wormholes {
 		public int ChaosBombScatterRadius = 32;
 
 
-
-		////////
-
-		public string _OLD_SETTINGS_BELOW_ = "";
-
-		[Obsolete("Use the DebugMode series of settings", true)]
-		public int DEBUGFLAGS = 0;  // 1: Info;  2: View wormholes on map;  4: Reset wormholes
-
-
 		////////////////
 
 		public bool UpdateToLatestVersion() {
@@ -59,19 +50,6 @@ namespace Wormholes {
 
 			if( vers_since >= WormholesConfigData.ConfigVersion ) {
 				return false;
-			}
-
-			if( vers_since < new Version( 1, 5, 0 ) ) {
-				this.SmallWorldPortals = new WormholesConfigData().SmallWorldPortals;
-				this.MediumWorldPortals = new WormholesConfigData().MediumWorldPortals;
-				this.LargeWorldPortals = new WormholesConfigData().LargeWorldPortals;
-				this.HugeWorldPortals = new WormholesConfigData().HugeWorldPortals;
-			}
-			if( vers_since < new Version( 1, 6, 0 ) ) {
-				this.WormholeSoundVolume = new WormholesConfigData().WormholeSoundVolume;
-			}
-			if( vers_since < new Version( 1, 6, 4 ) ) {
-				WormholeManager.ForceRegenWormholes = true;
 			}
 
 			this.VersionSinceUpdate = WormholesConfigData.ConfigVersion.ToString();

@@ -1,5 +1,6 @@
-﻿using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.Utilities.Network;
+﻿using HamstarHelpers.Components.Network;
+using HamstarHelpers.Components.Network.Data;
+using HamstarHelpers.Helpers.DebugHelpers;
 using Microsoft.Xna.Framework;
 
 
@@ -30,6 +31,8 @@ namespace Wormholes.NetProtocols {
 
 
 		////////////////
+
+		private WormholeUpdateProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
 
 		private WormholeUpdateProtocol( string id, float r_pos_x, float r_pos_y, float l_pos_x, float l_pos_y ) {
 			this.Id = id;

@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.TileHelpers;
+﻿using HamstarHelpers.Helpers.TileHelpers;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;

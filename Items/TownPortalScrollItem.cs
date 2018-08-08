@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.PlayerHelpers;
+﻿using HamstarHelpers.Helpers.PlayerHelpers;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;

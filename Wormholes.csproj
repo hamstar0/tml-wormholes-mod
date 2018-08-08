@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Wormholes</RootNamespace>
     <AssemblyName>Wormholes</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,6 +33,9 @@
   <ItemGroup>
     <Reference Include="HamstarHelpers">
       <HintPath>..\..\Helpers\HamstarHelpers\bin\Release\HamstarHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\Reference\tModLoader Patcher\references\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -62,6 +66,8 @@
     <Compile Include="Projectiles\ChaosBombProjectile.cs" />
     <Compile Include="Utils\SpriteAnimator.cs" />
     <Compile Include="API.cs" />
+    <Compile Include="WormholesMod_Draw.cs" />
+    <Compile Include="WormholesMod_Meta.cs" />
     <Compile Include="Wormholes\WormholeLink_Interact.cs" />
     <Compile Include="Wormholes\WormholeLink_TownPortal.cs" />
     <Compile Include="Wormholes\WormholeManager.cs" />

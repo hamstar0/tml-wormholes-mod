@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Utilities.Network;
+﻿using HamstarHelpers.Components.Network;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -18,9 +18,11 @@ namespace Wormholes {
 
 		public bool HasEnteredWorld { get; private set; }
 		public bool HasLoadedTownPortals { get; private set; }
-		
+
 
 		////////////////
+
+		public override bool CloneNewInstances { get { return false; } }
 
 		public override void Initialize() {
 			this.ChartedLinks = new HashSet<string>();
@@ -118,8 +120,8 @@ namespace Wormholes {
 				var mymod = (WormholesMod)this.mod;
 				var modworld = this.mod.GetModWorld<WormholesWorld>();
 
-				if( !mymod.JsonConfig.LoadFile() ) {
-					mymod.JsonConfig.SaveFile();
+				if( !mymod.ConfigJson.LoadFile() ) {
+					mymod.ConfigJson.SaveFile();
 				}
 				
 				if( modworld.HasCorrectID ) {

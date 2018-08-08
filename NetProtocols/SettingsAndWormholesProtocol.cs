@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Utilities.Network;
+﻿using HamstarHelpers.Components.Network;
+using HamstarHelpers.Components.Network.Data;
 using Microsoft.Xna.Framework;
 
 
@@ -15,7 +16,11 @@ namespace Wormholes.NetProtocols {
 
 		////////////////
 
-		public override void SetServerDefaults() {
+		private SettingsAndWormholesProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
+
+		////////////////
+
+		protected override void SetServerDefaults() {
 			var mymod = WormholesMod.Instance;
 			var modworld = mymod.GetModWorld<WormholesWorld>();
 
@@ -49,7 +54,7 @@ namespace Wormholes.NetProtocols {
 			var mymod = WormholesMod.Instance;
 			var myworld = mymod.GetModWorld<WormholesWorld>();
 			
-			mymod.JsonConfig.SetData( this.ModSettings );
+			mymod.ConfigJson.SetData( this.ModSettings );
 
 			for( int i=0; i<this.Ids.Length; i++ ) {
 				var pos_r = new Vector2( this.RightPosX[i], this.RightPosY[i] );

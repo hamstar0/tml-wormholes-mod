@@ -1,5 +1,6 @@
-﻿using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.Utilities.Network;
+﻿using HamstarHelpers.Components.Network;
+using HamstarHelpers.Components.Network.Data;
+using HamstarHelpers.Helpers.DebugHelpers;
 
 
 namespace Wormholes.NetProtocols {
@@ -20,7 +21,11 @@ namespace Wormholes.NetProtocols {
 
 
 		////////////////
-		
+
+		private WormholeUpdateProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
+
+		////////////////
+
 		protected override void ReceiveWithServer( int from_who ) {
 			var mymod = WormholesMod.Instance;
 			var myworld = mymod.GetModWorld<WormholesWorld>();
