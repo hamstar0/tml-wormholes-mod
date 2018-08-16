@@ -20,7 +20,7 @@ namespace Wormholes.NetProtocols {
 
 		////////////////
 
-		protected override void SetServerDefaults() {
+		protected override void SetServerDefaults( int who ) {
 			var mymod = WormholesMod.Instance;
 			var modworld = mymod.GetModWorld<WormholesWorld>();
 
