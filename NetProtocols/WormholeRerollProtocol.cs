@@ -4,9 +4,26 @@ using HamstarHelpers.Helpers.DebugHelpers;
 
 
 namespace Wormholes.NetProtocols {
-	class WormholeRerollProtocol : PacketProtocol {
+	class WormholeRerollProtocol : PacketProtocolSentToEither {
+		protected class MyFactory : Factory<WormholeRerollProtocol> {
+			public string ID;
+
+			public MyFactory( string id ) {
+				this.ID = id;
+			}
+
+			protected override void Initialize( WormholeRerollProtocol data ) {
+				data.ID = this.ID;
+			}
+		}
+
+
+
+		////////////////
+
 		public static void ClientRequestReroll( string id ) {
-			var protocol = new WormholeRerollProtocol( id );
+			var factory = new MyFactory( id );
+			WormholeRerollProtocol protocol = factory.Create();
 
 			protocol.SendToServer( false );
 		}
@@ -20,15 +37,15 @@ namespace Wormholes.NetProtocols {
 
 		////////////////
 
-		private WormholeRerollProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
-
-		private WormholeRerollProtocol( string id ) {
-			this.ID = id;
-		}
+		protected WormholeRerollProtocol( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
 
 		////////////////
 
-		protected override void ReceiveWithServer( int from_who ) {
+		protected override void ReceiveOnClient() {
+			throw new System.NotImplementedException();
+		}
+
+		protected override void ReceiveOnServer( int from_who ) {
 			var mymod = WormholesMod.Instance;
 			var myworld = mymod.GetModWorld<WormholesWorld>();
 			var mngr = myworld.Wormholes;

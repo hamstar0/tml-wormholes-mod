@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 
 namespace Wormholes.NetProtocols {
-	class SettingsAndWormholesProtocol : PacketProtocol {
+	class SettingsAndWormholesProtocol : PacketProtocolRequestToServer {
 		public WormholesConfigData ModSettings;
 		public string[] Ids;
 		public float[] RightPosX;
@@ -16,11 +16,11 @@ namespace Wormholes.NetProtocols {
 
 		////////////////
 
-		private SettingsAndWormholesProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
+		protected SettingsAndWormholesProtocol( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
 
 		////////////////
 
-		protected override void SetServerDefaults( int who ) {
+		protected override void InitializeServerSendData( int who ) {
 			var mymod = WormholesMod.Instance;
 			var modworld = mymod.GetModWorld<WormholesWorld>();
 
@@ -50,7 +50,7 @@ namespace Wormholes.NetProtocols {
 
 		////////////////
 
-		protected override void ReceiveWithClient() {
+		protected override void ReceiveReply() {
 			var mymod = WormholesMod.Instance;
 			var myworld = mymod.GetModWorld<WormholesWorld>();
 			

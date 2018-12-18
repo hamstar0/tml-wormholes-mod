@@ -140,8 +140,7 @@ namespace Wormholes {
 			}
 
 			if( mymod.Config.DebugModeInfo ) {
-				bool _;
-				ErrorLogger.Log( "Wormholes.WormholesPlayer.OnEnterWorld - " + player.name + " joined (" + PlayerIdentityHelpers.GetUniqueId( player, out _ ) + ")" );
+				ErrorLogger.Log( "Wormholes.WormholesPlayer.OnEnterWorld - " + player.name + " joined (" + PlayerIdentityHelpers.GetProperUniqueId( player ) + ")" );
 			}
 
 			if( Main.netMode == 0 ) {
