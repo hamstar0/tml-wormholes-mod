@@ -244,20 +244,20 @@ namespace Wormholes {
 
 		////////////////
 
-		public WormholeLink( Color color, Vector2 left_node_pos, Vector2 right_node_pos ) {
+		public WormholeLink( Color color, Vector2 leftNodePos, Vector2 rightNodePos ) {
 			this.ID = Guid.NewGuid().ToString("D");
 			this.NodeColor = color;
-			this.LeftPortal = new WormholePortal( left_node_pos, color );
-			this.RightPortal = new WormholePortal( right_node_pos, color );
+			this.LeftPortal = new WormholePortal( leftNodePos, color );
+			this.RightPortal = new WormholePortal( rightNodePos, color );
 
 			this.IsMisplaced = this.LeftPortal.IsMisplaced || this.RightPortal.IsMisplaced;
 		}
 
-		public WormholeLink( string id, Color color, Vector2 left_node_pos, Vector2 right_node_pos ) {
+		public WormholeLink( string id, Color color, Vector2 leftNodePos, Vector2 rightNodePos ) {
 			this.ID = id;
 			this.NodeColor = color;
-			this.LeftPortal = new WormholePortal( left_node_pos, color );
-			this.RightPortal = new WormholePortal( right_node_pos, color );
+			this.LeftPortal = new WormholePortal( leftNodePos, color );
+			this.RightPortal = new WormholePortal( rightNodePos, color );
 
 			this.IsMisplaced = this.LeftPortal.IsMisplaced || this.RightPortal.IsMisplaced;
 		}
@@ -275,9 +275,9 @@ namespace Wormholes {
 			this.IsClosed = true;
 		}
 
-		public void ChangePosition( Vector2 right_pos, Vector2 left_pos ) {
-			this.RightPortal.ChangePosition( right_pos );
-			this.LeftPortal.ChangePosition( left_pos );
+		public void ChangePosition( Vector2 rightPos, Vector2 leftPos ) {
+			this.RightPortal.ChangePosition( rightPos );
+			this.LeftPortal.ChangePosition( leftPos );
 		}
 
 		////////////////

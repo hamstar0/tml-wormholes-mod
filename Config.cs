@@ -4,7 +4,6 @@ using System;
 
 namespace Wormholes {
 	public class WormholesConfigData : ConfigurationDataBase {
-		public static readonly Version ConfigVersion = new Version( 1, 8, 1 );
 		public readonly static string ConfigFileName = "Wormholes Config.json";
 
 
@@ -40,21 +39,33 @@ namespace Wormholes {
 		public int ChaosBombScatterRadius = 32;
 
 
+
 		////////////////
 
-		public bool UpdateToLatestVersion() {
-			var new_config = new WormholesConfigData();
-			var vers_since = this.VersionSinceUpdate != "" ?
+		public void SetDefaults() { }
+
+		////
+
+		public bool CanUpdateVersion() {
+			if( this.VersionSinceUpdate == "" ) { return true; }
+			var versSince = new Version( this.VersionSinceUpdate );
+			return versSince < WormholesMod.Instance.Version;
+		}
+
+		public void UpdateToLatestVersion() {
+			var mymod = WormholesMod.Instance;
+			var newConfig = new WormholesConfigData();
+			newConfig.SetDefaults();
+
+			var versSince = this.VersionSinceUpdate != "" ?
 				new Version( this.VersionSinceUpdate ) :
 				new Version();
 
-			if( vers_since >= WormholesConfigData.ConfigVersion ) {
-				return false;
+			if( this.VersionSinceUpdate == "" ) {
+				this.SetDefaults();
 			}
 
-			this.VersionSinceUpdate = WormholesConfigData.ConfigVersion.ToString();
-
-			return true;
+			this.VersionSinceUpdate = mymod.Version.ToString();
 		}
 	}
 }

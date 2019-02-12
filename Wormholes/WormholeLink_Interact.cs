@@ -8,13 +8,13 @@ using Wormholes.NetProtocols;
 
 namespace Wormholes {
 	public partial class WormholeLink {
-		internal void UpdateInteractions( Player player, bool is_obstructed, out bool is_upon_portal ) {
-			is_upon_portal = false;
+		internal void UpdateInteractions( Player player, bool isObstructed, out bool isUponPortal ) {
+			isUponPortal = false;
 			if( this.IsClosed ) { return; }
 			
 			int side = this.DetectCollision( player.getRect() );
 
-			if( !is_obstructed ) {
+			if( !isObstructed ) {
 				if( side == 1 ) {
 					this.TeleportToLeft( player );
 				} else if( side == -1 ) {
@@ -22,7 +22,7 @@ namespace Wormholes {
 				}
 			}
 
-			is_upon_portal = side != 0;
+			isUponPortal = side != 0;
 		}
 
 		internal void UpdateBehavior( Player player ) {
@@ -30,12 +30,12 @@ namespace Wormholes {
 			if( Main.myPlayer != player.whoAmI ) { return; }
 
 			if( Main.netMode != 2 ) {   // Not server
-				int l_open_anim = this.LeftPortal.GetOpenAnimation();
-				int r_open_anim = this.RightPortal.GetOpenAnimation();
-				if( l_open_anim > r_open_anim ) {
-					this.LeftPortal.AnimateOpen( r_open_anim );
-				} else if( l_open_anim < r_open_anim ) {
-					this.RightPortal.AnimateOpen( l_open_anim );
+				int lOpenAnim = this.LeftPortal.GetOpenAnimation();
+				int rOpenAnim = this.RightPortal.GetOpenAnimation();
+				if( lOpenAnim > rOpenAnim ) {
+					this.LeftPortal.AnimateOpen( rOpenAnim );
+				} else if( lOpenAnim < rOpenAnim ) {
+					this.RightPortal.AnimateOpen( lOpenAnim );
 				}
 				
 				this.LeftPortal.SoundFX();
@@ -62,15 +62,15 @@ namespace Wormholes {
 			if( Main.netMode == 2 ) { return 0; }
 			if( this.IsClosed ) { return 0; }
 
-			int on_portal = 0;
+			int onPortal = 0;
 
 			if( this.LeftPortal.Rect.Intersects( rect ) ) {
-				on_portal = -1;
+				onPortal = -1;
 			} else if( this.RightPortal.Rect.Intersects( rect ) ) {
-				on_portal = 1;
+				onPortal = 1;
 			}
 
-			return on_portal;
+			return onPortal;
 		}
 
 		public virtual void ApplyChaosHit() {
@@ -121,26 +121,26 @@ namespace Wormholes {
 
 			PlayerHelpers.Teleport( player, dest );
 
-			if( player.FindBuffIndex(88) != -1 ) {
+			if( player.FindBuffIndex( BuffID.ChaosState ) != -1 ) {
 				int def = player.statDefense;
 				player.statDefense = 0;
-				var dmg = player.Hurt( PlayerDeathReason.ByOther(13), player.statLifeMax2 / 7, 0 );
+				var dmg = player.Hurt( PlayerDeathReason.ByOther( 13 ), player.statLifeMax2 / 7, 0 );
 				player.statDefense = def;
 			}
 
-			player.AddBuff( 164, (int)(60f * 2.5f) );   // Distorted
-			player.AddBuff( 88, 60 * 10 );   // Chaos State
+			player.AddBuff( BuffID.VortexDebuff, (int)(60f * 2.5f) );   // Distorted
+			player.AddBuff( BuffID.ChaosState, 60 * 10 );   // Chaos State
 			
-			float vel_x = player.velocity.X * 3;
-			float vel_y = player.velocity.Y * 3;
+			float velX = player.velocity.X * 3;
+			float velY = player.velocity.Y * 3;
 
-			if( vel_x > 0 && vel_x < 1 ) { vel_x = 1; }
-			else if( vel_x < 0 && vel_x > 1 ) { vel_x = -1; }
-			if( vel_y > 0 && vel_y < 1 ) { vel_y = 1; }
-			else if( vel_y < 0 && vel_y > 1 ) { vel_y = -1; }
+			if( velX > 0 && velX < 1 ) { velX = 1; }
+			else if( velX < 0 && velX > 1 ) { velX = -1; }
+			if( velY > 0 && velY < 1 ) { velY = 1; }
+			else if( velY < 0 && velY > 1 ) { velY = -1; }
 
 			for( int i=0; i<24; i++ ) {
-				Dust.NewDust( player.position, player.width, player.height, 245, vel_x, vel_y );
+				Dust.NewDust( player.position, player.width, player.height, 245, velX, velY );
 			}
 
 			//Main.PlaySound( 2, player.position, 100 );

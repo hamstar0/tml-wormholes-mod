@@ -1,4 +1,7 @@
 ﻿using HamstarHelpers.Components.Config;
+using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Helpers.DotNetHelpers;
+using HamstarHelpers.Helpers.TmlHelpers;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -14,20 +17,15 @@ namespace Wormholes {
 		////////////////
 
 		public JsonConfig<WormholesConfigData> ConfigJson { get; private set; }
-		public WormholesConfigData Config { get { return this.ConfigJson.Data; } }
+		public WormholesConfigData Config => this.ConfigJson.Data;
 
 		private WormholesUI UI;
+
 
 
 		////////////////
 
 		public WormholesMod() : base() {
-			this.Properties = new ModProperties() {
-				Autoload = true,
-				AutoloadGores = true,
-				AutoloadSounds = true
-			};
-			
 			this.ConfigJson = new JsonConfig<WormholesConfigData>( WormholesConfigData.ConfigFileName,
 				ConfigurationDataBase.RelativePath, new WormholesConfigData() );
 		}
@@ -35,14 +33,11 @@ namespace Wormholes {
 		////////////////
 
 		public override void Load() {
+			string depErr = TmlHelpers.ReportBadDependencyMods( this );
+			if( depErr != null ) { throw new HamstarException( depErr ); }
+
 			WormholesMod.Instance = this;
-
-			var hamhelpmod = ModLoader.GetMod( "HamstarHelpers" );
-			var min_vers = new Version( 1, 2, 0 );
-			if( hamhelpmod.Version < min_vers ) {
-				throw new Exception( "Hamstar Helpers must be version " + min_vers.ToString() + " or greater." );
-			}
-
+			
 			this.LoadConfig();
 
 			// Clients and single only
@@ -59,8 +54,9 @@ namespace Wormholes {
 				this.ConfigJson.SaveFile();
 			}
 
-			if( this.Config.UpdateToLatestVersion() ) {
-				ErrorLogger.Log( "Wormholes updated to " + WormholesConfigData.ConfigVersion.ToString() );
+			if( this.Config.CanUpdateVersion() ) {
+				this.Config.UpdateToLatestVersion();
+				ErrorLogger.Log( "Wormholes updated to " + this.Version.ToString() );
 				this.ConfigJson.SaveFile();
 			}
 		}
@@ -72,30 +68,37 @@ namespace Wormholes {
 		////////////////
 
 		public override void AddRecipeGroups() {
-			RecipeGroup evac_grp = new RecipeGroup( () => Lang.misc[37] + " Evac Potion", new int[] {
+			RecipeGroup evacGrp = new RecipeGroup( () => Lang.misc[37] + " Evac Potion", new int[] {
 				ItemID.RecallPotion, ItemID.WormholePotion
 			} );
-			RecipeGroup book_grp = new RecipeGroup( () => Lang.misc[37] + " Basic Book", new int[] {
+			RecipeGroup bookGrp = new RecipeGroup( () => Lang.misc[37] + " Basic Book", new int[] {
 				ItemID.Book, ItemID.SpellTome
 			} );
 
-			RecipeGroup.RegisterGroup( "WormholesMod:EvacPotions", evac_grp );
-			RecipeGroup.RegisterGroup( "WormholesMod:BasicBooks", book_grp );
+			RecipeGroup.RegisterGroup( "WormholesMod:EvacPotions", evacGrp );
+			RecipeGroup.RegisterGroup( "WormholesMod:BasicBooks", bookGrp );
 		}
 
 
 		////////////////
 
 		public override object Call( params object[] args ) {
-			if( args.Length == 0 ) { throw new Exception( "Undefined call type." ); }
+			if( args == null || args.Length == 0 ) { throw new HamstarException( "Undefined call type." ); }
 
-			string call_type = args[0] as string;
-			if( args == null ) { throw new Exception( "Invalid call type." ); }
+			string callType = args[0] as string;
+			if( callType == null ) { throw new HamstarException( "Invalid call type." ); }
 
-			var new_args = new object[args.Length - 1];
-			Array.Copy( args, 1, new_args, 0, args.Length - 1 );
+			var methodInfo = typeof( WormholesAPI ).GetMethod( callType );
+			if( methodInfo == null ) { throw new HamstarException( "Invalid call type " + callType ); }
 
-			return WormholesAPI.Call( call_type, new_args );
+			var newArgs = new object[args.Length - 1];
+			Array.Copy( args, 1, newArgs, 0, args.Length - 1 );
+
+			try {
+				return ReflectionHelpers.SafeCall( methodInfo, null, newArgs );
+			} catch( Exception e ) {
+				throw new HamstarException( "Wormholes.WormholesMod.Call - Bad API call.", e );
+			}
 		}
 	}
 }

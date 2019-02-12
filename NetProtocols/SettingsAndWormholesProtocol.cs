@@ -1,5 +1,4 @@
 ﻿using HamstarHelpers.Components.Network;
-using HamstarHelpers.Components.Network.Data;
 using Microsoft.Xna.Framework;
 
 
@@ -16,7 +15,7 @@ namespace Wormholes.NetProtocols {
 
 		////////////////
 
-		protected SettingsAndWormholesProtocol( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
+		private SettingsAndWormholesProtocol() { }
 
 		////////////////
 
@@ -57,10 +56,10 @@ namespace Wormholes.NetProtocols {
 			mymod.ConfigJson.SetData( this.ModSettings );
 
 			for( int i=0; i<this.Ids.Length; i++ ) {
-				var pos_r = new Vector2( this.RightPosX[i], this.RightPosY[i] );
-				var pos_l = new Vector2( this.LeftPosX[i], this.LeftPosY[i] );
+				var posR = new Vector2( this.RightPosX[i], this.RightPosY[i] );
+				var posL = new Vector2( this.LeftPosX[i], this.LeftPosY[i] );
 
-				var link = new WormholeLink( this.Ids[i], WormholeLink.GetColor(i), pos_l, pos_r );
+				var link = new WormholeLink( this.Ids[i], WormholeLink.GetColor(i), posL, posR );
 				myworld.Wormholes.Links.Insert( i, link );
 			}
 		}

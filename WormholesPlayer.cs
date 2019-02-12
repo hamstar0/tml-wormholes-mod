@@ -21,9 +21,10 @@ namespace Wormholes {
 		public bool HasLoadedTownPortals { get; private set; }
 
 
+
 		////////////////
 
-		public override bool CloneNewInstances { get { return false; } }
+		public override bool CloneNewInstances => false;
 
 		public override void Initialize() {
 			this.ChartedLinks = new HashSet<string>();
@@ -135,7 +136,7 @@ namespace Wormholes {
 			if( Main.netMode == 0 ) {
 				if( !mymod.ConfigJson.LoadFile() ) {
 					mymod.ConfigJson.SaveFile();
-					ErrorLogger.Log( "Wormholes config " + WormholesConfigData.ConfigVersion.ToString() + " created (ModPlayer.OnEnterWorld())." );
+					ErrorLogger.Log( "Wormholes config " + mymod.Version.ToString() + " created (ModPlayer.OnEnterWorld())." );
 				}
 			}
 
@@ -147,7 +148,7 @@ namespace Wormholes {
 				this.OnSingleConnect();
 			}
 			if( Main.netMode == 1 ) {
-				this.OnClientConnect();
+				this.OnCurrentClientConnect();
 			}
 		}
 
@@ -175,10 +176,10 @@ namespace Wormholes {
 			this.HasEnteredWorld = true;
 		}
 
-		private void OnClientConnect() {
+		private void OnCurrentClientConnect() {
 			this.OnLocalConnect();
 
-			PacketProtocol.QuickRequestToServer<SettingsAndWormholesProtocol>();
+			PacketProtocolRequestToServer.QuickRequestToServer<SettingsAndWormholesProtocol>( -1 );
 
 			this.HasEnteredWorld = true;
 		}
@@ -196,7 +197,7 @@ namespace Wormholes {
 			if( this.TownPortalRightPositions.Keys.Contains( world_id ) ) {
 				Vector2 r_pos = this.TownPortalRightPositions[world_id];
 				Vector2 l_pos = this.TownPortalLeftPositions[world_id];
-				TownPortalScrollItem.OpenPortal( mymod, this.player, r_pos, l_pos );
+				TownPortalScrollItem.OpenPortal( this.player, r_pos, l_pos );
 			}
 
 			this.HasLoadedTownPortals = true;

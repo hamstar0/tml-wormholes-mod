@@ -1,39 +1,10 @@
 ﻿using HamstarHelpers.Components.Network;
-using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
 using Microsoft.Xna.Framework;
 
 
 namespace Wormholes.NetProtocols {
 	class WormholeUpdateProtocol : PacketProtocolSentToEither {
-		protected class MyFactory : Factory<WormholeUpdateProtocol> {
-			public string Id;
-			public float RightPosX;
-			public float RightPosY;
-			public float LeftPosX;
-			public float LeftPosY;
-
-			public MyFactory( string id, float r_pos_x, float r_pos_y, float l_pos_x, float l_pos_y ) {
-				this.Id = id;
-				this.RightPosX = r_pos_x;
-				this.RightPosY = r_pos_y;
-				this.LeftPosX = l_pos_x;
-				this.LeftPosY = l_pos_y;
-			}
-
-			protected override void Initialize( WormholeUpdateProtocol data ) {
-				data.Id = this.Id;
-				data.RightPosX = this.RightPosX;
-				data.RightPosY = this.RightPosY;
-				data.LeftPosX = this.LeftPosX;
-				data.LeftPosY = this.LeftPosY;
-			}
-		}
-
-
-
-		////////////////
-
 		public static void BroadcastToClients( string id ) {
 			var mymod = WormholesMod.Instance;
 			var myworld = mymod.GetModWorld<WormholesWorld>();
@@ -44,11 +15,10 @@ namespace Wormholes.NetProtocols {
 				return;
 			}
 
-			var factory = new MyFactory( id, link.RightPortal.Pos.X, link.RightPortal.Pos.Y, link.LeftPortal.Pos.X, link.LeftPortal.Pos.Y );
-			WormholeUpdateProtocol protocol = factory.Create();
-
+			var protocol = new WormholeUpdateProtocol( id, link.RightPortal.Pos.X, link.RightPortal.Pos.Y, link.LeftPortal.Pos.X, link.LeftPortal.Pos.Y );
 			protocol.SendToClient( -1, -1 );
 		}
+
 
 
 		////////////////
@@ -60,9 +30,18 @@ namespace Wormholes.NetProtocols {
 		public float LeftPosY;
 
 
+
 		////////////////
 
-		protected WormholeUpdateProtocol( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
+		private WormholeUpdateProtocol() { }
+
+		public WormholeUpdateProtocol( string id, float rPosX, float rPosY, float lPosX, float lPosY ) {
+			this.Id = id;
+			this.RightPosX = rPosX;
+			this.RightPosY = rPosY;
+			this.LeftPosX = lPosX;
+			this.LeftPosY = lPosY;
+		}
 
 
 		////////////////
@@ -72,11 +51,11 @@ namespace Wormholes.NetProtocols {
 			var myworld = mymod.GetModWorld<WormholesWorld>();
 			var mngr = mymod.GetModWorld<WormholesWorld>().Wormholes;
 
-			Vector2 pos_r = new Vector2( this.RightPosX, this.RightPosY );
-			Vector2 pos_l = new Vector2( this.LeftPosX, this.LeftPosY );
+			var posR = new Vector2( this.RightPosX, this.RightPosY );
+			var posL = new Vector2( this.LeftPosX, this.LeftPosY );
 
 			var link = mngr.GetLinkById( this.Id );
-			link.ChangePosition( pos_r, pos_l );
+			link.ChangePosition( posR, posL );
 		}
 
 		protected override void ReceiveOnServer( int fromWho ) {

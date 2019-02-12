@@ -4,8 +4,8 @@ using Terraria;
 
 namespace Wormholes {
 	public class TownPortalLink : WormholeLink {
-		public TownPortalLink( Color color, Vector2 left_node_pos, Vector2 right_node_pos ) :
-			base( color, left_node_pos, right_node_pos ) { }
+		public TownPortalLink( Color color, Vector2 leftNodePos, Vector2 rightNodePos ) :
+			base( color, leftNodePos, rightNodePos ) { }
 
 
 		protected override void TeleportToLeft( Player player ) {

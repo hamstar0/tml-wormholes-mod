@@ -13,6 +13,7 @@ namespace Wormholes {
 		public static int Height { get; private set; }
 
 
+
 		////////////////
 
 		static WormholePortal() {
@@ -28,13 +29,12 @@ namespace Wormholes {
 			}
 		}
 
-		
+
+
 		////////////////
 
-		private Vector2 _pos;
-		
 		public Color BaseColor { get; private set; }
-		public Vector2 Pos { get { return this._pos; } }
+		public Vector2 Pos { get; private set; }
 		public Rectangle Rect { get; private set; }
 
 		//public int DustWho { get; private set; }
@@ -57,7 +57,7 @@ namespace Wormholes {
 			pos.Y = MathHelper.Clamp( pos.Y, 160, (Main.maxTilesY-10) * 16 );
 //DebugHelpers.Log( "wall of "+color.ToString()+": "+Main.tile[(int)(pos.X/16f)+2, (int)(pos.Y/16f)+4].wall );
 
-			this._pos = pos;
+			this.Pos = pos;
 			this.BaseColor = color;
 			
 			// Clients and single only
@@ -76,7 +76,7 @@ namespace Wormholes {
 		}
 
 		public void ChangePosition( Vector2 pos ) {
-			this._pos = pos;
+			this.Pos = pos;
 			this.Rect = new Rectangle( (int)pos.X, (int)pos.Y, this.Rect.Width, this.Rect.Height );
 		}
 
@@ -116,19 +116,19 @@ namespace Wormholes {
 			//var zoom_world_scr_pos = new Vector2( zoom_world_scr_x, zoom_world_scr_y );
 			//var zoom_world_scr_rect = new Rectangle( (int)zoom_world_scr_x, (int)zoom_world_scr_y, (int)zoom_scr_wid, (int)zoom_scr_hei );
 
-			var world_scr_rect = new Rectangle( (int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight );
-			if( !this.Rect.Intersects( world_scr_rect ) ) { return; }
-			Vector2 world_scr_pos = Main.screenPosition;
+			var worldScrRect = new Rectangle( (int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight );
+			if( !this.Rect.Intersects( worldScrRect ) ) { return; }
+			Vector2 worldScrPos = Main.screenPosition;
 
 			this.Animator.Animate();
 
 			Vector2 offset = this.Animator.GetPositionOffset();
-			Vector2 scr_scr_pos = ((this.Pos - world_scr_pos) + offset);//* zoom;
+			Vector2 scrScrPos = ((this.Pos - worldScrPos) + offset);//* zoom;
 			//Color color = this.Animator.GetColorFlicker();
 			Color color = this.BaseColor;
 			Vector2 scale = this.Animator.GetScale();//* zoom;
 
-			Main.spriteBatch.Draw( WormholePortal.Tex, scr_scr_pos, this.Animator.Frame, color, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
+			Main.spriteBatch.Draw( WormholePortal.Tex, scrScrPos, this.Animator.Frame, color, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
 			
 			Dust.NewDust( this.Pos, this.Rect.Width, this.Rect.Height, 15, 0, 0, 150, color, 1f );
 		}
@@ -154,10 +154,10 @@ namespace Wormholes {
 			int x = (int)((this.Pos.X + (WormholePortal.Width / 2)) / 16f);
 			int y = (int)((this.Pos.Y + (WormholePortal.Height / 2)) / 16f);
 
-			float flicker_scale = 0.5f + mymod.Config.WormholeLightScale * Main.rand.NextFloat();
-			float r = flicker_scale * this.BaseColor.R / 255f;
-			float g = flicker_scale * this.BaseColor.G / 255f;
-			float b = flicker_scale * this.BaseColor.B / 255f;
+			float flickerScale = 0.5f + mymod.Config.WormholeLightScale * Main.rand.NextFloat();
+			float r = flickerScale * this.BaseColor.R / 255f;
+			float g = flickerScale * this.BaseColor.G / 255f;
+			float b = flickerScale * this.BaseColor.B / 255f;
 
 			// Emit light
 			Lighting.AddLight( x, y, r, g, b );

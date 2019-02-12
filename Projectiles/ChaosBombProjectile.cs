@@ -79,55 +79,55 @@ namespace Wormholes.Projectiles {
 		}
 
 
-		public override void Kill( int time_left ) {
+		public override void Kill( int timeLeft ) {
 			var mymod = (WormholesMod)this.mod;
 			Projectile proj = this.projectile;
 			Main.PlaySound( SoundID.Item14, proj.position );
 			var vec = default( Vector2 );
 
 			for( int i = 0; i < 20; i++ ) {
-				int dust_id = Dust.NewDust( new Vector2( proj.position.X, proj.position.Y ), proj.width, proj.height, 31, 0f, 0f, 100, default( Color ), 1.5f );
-				Main.dust[dust_id].velocity *= 1.4f;
+				int dustId = Dust.NewDust( new Vector2( proj.position.X, proj.position.Y ), proj.width, proj.height, 31, 0f, 0f, 100, default( Color ), 1.5f );
+				Main.dust[dustId].velocity *= 1.4f;
 			}
 
 			for( int i = 0; i < 10; i++ ) {
-				int dust_id = Dust.NewDust( new Vector2( proj.position.X, proj.position.Y ), proj.width, proj.height, 6, 0f, 0f, 100, default( Color ), 2.5f );
-				Main.dust[dust_id].noGravity = true;
-				Main.dust[dust_id].velocity *= 5f;
-				dust_id = Dust.NewDust( new Vector2( proj.position.X, proj.position.Y ), proj.width, proj.height, 6, 0f, 0f, 100, default( Color ), 1.5f );
-				Main.dust[dust_id].velocity *= 3f;
+				int dustId = Dust.NewDust( new Vector2( proj.position.X, proj.position.Y ), proj.width, proj.height, 6, 0f, 0f, 100, default( Color ), 2.5f );
+				Main.dust[dustId].noGravity = true;
+				Main.dust[dustId].velocity *= 5f;
+				dustId = Dust.NewDust( new Vector2( proj.position.X, proj.position.Y ), proj.width, proj.height, 6, 0f, 0f, 100, default( Color ), 1.5f );
+				Main.dust[dustId].velocity *= 3f;
 			}
 
-			int gore_id = Gore.NewGore( new Vector2( proj.position.X, proj.position.Y ), vec, Main.rand.Next( 61, 64 ), 1f );
-			Main.gore[gore_id].velocity *= 0.4f;
-			Gore gore_1 = Main.gore[gore_id];
-			gore_1.velocity.X = gore_1.velocity.X + 1f;
-			Gore gore_2 = Main.gore[gore_id];
-			gore_2.velocity.Y = gore_2.velocity.Y + 1f;
-			gore_id = Gore.NewGore( new Vector2( proj.position.X, proj.position.Y ), vec, Main.rand.Next( 61, 64 ), 1f );
-			Main.gore[gore_id].velocity *= 0.4f;
-			Gore gore_3 = Main.gore[gore_id];
-			gore_3.velocity.X = gore_3.velocity.X - 1f;
-			Gore gore_4 = Main.gore[gore_id];
-			gore_4.velocity.Y = gore_4.velocity.Y + 1f;
-			gore_id = Gore.NewGore( new Vector2( proj.position.X, proj.position.Y ), vec, Main.rand.Next( 61, 64 ), 1f );
-			Main.gore[gore_id].velocity *= 0.4f;
-			Gore gore_5 = Main.gore[gore_id];
-			gore_5.velocity.X = gore_5.velocity.X + 1f;
-			Gore gore_6 = Main.gore[gore_id];
-			gore_6.velocity.Y = gore_6.velocity.Y - 1f;
-			gore_id = Gore.NewGore( new Vector2( proj.position.X, proj.position.Y ), vec, Main.rand.Next( 61, 64 ), 1f );
-			Main.gore[gore_id].velocity *= 0.4f;
-			Gore gore_7 = Main.gore[gore_id];
-			gore_7.velocity.X = gore_7.velocity.X - 1f;
-			Gore gore_8 = Main.gore[gore_id];
-			gore_8.velocity.Y = gore_8.velocity.Y - 1f;
+			int goreId = Gore.NewGore( new Vector2( proj.position.X, proj.position.Y ), vec, Main.rand.Next( 61, 64 ), 1f );
+			Main.gore[goreId].velocity *= 0.4f;
+			Gore gore1 = Main.gore[goreId];
+			gore1.velocity.X = gore1.velocity.X + 1f;
+			Gore gore2 = Main.gore[goreId];
+			gore2.velocity.Y = gore2.velocity.Y + 1f;
+			goreId = Gore.NewGore( new Vector2( proj.position.X, proj.position.Y ), vec, Main.rand.Next( 61, 64 ), 1f );
+			Main.gore[goreId].velocity *= 0.4f;
+			Gore gore3 = Main.gore[goreId];
+			gore3.velocity.X = gore3.velocity.X - 1f;
+			Gore gore4 = Main.gore[goreId];
+			gore4.velocity.Y = gore4.velocity.Y + 1f;
+			goreId = Gore.NewGore( new Vector2( proj.position.X, proj.position.Y ), vec, Main.rand.Next( 61, 64 ), 1f );
+			Main.gore[goreId].velocity *= 0.4f;
+			Gore gore5 = Main.gore[goreId];
+			gore5.velocity.X = gore5.velocity.X + 1f;
+			Gore gore6 = Main.gore[goreId];
+			gore6.velocity.Y = gore6.velocity.Y - 1f;
+			goreId = Gore.NewGore( new Vector2( proj.position.X, proj.position.Y ), vec, Main.rand.Next( 61, 64 ), 1f );
+			Main.gore[goreId].velocity *= 0.4f;
+			Gore gore7 = Main.gore[goreId];
+			gore7.velocity.X = gore7.velocity.X - 1f;
+			Gore gore8 = Main.gore[goreId];
+			gore8.velocity.Y = gore8.velocity.Y - 1f;
 
-			if( time_left == 0 && proj.owner == Main.myPlayer ) {
-				int tile_x = (int)this.projectile.Center.X / 16;
-				int tile_y = (int)this.projectile.Center.Y / 16;
+			if( timeLeft == 0 && proj.owner == Main.myPlayer ) {
+				int tileX = (int)this.projectile.Center.X / 16;
+				int tileY = (int)this.projectile.Center.Y / 16;
 				int radius = mymod.Config.ChaosBombRadius;
-				this.ScatterTiles( tile_x, tile_y, radius, mymod.Config.ChaosBombScatterRadius );
+				this.ScatterTiles( tileX, tileY, radius, mymod.Config.ChaosBombScatterRadius );
 				
 				if( Main.netMode != 0 ) {
 					NetMessage.SendData( MessageID.KillProjectile, -1, -1, null, proj.identity, (float)proj.owner, 0f, 0f, 0, 0, 0 );
@@ -136,47 +136,47 @@ namespace Wormholes.Projectiles {
 		}
 
 
-		public void ScatterTiles( int tile_x, int tile_y, int radius, int scatter_radius ) {
-			int to_x, to_y, style = 0;
-			Tile fro_tile;
+		public void ScatterTiles( int tileX, int tileY, int radius, int scatterRadius ) {
+			int toX, toY, style = 0;
+			Tile froTile;
 
-			for( int i=tile_x-radius; i<=tile_x+radius; i++ ) {
-				for( int j=tile_y-radius; j<=tile_y+radius; j++ ) {
-					float x_dist = i - tile_x;
-					float y_dist = j - tile_y;
-					if( Math.Sqrt( (x_dist*x_dist)+(y_dist*y_dist) ) > radius ) { continue; }	// Crude
+			for( int i=tileX-radius; i<=tileX+radius; i++ ) {
+				for( int j=tileY-radius; j<=tileY+radius; j++ ) {
+					float xDist = i - tileX;
+					float yDist = j - tileY;
+					if( Math.Sqrt( (xDist*xDist)+(yDist*yDist) ) > radius ) { continue; }	// Crude
 
-					fro_tile = Main.tile[i, j];
-					if( fro_tile == null ) { continue; }
-					if( !TileHelpers.IsSolid( fro_tile, true, true ) ) { continue; }
-					if( TileHelpers.IsWire( fro_tile ) ) { continue; }
-					if( fro_tile.lava() ) { continue; }
+					froTile = Main.tile[i, j];
+					if( froTile == null ) { continue; }
+					if( !TileHelpers.IsSolid( froTile, true, true ) ) { continue; }
+					if( TileHelpers.IsWire( froTile ) ) { continue; }
+					if( froTile.lava() ) { continue; }
 					if( TileHelpers.IsNotVanillaBombable(i, j) ) { continue; }
 
-					var tile_data = TileObjectData.GetTileData( fro_tile );
-					if( tile_data != null && (tile_data.Width > 1 || tile_data.Height > 1) ) { continue; }
+					var tileData = TileObjectData.GetTileData( froTile );
+					if( tileData != null && (tileData.Width > 1 || tileData.Height > 1) ) { continue; }
 					
-					if( !TileFinderHelpers.FindNearbyRandomAirTile( tile_x, tile_y, scatter_radius, out to_x, out to_y ) ) {
+					if( !TileFinderHelpers.FindNearbyRandomAirTile( tileX, tileY, scatterRadius, out toX, out toY ) ) {
 						break;
 					}
 
 					try {
-						style = TileObjectData.GetTileStyle( fro_tile );
+						style = TileObjectData.GetTileStyle( froTile );
 					} catch( Exception ) {
 						style = 0;
 					}
 
-					int old_type = fro_tile.type;
+					int oldType = froTile.type;
 					WorldGen.KillTile( i, j, false, false, true );
-					WorldGen.PlaceTile( to_x, to_y, old_type, true, true, this.projectile.owner, style );
+					WorldGen.PlaceTile( toX, toY, oldType, true, true, this.projectile.owner, style );
 
 					if( Main.netMode != 0 ) {
 						NetMessage.SendData( MessageID.TileChange, -1, -1, null, 0, (float)i, (float)j, 0f, 0, 0, 0 );
-						NetMessage.SendData( MessageID.TileChange, -1, -1, null, 0, (float)to_x, (float)to_y, 0f, 0, 0, 0 );
+						NetMessage.SendData( MessageID.TileChange, -1, -1, null, 0, (float)toX, (float)toY, 0f, 0, 0, 0 );
 					}
 
 					Dust.NewDust( new Vector2(i*16, j*16), 0, 0, 15, 0, 0, 150, Color.Cyan, 1f );
-					Dust.NewDust( new Vector2(to_x*16, to_y*16), 0, 0, 15, 0, 0, 150, Color.Cyan, 1f );
+					Dust.NewDust( new Vector2(toX*16, toY*16), 0, 0, 15, 0, 0, 150, Color.Cyan, 1f );
 				}
 			}
 		}

@@ -7,13 +7,13 @@ using Terraria.ModLoader;
 
 namespace Wormholes.Items {
 	class TownPortalScrollItem : ModItem {
-		public static void OpenPortal( WormholesMod mymod, Player player, Vector2 right_pos, Vector2 left_pos ) {
-			WormholesPlayer modplayer = player.GetModPlayer<WormholesPlayer>( mymod );
+		public static void OpenPortal( Player player, Vector2 rightPos, Vector2 leftPos ) {
+			WormholesPlayer modplayer = player.GetModPlayer<WormholesPlayer>();
 			if( modplayer.MyPortal != null ) {
 				modplayer.MyPortal.Close();
 			}
 
-			var link = new TownPortalLink( Color.Cyan, right_pos, left_pos );
+			var link = new TownPortalLink( Color.Cyan, rightPos, leftPos );
 			link.LeftPortal.AnimateOpen();
 			link.RightPortal.AnimateOpen();
 
@@ -50,14 +50,14 @@ namespace Wormholes.Items {
 		}
 
 		public override bool ConsumeItem( Player player ) {
-			var player_pos = player.Center;
-			var home_pos = PlayerHelpers.GetSpawnPoint( player );
-			player_pos.X -= WormholePortal.Width / 2;
-			player_pos.Y -= 128 + player.height + 1;
-			home_pos.X -= WormholePortal.Width / 2;
-			home_pos.Y -= 128 + player.height + 1;
+			var playerPos = player.Center;
+			var homePos = PlayerHelpers.GetSpawnPoint( player );
+			playerPos.X -= WormholePortal.Width / 2;
+			playerPos.Y -= 128 + player.height + 1;
+			homePos.X -= WormholePortal.Width / 2;
+			homePos.Y -= 128 + player.height + 1;
 
-			TownPortalScrollItem.OpenPortal( (WormholesMod)this.mod, player, player_pos, home_pos );
+			TownPortalScrollItem.OpenPortal( player, playerPos, homePos );
 
 			return base.ConsumeItem( player );
 		}

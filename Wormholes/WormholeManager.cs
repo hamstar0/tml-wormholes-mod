@@ -10,20 +10,22 @@ using Terraria.ModLoader.IO;
 
 namespace Wormholes {
 	class WormholeManager {
-		public static bool ForceRegenWormholes = false;
 		public static int PortalCount { get; private set; }
-
-
-		////////////////
-
-		private IDictionary<int, int> BlockPortalCountdown = new Dictionary<int, int>();
 		public IList<WormholeLink> Links { get; private set; }
 		public bool WormholesFinishedSpawning { get; private set; }
-
 		
 		////////////////
 
-		public WormholeManager( WormholesMod mymod ) {
+		public static bool ForceRegenWormholes = false;
+		private IDictionary<int, int> BlockPortalCountdown = new Dictionary<int, int>();
+
+		
+
+		////////////////
+
+		public WormholeManager() {
+			var mymod = WormholesMod.Instance;
+
 			switch( WorldHelpers.GetSize() ) {
 			case WorldSize.SubSmall:
 				WormholeManager.PortalCount = mymod.Config.TinyWorldPortals;
@@ -47,7 +49,9 @@ namespace Wormholes {
 
 		/////////////////
 
-		public bool Load( WormholesMod mymod, TagCompound tags ) {
+		public bool Load( TagCompound tags ) {
+			var mymod = WormholesMod.Instance;
+
 			if( mymod.Config.DisableNaturalWormholes ) { return false; }
 			if( !tags.ContainsKey("wormhole_count") ) { return false; }
 
@@ -58,12 +62,12 @@ namespace Wormholes {
 				LogHelpers.Log( "Loading world ids (" + Main.netMode + "): " + holes );
 			}
 
-			int[] worm_l_x = tags.GetIntArray( "wormhole_left_x" );
-			int[] worm_l_y = tags.GetIntArray( "wormhole_left_y" );
-			int[] worm_r_x = tags.GetIntArray( "wormhole_right_x" );
-			int[] worm_r_y = tags.GetIntArray( "wormhole_right_y" );
+			int[] wormLeftX = tags.GetIntArray( "wormhole_left_x" );
+			int[] wormLeftY = tags.GetIntArray( "wormhole_left_y" );
+			int[] wormRightX = tags.GetIntArray( "wormhole_right_x" );
+			int[] wormRightY = tags.GetIntArray( "wormhole_right_y" );
 
-			for( int i = 0; i < holes && i < worm_l_x.Length && i < WormholeManager.PortalCount; i++ ) {
+			for( int i = 0; i < holes && i < wormLeftX.Length && i < WormholeManager.PortalCount; i++ ) {
 				if( i < this.Links.Count && this.Links[i] != null ) {
 					this.Links[i].Close();
 				}
@@ -73,15 +77,15 @@ namespace Wormholes {
 					LogHelpers.Log( "  world load id: " + id + " (" + i + ")" );
 				}
 
-				Vector2 pos_l = new Vector2( worm_l_x[i], worm_l_y[i] );
-				Vector2 pos_r = new Vector2( worm_r_x[i], worm_r_y[i] );
+				Vector2 posL = new Vector2( wormLeftX[i], wormLeftY[i] );
+				Vector2 posR = new Vector2( wormRightX[i], wormRightY[i] );
 
-				var link = new WormholeLink( id, WormholeLink.GetColor( i ), pos_l, pos_r );
+				var link = new WormholeLink( id, WormholeLink.GetColor( i ), posL, posR );
 
 				// Failsafe against glitched portals
 				if( link.IsMisplaced ) {
-					ErrorLogger.Log( "Found bad portal. " + i + " " + worm_l_x[i] + "," + worm_l_y[i]
-						+ " : " + worm_r_x[i] + "," + worm_r_y[i] );
+					ErrorLogger.Log( "Found bad portal. " + i + " " + wormLeftX[i] + "," + wormLeftY[i]
+						+ " : " + wormRightX[i] + "," + wormRightY[i] );
 					WormholeManager.ForceRegenWormholes = true;
 					break;
 				}
@@ -95,10 +99,10 @@ namespace Wormholes {
 		public TagCompound Save() {
 			var mymod = WormholesMod.Instance;
 			string[] ids = new string[WormholeManager.PortalCount];
-			int[] worm_l_x = new int[WormholeManager.PortalCount];
-			int[] worm_l_y = new int[WormholeManager.PortalCount];
-			int[] worm_r_x = new int[WormholeManager.PortalCount];
-			int[] worm_r_y = new int[WormholeManager.PortalCount];
+			int[] wormLeftX = new int[WormholeManager.PortalCount];
+			int[] wormLeftY = new int[WormholeManager.PortalCount];
+			int[] wormRightX = new int[WormholeManager.PortalCount];
+			int[] wormRightY = new int[WormholeManager.PortalCount];
 
 			if( mymod.Config.DebugModeInfo ) {
 				LogHelpers.Log( "Save world ids (" + Main.netMode + "): " + WormholeManager.PortalCount );
@@ -111,18 +115,18 @@ namespace Wormholes {
 				if( link.IsClosed ) { continue; }
 
 				ids[i] = link.ID;
-				worm_l_x[i] = (int)link.LeftPortal.Pos.X;
-				worm_l_y[i] = (int)link.LeftPortal.Pos.Y;
-				worm_r_x[i] = (int)link.RightPortal.Pos.X;
-				worm_r_y[i] = (int)link.RightPortal.Pos.Y;
+				wormLeftX[i] = (int)link.LeftPortal.Pos.X;
+				wormLeftY[i] = (int)link.LeftPortal.Pos.Y;
+				wormRightX[i] = (int)link.RightPortal.Pos.X;
+				wormRightY[i] = (int)link.RightPortal.Pos.Y;
 			}
 			
 			var tags = new TagCompound {
 				{"wormhole_count", i},
-				{"wormhole_left_x", worm_l_x},
-				{"wormhole_left_y", worm_l_y},
-				{"wormhole_right_x", worm_r_x},
-				{"wormhole_right_y", worm_r_y}
+				{"wormhole_left_x", wormLeftX},
+				{"wormhole_left_y", wormLeftY},
+				{"wormhole_right_x", wormRightX},
+				{"wormhole_right_y", wormRightY}
 			};
 
 			for( i = 0; i < this.Links.Count; i++ ) {
@@ -130,7 +134,7 @@ namespace Wormholes {
 
 				if( mymod.Config.DebugModeInfo ) {
 					LogHelpers.Log( "  world save id: " + ids[i] + " (" + i + ") = "
-						+ worm_l_x[i] + "," + worm_l_y[i] + " | " + worm_r_x[i] + "," + worm_r_y[i] );
+						+ wormLeftX[i] + "," + wormLeftY[i] + " | " + wormRightX[i] + "," + wormRightY[i] );
 				}
 			}
 
@@ -149,56 +153,56 @@ namespace Wormholes {
 		}
 		
 		public void Reroll( WormholeLink link ) {
-			Vector2 rand_pos1, rand_pos2;
+			Vector2 randPos1, randPos2;
 
 			do {
-				rand_pos1 = this.GetRandomClearMapPos();
-				rand_pos2 = this.GetRandomClearMapPos();
-			} while( Vector2.Distance( rand_pos1, rand_pos2 ) < 2048 );
+				randPos1 = this.GetRandomClearMapPos();
+				randPos2 = this.GetRandomClearMapPos();
+			} while( Vector2.Distance( randPos1, randPos2 ) < 2048 );
 
-			link.ChangePosition( rand_pos1, rand_pos2 );
+			link.ChangePosition( randPos1, randPos2 );
 		}
 
 		/////////////////
 
 		private Vector2 GetRandomClearMapPos() {
-			Vector2 rand_pos;
-			int world_x, world_y;
-			bool found = false, is_empty = false;
+			Vector2 randPos;
+			int worldX, worldY;
+			bool found = false, isEmpty = false;
 
 			do {
 				found = true;
 
 				do {
-					world_x = Main.rand.Next( 64, Main.maxTilesX - 64 );
-					world_y = Main.rand.Next( (int)Main.worldSurface, Main.maxTilesY - 220 );
+					worldX = Main.rand.Next( 64, Main.maxTilesX - 64 );
+					worldY = Main.rand.Next( (int)Main.worldSurface, Main.maxTilesY - 220 );
 
-					is_empty = true;
-					for( int i=world_x; i<world_x+6; i++ ) {
-						for( int j=world_y; j<world_y+8; j++ ) {
+					isEmpty = true;
+					for( int i=worldX; i<worldX+6; i++ ) {
+						for( int j=worldY; j<worldY+8; j++ ) {
 							Tile tile = Framing.GetTileSafely( i, j );
 
-							is_empty = !TileHelpers.IsSolid( tile, true, true ) && !tile.lava() && !TileWallHelpers.IsDungeon(tile);
-							if( !is_empty ) { break; }
+							isEmpty = !TileHelpers.IsSolid( tile, true, true ) && !tile.lava() && !TileWallHelpers.IsDungeon(tile);
+							if( !isEmpty ) { break; }
 						}
-						if( !is_empty ) { break; }
+						if( !isEmpty ) { break; }
 					}
-				} while( !is_empty );
+				} while( !isEmpty );
 				//} while( Collision.SolidCollision( new Vector2(world_x*16f, world_y*16f), WormholePortal.Width, WormholePortal.Height ) );
 
-				rand_pos = new Vector2( world_x * 16f, world_y * 16f );
+				randPos = new Vector2( worldX * 16f, worldY * 16f );
 
 				// Not too close to other portals?
 				for( int i = 0; i < this.Links.Count; i++ ) {
 					var link = this.Links[i];
 
-					float dist = Vector2.Distance( link.LeftPortal.Pos, rand_pos );
+					float dist = Vector2.Distance( link.LeftPortal.Pos, randPos );
 					if( dist < 2048 ) {
 						found = false;
 						break;
 					}
 
-					dist = Vector2.Distance( link.RightPortal.Pos, rand_pos );
+					dist = Vector2.Distance( link.RightPortal.Pos, randPos );
 					if( dist < 2048 ) {
 						found = false;
 						break;
@@ -206,19 +210,19 @@ namespace Wormholes {
 				}
 			} while( !found );
 
-			return rand_pos;
+			return randPos;
 		}
 
 
 		public WormholeLink CreateRandomWormholePair( Color color ) {
-			Vector2 rand_pos1, rand_pos2;
+			Vector2 randPos1, randPos2;
 
 			do {
-				rand_pos1 = this.GetRandomClearMapPos();
-				rand_pos2 = this.GetRandomClearMapPos();
-			} while( Vector2.Distance( rand_pos1, rand_pos2 ) < 2048 );
+				randPos1 = this.GetRandomClearMapPos();
+				randPos2 = this.GetRandomClearMapPos();
+			} while( Vector2.Distance( randPos1, randPos2 ) < 2048 );
 
-			return new WormholeLink( color, rand_pos1, rand_pos2 );
+			return new WormholeLink( color, randPos1, randPos2 );
 		}
 
 
@@ -258,37 +262,37 @@ namespace Wormholes {
 				this.BlockPortalCountdown[who] = 0;
 			}
 
-			bool is_upon_a_portal = false;
-			bool is_upon_my_portal = false;
-			int block_countdown = this.BlockPortalCountdown[who];
-			WormholeLink town_portal = player.GetModPlayer<WormholesPlayer>( mymod ).MyPortal;
+			bool isUponAPortal = false;
+			bool isUponMyPortal = false;
+			int blockCountdown = this.BlockPortalCountdown[who];
+			WormholeLink townPortal = player.GetModPlayer<WormholesPlayer>( mymod ).MyPortal;
 
 			if( !mymod.Config.DisableNaturalWormholes ) {
 				for( int i = 0; i < this.Links.Count; i++ ) {
 					WormholeLink link = this.Links[i];
 					if( link == null ) { break; }
 
-					link.UpdateInteractions( player, (block_countdown > 0), out is_upon_a_portal );
+					link.UpdateInteractions( player, (blockCountdown > 0), out isUponAPortal );
 					link.UpdateBehavior( player );
 
-					if( is_upon_a_portal ) { break; }
+					if( isUponAPortal ) { break; }
 				}
 			}
 
-			if( town_portal != null ) {
-				town_portal.UpdateInteractions( player, (block_countdown > 0 || is_upon_a_portal), out is_upon_my_portal );
-				town_portal.UpdateBehavior( player );
+			if( townPortal != null ) {
+				townPortal.UpdateInteractions( player, (blockCountdown > 0 || isUponAPortal), out isUponMyPortal );
+				townPortal.UpdateBehavior( player );
 			}
 
-			if( (is_upon_a_portal || is_upon_my_portal) && block_countdown == 0 ) {
+			if( (isUponAPortal || isUponMyPortal) && blockCountdown == 0 ) {
 				this.BlockPortalCountdown[who] = 120;
 			}
-			if( (!is_upon_a_portal && !is_upon_my_portal && block_countdown > 0) || block_countdown > 1 ) {
+			if( (!isUponAPortal && !isUponMyPortal && blockCountdown > 0) || blockCountdown > 1 ) {
 				this.BlockPortalCountdown[who]--;
 			}
 		}
 
-		public void DrawAll( WormholeLink town_portal ) {
+		public void DrawAll( WormholeLink townPortal ) {
 			var mymod = WormholesMod.Instance;
 
 			if( !mymod.Config.DisableNaturalWormholes ) {
@@ -299,8 +303,8 @@ namespace Wormholes {
 					link.DrawForMe();
 				}
 			}
-			if( town_portal != null ) {
-				town_portal.DrawForMe();
+			if( townPortal != null ) {
+				townPortal.DrawForMe();
 			}
 		}
 	}

@@ -21,7 +21,7 @@ namespace Wormholes {
 		public override void Initialize() {
 			var mymod = (WormholesMod)this.mod;
 
-			this.Wormholes = new WormholeManager( mymod );
+			this.Wormholes = new WormholeManager();
 			this.ID = Guid.NewGuid().ToString( "D" );
 			this.HasCorrectID = false;
 
@@ -37,7 +37,7 @@ namespace Wormholes {
 				this.ID = id;
 
 				var mymod = (WormholesMod)this.mod;
-				if( this.Wormholes.Load( mymod, tags ) ) {
+				if( this.Wormholes.Load( tags ) ) {
 					this.Wormholes.FinishSettingUpWormholes();
 				}
 			}

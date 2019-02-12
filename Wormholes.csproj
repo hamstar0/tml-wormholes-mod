@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Wormholes</RootNamespace>
     <AssemblyName>Wormholes</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -56,7 +56,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API_Call.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Items\ChaosBombItem.cs" />
     <Compile Include="Items\TownPortalScrollItem.cs" />
