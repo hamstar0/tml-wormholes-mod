@@ -1,7 +1,4 @@
-﻿using HamstarHelpers.Components.Config;
-using HamstarHelpers.Components.Errors;
-using HamstarHelpers.Helpers.DotNetHelpers;
-using HamstarHelpers.Helpers.TmlHelpers;
+﻿using HamstarHelpers.Helpers.TModLoader.Mods;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -16,8 +13,7 @@ namespace Wormholes {
 
 		////////////////
 
-		public JsonConfig<WormholesConfigData> ConfigJson { get; private set; }
-		public WormholesConfigData Config => this.ConfigJson.Data;
+		public WormholesConfig Config => this.GetConfig<WormholesConfig>();
 
 		private WormholesUI UI;
 
@@ -26,38 +22,18 @@ namespace Wormholes {
 		////////////////
 
 		public WormholesMod() : base() {
-			this.ConfigJson = new JsonConfig<WormholesConfigData>( WormholesConfigData.ConfigFileName,
-				ConfigurationDataBase.RelativePath, new WormholesConfigData() );
+			WormholesMod.Instance = this;
 		}
 
 		////////////////
 
 		public override void Load() {
-			string depErr = TmlHelpers.ReportBadDependencyMods( this );
-			if( depErr != null ) { throw new HamstarException( depErr ); }
-
-			WormholesMod.Instance = this;
-			
-			this.LoadConfig();
-
 			// Clients and single only
 			if( Main.netMode != 2 ) {
 				WormholePortal.Initialize();
 				WormholesUI.Initialize();
 
 				this.UI = new WormholesUI();
-			}
-		}
-
-		private void LoadConfig() {
-			if( !this.ConfigJson.LoadFile() ) {
-				this.ConfigJson.SaveFile();
-			}
-
-			if( this.Config.CanUpdateVersion() ) {
-				this.Config.UpdateToLatestVersion();
-				ErrorLogger.Log( "Wormholes updated to " + this.Version.ToString() );
-				this.ConfigJson.SaveFile();
 			}
 		}
 
@@ -83,22 +59,7 @@ namespace Wormholes {
 		////////////////
 
 		public override object Call( params object[] args ) {
-			if( args == null || args.Length == 0 ) { throw new HamstarException( "Undefined call type." ); }
-
-			string callType = args[0] as string;
-			if( callType == null ) { throw new HamstarException( "Invalid call type." ); }
-
-			var methodInfo = typeof( WormholesAPI ).GetMethod( callType );
-			if( methodInfo == null ) { throw new HamstarException( "Invalid call type " + callType ); }
-
-			var newArgs = new object[args.Length - 1];
-			Array.Copy( args, 1, newArgs, 0, args.Length - 1 );
-
-			try {
-				return ReflectionHelpers.SafeCall( methodInfo, null, newArgs );
-			} catch( Exception e ) {
-				throw new HamstarException( "Wormholes.WormholesMod.Call - Bad API call.", e );
-			}
+			return ModBoilerplateHelpers.HandleModCall( typeof( WormholesAPI ), args );
 		}
 	}
 }

@@ -1,10 +1,9 @@
-﻿using HamstarHelpers.Components.Network;
+﻿using HamstarHelpers.Components.Protocols.Packet.Interfaces;
 using Microsoft.Xna.Framework;
 
 
 namespace Wormholes.NetProtocols {
-	class SettingsAndWormholesProtocol : PacketProtocolRequestToServer {
-		public WormholesConfigData ModSettings;
+	class WormholesProtocol : PacketProtocolRequestToServer {
 		public string[] Ids;
 		public float[] RightPosX;
 		public float[] RightPosY;
@@ -15,7 +14,7 @@ namespace Wormholes.NetProtocols {
 
 		////////////////
 
-		private SettingsAndWormholesProtocol() { }
+		private WormholesProtocol() { }
 
 		////////////////
 
@@ -25,8 +24,6 @@ namespace Wormholes.NetProtocols {
 
 			// Be sure our wormholes are ready to send (if not already)
 			modworld.SetupWormholes();
-
-			this.ModSettings = mymod.Config;
 
 			int count = WormholeManager.PortalCount;
 
@@ -52,8 +49,6 @@ namespace Wormholes.NetProtocols {
 		protected override void ReceiveReply() {
 			var mymod = WormholesMod.Instance;
 			var myworld = mymod.GetModWorld<WormholesWorld>();
-			
-			mymod.ConfigJson.SetData( this.ModSettings );
 
 			for( int i=0; i<this.Ids.Length; i++ ) {
 				var posR = new Vector2( this.RightPosX[i], this.RightPosY[i] );

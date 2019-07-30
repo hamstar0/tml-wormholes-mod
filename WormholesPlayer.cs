@@ -1,5 +1,5 @@
-﻿using HamstarHelpers.Components.Network;
-using HamstarHelpers.Helpers.PlayerHelpers;
+﻿using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.Players;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -60,22 +60,22 @@ namespace Wormholes {
 
 			int my_portal_count = tag.GetInt( "my_town_portal_count" );
 			for( int i=0; i<my_portal_count; i++ ) {
-				string world_id = tag.GetString( "my_town_portal_id_" + i );
-				float right_x = tag.GetFloat( "my_town_right_portal_x_" + i );
-				float right_y = tag.GetFloat( "my_town_right_portal_y_" + i );
-				float left_x = tag.GetFloat( "my_town_left_portal_x_" + i );
-				float left_y = tag.GetFloat( "my_town_left_portal_y_" + i );
-				var right = new Vector2( right_x, right_y );
-				var left = new Vector2( left_x, left_y );
+				string worldId = tag.GetString( "my_town_portal_id_" + i );
+				float rightX = tag.GetFloat( "my_town_right_portal_x_" + i );
+				float rightY = tag.GetFloat( "my_town_right_portal_y_" + i );
+				float leftX = tag.GetFloat( "my_town_left_portal_x_" + i );
+				float leftY = tag.GetFloat( "my_town_left_portal_y_" + i );
+				var right = new Vector2( rightX, rightY );
+				var left = new Vector2( leftX, leftY );
 
-				this.TownPortalRightPositions[ world_id ] = right;
-				this.TownPortalLeftPositions[ world_id ] = left;
+				this.TownPortalRightPositions[ worldId ] = right;
+				this.TownPortalLeftPositions[ worldId ] = left;
 			}
 		}
 
 		public override TagCompound Save() {
 			var modworld = this.mod.GetModWorld<WormholesWorld>();
-			string world_id = modworld.ID;
+			string worldId = modworld.ID;
 			var tags = new TagCompound {
 				{ "wormholes_count", (int)this.ChartedLinks.Count }
 			};
@@ -90,13 +90,13 @@ namespace Wormholes {
 
 			if( this.MyPortal != null ) {
 				if( this.MyPortal.IsClosed ) {
-					if( this.TownPortalRightPositions.Keys.Contains(world_id) ) {
-						this.TownPortalRightPositions.Remove( world_id );
-						this.TownPortalLeftPositions.Remove( world_id );
+					if( this.TownPortalRightPositions.Keys.Contains(worldId) ) {
+						this.TownPortalRightPositions.Remove( worldId );
+						this.TownPortalLeftPositions.Remove( worldId );
 					}
 				} else {
-					this.TownPortalRightPositions[world_id] = this.MyPortal.RightPortal.Pos;
-					this.TownPortalLeftPositions[world_id] = this.MyPortal.LeftPortal.Pos;
+					this.TownPortalRightPositions[worldId] = this.MyPortal.RightPortal.Pos;
+					this.TownPortalLeftPositions[worldId] = this.MyPortal.LeftPortal.Pos;
 				}
 			}
 
@@ -115,13 +115,14 @@ namespace Wormholes {
 			return tags;
 		}
 
+
 		////////////////
 		
-		public override void SyncPlayer( int to_who, int from_who, bool new_player ) {
+		public override void SyncPlayer( int toWho, int fromWho, bool newPlayer ) {
 			var mymod = (WormholesMod)this.mod;
 
 			if( Main.netMode == 2 ) {
-				if( to_who == -1 && from_who == this.player.whoAmI ) {
+				if( toWho == -1 && fromWho == this.player.whoAmI ) {
 					this.OnServerConnect();
 				}
 			}
@@ -133,15 +134,8 @@ namespace Wormholes {
 
 			var mymod = (WormholesMod)this.mod;
 
-			if( Main.netMode == 0 ) {
-				if( !mymod.ConfigJson.LoadFile() ) {
-					mymod.ConfigJson.SaveFile();
-					ErrorLogger.Log( "Wormholes config " + mymod.Version.ToString() + " created (ModPlayer.OnEnterWorld())." );
-				}
-			}
-
 			if( mymod.Config.DebugModeInfo ) {
-				ErrorLogger.Log( "Wormholes.WormholesPlayer.OnEnterWorld - " + player.name + " joined (" + PlayerIdentityHelpers.GetProperUniqueId( player ) + ")" );
+				LogHelpers.Alert( player.name + " joined (" + PlayerIdentityHelpers.GetUniqueId( player ) + ")" );
 			}
 
 			if( Main.netMode == 0 ) {
@@ -179,7 +173,8 @@ namespace Wormholes {
 		private void OnCurrentClientConnect() {
 			this.OnLocalConnect();
 
-			PacketProtocolRequestToServer.QuickRequestToServer<SettingsAndWormholesProtocol>( -1 );
+			WormholesProtocol.QuickRequest();
+			^ PacketProtocolRequestToServer.QuickRequestToServer<WormholesProtocol>( -1 );
 
 			this.HasEnteredWorld = true;
 		}
@@ -192,12 +187,12 @@ namespace Wormholes {
 		public void ReopenTownPortal() {
 			var mymod = (WormholesMod)this.mod;
 			var modworld = this.mod.GetModWorld<WormholesWorld>();
-			string world_id = modworld.ID;
+			string worldId = modworld.ID;
 
-			if( this.TownPortalRightPositions.Keys.Contains( world_id ) ) {
-				Vector2 r_pos = this.TownPortalRightPositions[world_id];
-				Vector2 l_pos = this.TownPortalLeftPositions[world_id];
-				TownPortalScrollItem.OpenPortal( this.player, r_pos, l_pos );
+			if( this.TownPortalRightPositions.Keys.Contains( worldId ) ) {
+				Vector2 rPos = this.TownPortalRightPositions[worldId];
+				Vector2 lPos = this.TownPortalLeftPositions[worldId];
+				TownPortalScrollItem.OpenPortal( this.player, rPos, lPos );
 			}
 
 			this.HasLoadedTownPortals = true;

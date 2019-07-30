@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using HamstarHelpers.Helpers.Debug;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -104,7 +105,7 @@ namespace Wormholes {
 			try {
 				this.Wormholes.DrawAll( myplayer.MyPortal );
 			} catch( Exception e ) {
-				ErrorLogger.Log( "PostDrawTiles: " + e.ToString() );
+				LogHelpers.Log( "PostDrawTiles: " + e.ToString() );
 				throw e;
 			}
 			Main.spriteBatch.End();

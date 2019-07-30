@@ -1,5 +1,5 @@
-﻿using HamstarHelpers.Components.Network;
-using HamstarHelpers.Helpers.DebugHelpers;
+﻿using HamstarHelpers.Components.Protocols.Packet.Interfaces;
+using HamstarHelpers.Helpers.Debug;
 using Microsoft.Xna.Framework;
 
 
@@ -11,7 +11,7 @@ namespace Wormholes.NetProtocols {
 
 			WormholeLink link = myworld.Wormholes.GetLinkById( id );
 			if( link == null ) {
-				LogHelpers.Log( "WormholeUpdateProtocol.BroadcastToClients - Invalid wormhole link id " + id );
+				LogHelpers.Alert( "Invalid wormhole link id " + id );
 				return;
 			}
 

@@ -4,12 +4,6 @@ using System.Collections.Generic;
 
 namespace Wormholes {
 	public static partial class WormholesAPI {
-		public static WormholesConfigData GetModSettings() {
-			return WormholesMod.Instance.Config;
-		}
-
-		////////////////
-
 		public static bool WormholesFinishedSpawning {
 			get {
 				var myworld = WormholesMod.Instance.GetModWorld<WormholesWorld>();

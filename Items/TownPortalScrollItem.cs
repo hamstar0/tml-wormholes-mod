@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Helpers.PlayerHelpers;
+﻿using HamstarHelpers.Helpers.Players;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -51,7 +51,7 @@ namespace Wormholes.Items {
 
 		public override bool ConsumeItem( Player player ) {
 			var playerPos = player.Center;
-			var homePos = PlayerHelpers.GetSpawnPoint( player );
+			var homePos = PlayerWarpHelpers.GetSpawnPoint( player );
 			playerPos.X -= WormholePortal.Width / 2;
 			playerPos.Y -= 128 + player.height + 1;
 			homePos.X -= WormholePortal.Width / 2;

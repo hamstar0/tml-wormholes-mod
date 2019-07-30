@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Helpers.PlayerHelpers;
+﻿using HamstarHelpers.Helpers.Players;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -119,7 +119,7 @@ namespace Wormholes {
 				myplayer.ChartedLinks.Add( this.ID );
 			}
 
-			PlayerHelpers.Teleport( player, dest );
+			PlayerWarpHelpers.Teleport( player, dest );
 
 			if( player.FindBuffIndex( BuffID.ChaosState ) != -1 ) {
 				int def = player.statDefense;

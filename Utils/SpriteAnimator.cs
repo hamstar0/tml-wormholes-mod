@@ -14,8 +14,8 @@ namespace Wormholes.Utils {
 
 		private Rectangle _frame;
 		private Color _myColor;
-		public Rectangle Frame { get { return this._frame; } }
-		public Color MyColor { get { return this._myColor; } }
+		public Rectangle Frame => this._frame;
+		public Color MyColor => this._myColor;
 
 		private float ColorFlicker = 1f;
 		private float Scale = 1f;
@@ -24,6 +24,8 @@ namespace Wormholes.Utils {
 		public int AnimatingOpen { get; private set; }
 
 
+
+		////////////////
 
 		public SpriteAnimator( int frame_rate, int frame_count, Texture2D tex, Color color ) {
 			this.FrameRate = frame_rate;

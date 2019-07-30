@@ -1,6 +1,6 @@
-﻿using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.TileHelpers;
-using HamstarHelpers.Helpers.WorldHelpers;
+﻿using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.Tiles;
+using HamstarHelpers.Helpers.World;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -84,7 +84,7 @@ namespace Wormholes {
 
 				// Failsafe against glitched portals
 				if( link.IsMisplaced ) {
-					ErrorLogger.Log( "Found bad portal. " + i + " " + wormLeftX[i] + "," + wormLeftY[i]
+					LogHelpers.Log( "Found bad portal. " + i + " " + wormLeftX[i] + "," + wormLeftY[i]
 						+ " : " + wormRightX[i] + "," + wormRightY[i] );
 					WormholeManager.ForceRegenWormholes = true;
 					break;
@@ -182,7 +182,8 @@ namespace Wormholes {
 						for( int j=worldY; j<worldY+8; j++ ) {
 							Tile tile = Framing.GetTileSafely( i, j );
 
-							isEmpty = !TileHelpers.IsSolid( tile, true, true ) && !tile.lava() && !TileWallHelpers.IsDungeon(tile);
+							bool _;
+							isEmpty = !TileHelpers.IsSolid( tile, true, true ) && !tile.lava() && !TileWallHelpers.IsDungeon(tile, out _);
 							if( !isEmpty ) { break; }
 						}
 						if( !isEmpty ) { break; }

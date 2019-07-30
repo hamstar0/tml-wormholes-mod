@@ -1,6 +1,4 @@
-﻿using HamstarHelpers.Components.Network;
-using HamstarHelpers.Components.Network.Data;
-using HamstarHelpers.Helpers.DebugHelpers;
+﻿using HamstarHelpers.Components.Protocols.Packet.Interfaces;
 
 
 namespace Wormholes.NetProtocols {
