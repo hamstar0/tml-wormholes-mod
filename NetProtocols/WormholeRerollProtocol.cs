@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Components.Protocols.Packet.Interfaces;
+﻿using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
 
 
 namespace Wormholes.NetProtocols {

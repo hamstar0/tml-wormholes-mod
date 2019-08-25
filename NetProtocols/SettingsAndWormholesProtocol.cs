@@ -1,9 +1,17 @@
-﻿using HamstarHelpers.Components.Protocols.Packet.Interfaces;
+﻿using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
 using Microsoft.Xna.Framework;
 
 
 namespace Wormholes.NetProtocols {
 	class WormholesProtocol : PacketProtocolRequestToServer {
+		public static void QuickRequest() {
+			PacketProtocolRequestToServer.QuickRequestToServer<WormholesProtocol>( -1 );
+		}
+
+
+
+		////////////////
+
 		public string[] Ids;
 		public float[] RightPosX;
 		public float[] RightPosY;

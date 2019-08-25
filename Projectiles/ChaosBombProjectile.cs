@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Helpers.Tiles;
+﻿using HamstarHelpers.Classes.Tiles.TilePattern;
+using HamstarHelpers.Helpers.Tiles;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -144,7 +145,7 @@ namespace Wormholes.Projectiles {
 				for( int j=tileY-radius; j<=tileY+radius; j++ ) {
 					float xDist = i - tileX;
 					float yDist = j - tileY;
-					if( Math.Sqrt( (xDist*xDist)+(yDist*yDist) ) > radius ) { continue; }	// Crude
+					if( (xDist*xDist)+(yDist*yDist) > (radius*radius) ) { continue; }	// Crude
 
 					froTile = Main.tile[i, j];
 					if( froTile == null ) { continue; }
@@ -156,7 +157,14 @@ namespace Wormholes.Projectiles {
 					var tileData = TileObjectData.GetTileData( froTile );
 					if( tileData != null && (tileData.Width > 1 || tileData.Height > 1) ) { continue; }
 					
-					if( !TileFinderHelpers.FindNearbyRandomMatch( TilePattern.NonSolid, tileX, tileY, scatterRadius, out toX, out toY ) ) {
+					if( !TileFinderHelpers.FindNearbyRandomMatch( TilePattern.NonSolid,
+							tileX,
+							tileY,
+							scatterRadius,
+							100,
+							false,
+							out toX,
+							out toY ) ) {
 						break;
 					}
 

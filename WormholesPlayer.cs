@@ -174,7 +174,6 @@ namespace Wormholes {
 			this.OnLocalConnect();
 
 			WormholesProtocol.QuickRequest();
-			^ PacketProtocolRequestToServer.QuickRequestToServer<WormholesProtocol>( -1 );
 
 			this.HasEnteredWorld = true;
 		}

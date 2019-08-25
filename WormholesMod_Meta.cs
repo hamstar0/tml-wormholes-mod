@@ -1,4 +1,4 @@
-﻿using System;xs
+﻿using System;
 using Terraria.ModLoader;
 
 

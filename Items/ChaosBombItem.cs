@@ -9,7 +9,7 @@ namespace Wormholes.Items {
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Chaos Bomb" );
 			this.Tooltip.SetDefault( "Randomly scatters blocks within blast radius"+'\n'+
-				"20% chance to permanently relocate a wormholes" );
+				"20% chance to permanently relocate a wormhole" );
 		}
 
 		public override void SetDefaults() {
