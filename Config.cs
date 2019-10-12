@@ -5,6 +5,11 @@ using Terraria.ModLoader.Config;
 
 
 namespace Wormholes {
+	class MyFloatInputElement : FloatInputElement { }
+
+
+
+
 	public class WormholesConfig : ModConfig {
 		public override ConfigScope Mode => ConfigScope.ServerSide;
 
@@ -57,17 +62,17 @@ namespace Wormholes {
 
 		[Range( 0f, 10f )]
 		[DefaultValue( 0.45f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float WormholeSoundVolume = 0.45f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 1.25f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float WormholeLightScale = 1.25f;
 
 		[Range( 0f, 10f )]
 		[DefaultValue( 0.9f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float WormholeEntrySoundVolume = 0.9f;
 
 
