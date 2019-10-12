@@ -1,5 +1,5 @@
 ﻿using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
-
+using Terraria.ModLoader;
 
 namespace Wormholes.NetProtocols {
 	class WormholeRerollProtocol : PacketProtocolSentToEither {
@@ -33,7 +33,7 @@ namespace Wormholes.NetProtocols {
 
 		protected override void ReceiveOnServer( int fromWho ) {
 			var mymod = WormholesMod.Instance;
-			var myworld = mymod.GetModWorld<WormholesWorld>();
+			var myworld = ModContent.GetInstance<WormholesWorld>();
 			var mngr = myworld.Wormholes;
 
 			var link = mngr.GetLinkById( this.ID );

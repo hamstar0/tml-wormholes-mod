@@ -69,7 +69,7 @@ namespace Wormholes {
 				this.HasCorrectID = has_correct_id;
 				this.ID = id;
 
-				var modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>( this.mod );
+				var modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>();
 				if( modplayer.HasEnteredWorld && !modplayer.HasLoadedTownPortals ) {
 					modplayer.ReopenTownPortal();
 				}
@@ -95,7 +95,7 @@ namespace Wormholes {
 			if( this.Wormholes == null ) { return; }
 
 			Player player = Main.player[Main.myPlayer];
-			var myplayer = player.GetModPlayer<WormholesPlayer>( this.mod );
+			var myplayer = player.GetModPlayer<WormholesPlayer>();
 			var mymod = (WormholesMod)this.mod;
 			
 			//Main.spriteBatch.Begin();

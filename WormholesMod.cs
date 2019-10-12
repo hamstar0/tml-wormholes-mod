@@ -13,7 +13,7 @@ namespace Wormholes {
 
 		////////////////
 
-		public WormholesConfig Config => this.GetConfig<WormholesConfig>();
+		public WormholesConfig Config => ModContent.GetInstance<WormholesConfig>();
 
 		private WormholesUI UI;
 

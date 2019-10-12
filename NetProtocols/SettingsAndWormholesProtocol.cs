@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
 using Microsoft.Xna.Framework;
+using Terraria.ModLoader;
 
 
 namespace Wormholes.NetProtocols {
@@ -28,7 +29,7 @@ namespace Wormholes.NetProtocols {
 
 		protected override void InitializeServerSendData( int who ) {
 			var mymod = WormholesMod.Instance;
-			var modworld = mymod.GetModWorld<WormholesWorld>();
+			var modworld = ModContent.GetInstance<WormholesWorld>();
 
 			// Be sure our wormholes are ready to send (if not already)
 			modworld.SetupWormholes();
@@ -56,7 +57,7 @@ namespace Wormholes.NetProtocols {
 
 		protected override void ReceiveReply() {
 			var mymod = WormholesMod.Instance;
-			var myworld = mymod.GetModWorld<WormholesWorld>();
+			var myworld = ModContent.GetInstance<WormholesWorld>();
 
 			for( int i=0; i<this.Ids.Length; i++ ) {
 				var posR = new Vector2( this.RightPosX[i], this.RightPosY[i] );

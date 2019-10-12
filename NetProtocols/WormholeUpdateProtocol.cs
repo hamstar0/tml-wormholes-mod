@@ -1,13 +1,14 @@
 ﻿using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
 using HamstarHelpers.Helpers.Debug;
 using Microsoft.Xna.Framework;
+using Terraria.ModLoader;
 
 
 namespace Wormholes.NetProtocols {
 	class WormholeUpdateProtocol : PacketProtocolSentToEither {
 		public static void BroadcastToClients( string id ) {
 			var mymod = WormholesMod.Instance;
-			var myworld = mymod.GetModWorld<WormholesWorld>();
+			var myworld = ModContent.GetInstance<WormholesWorld>();
 
 			WormholeLink link = myworld.Wormholes.GetLinkById( id );
 			if( link == null ) {
@@ -48,8 +49,8 @@ namespace Wormholes.NetProtocols {
 
 		protected override void ReceiveOnClient() {
 			var mymod = WormholesMod.Instance;
-			var myworld = mymod.GetModWorld<WormholesWorld>();
-			var mngr = mymod.GetModWorld<WormholesWorld>().Wormholes;
+			var myworld = ModContent.GetInstance<WormholesWorld>();
+			var mngr = ModContent.GetInstance<WormholesWorld>().Wormholes;
 
 			var posR = new Vector2( this.RightPosX, this.RightPosY );
 			var posL = new Vector2( this.LeftPosX, this.LeftPosY );

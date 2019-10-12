@@ -46,7 +46,7 @@ namespace Wormholes {
 		////////////////
 
 		public override void Load( TagCompound tag ) {
-			var modworld = this.mod.GetModWorld<WormholesWorld>();
+			var modworld = ModContent.GetInstance<WormholesWorld>();
 			int wormholes = tag.GetInt( "wormholes_count" );
 
 			this.TownPortalRightPositions = new Dictionary<string, Vector2>();
@@ -74,7 +74,7 @@ namespace Wormholes {
 		}
 
 		public override TagCompound Save() {
-			var modworld = this.mod.GetModWorld<WormholesWorld>();
+			var modworld = ModContent.GetInstance<WormholesWorld>();
 			string worldId = modworld.ID;
 			var tags = new TagCompound {
 				{ "wormholes_count", (int)this.ChartedLinks.Count }
@@ -150,7 +150,7 @@ namespace Wormholes {
 
 		private void OnLocalConnect() {
 			var mymod = (WormholesMod)this.mod;
-			var myworld = this.mod.GetModWorld<WormholesWorld>();
+			var myworld = ModContent.GetInstance<WormholesWorld>();
 
 			if( myworld.HasCorrectID ) {
 				this.ReopenTownPortal();
@@ -161,7 +161,7 @@ namespace Wormholes {
 
 
 		private void OnSingleConnect() {
-			var myworld = this.mod.GetModWorld<WormholesWorld>();
+			var myworld = ModContent.GetInstance<WormholesWorld>();
 
 			this.OnLocalConnect();
 
@@ -185,7 +185,7 @@ namespace Wormholes {
 
 		public void ReopenTownPortal() {
 			var mymod = (WormholesMod)this.mod;
-			var modworld = this.mod.GetModWorld<WormholesWorld>();
+			var modworld = ModContent.GetInstance<WormholesWorld>();
 			string worldId = modworld.ID;
 
 			if( this.TownPortalRightPositions.Keys.Contains( worldId ) ) {
@@ -204,7 +204,7 @@ namespace Wormholes {
 			if( Main.netMode == 2 ) { return; } // Not server
 
 			var mymod = (WormholesMod)this.mod;
-			WormholesWorld modworld = mymod.GetModWorld<WormholesWorld>();
+			WormholesWorld modworld = ModContent.GetInstance<WormholesWorld>();
 			if( modworld.Wormholes == null ) { return; }
 
 			modworld.Wormholes.RunAll( this.player );

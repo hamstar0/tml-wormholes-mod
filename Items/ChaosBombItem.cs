@@ -15,7 +15,7 @@ namespace Wormholes.Items {
 		public override void SetDefaults() {
 			this.item.useStyle = 1;
 			this.item.shootSpeed = 5f;
-			this.item.shoot = this.mod.ProjectileType<ChaosBombProjectile>();
+			this.item.shoot = ModContent.ProjectileType<ChaosBombProjectile>();
 			this.item.width = 20;
 			this.item.height = 20;
 			this.item.maxStack = 99;

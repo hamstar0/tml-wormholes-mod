@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Wormholes.NetProtocols;
 
 
@@ -77,7 +78,7 @@ namespace Wormholes {
 			var mymod = WormholesMod.Instance;
 
 			if( Main.netMode == 0 ) {	// Single
-				var mngr = mymod.GetModWorld<WormholesWorld>().Wormholes;
+				var mngr = ModContent.GetInstance<WormholesWorld>().Wormholes;
 				mngr.Reroll( this );
 			} else {    // Non-single
 				WormholeRerollProtocol.ClientRequestReroll( this.ID );
@@ -113,7 +114,7 @@ namespace Wormholes {
 
 		protected virtual void Teleport( Player player, Vector2 dest ) {
 			var mymod = WormholesMod.Instance;
-			WormholesPlayer myplayer = player.GetModPlayer<WormholesPlayer>( mymod );
+			WormholesPlayer myplayer = player.GetModPlayer<WormholesPlayer>();
 
 			if( myplayer.MyPortal == null || (myplayer.MyPortal != null && this.ID != myplayer.MyPortal.ID) ) {
 				myplayer.ChartedLinks.Add( this.ID );
