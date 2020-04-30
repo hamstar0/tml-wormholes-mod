@@ -47,19 +47,19 @@ namespace Wormholes {
 			float scale = Main.mapMinimapScale / 1.5f;
 			Texture2D tex = WormholesUI.Tex;
 
-			Rectangle l_rect = new Rectangle( (int)link.LeftPortal.Pos.X, (int)link.LeftPortal.Pos.Y, tex.Width, tex.Height );
-			Rectangle r_rect = new Rectangle( (int)link.RightPortal.Pos.X, (int)link.RightPortal.Pos.Y, tex.Width, tex.Height );
+			Rectangle lRect = new Rectangle( (int)link.LeftPortal.Pos.X, (int)link.LeftPortal.Pos.Y, tex.Width, tex.Height );
+			Rectangle rRect = new Rectangle( (int)link.RightPortal.Pos.X, (int)link.RightPortal.Pos.Y, tex.Width, tex.Height );
 
-			var l_pos_data = HUDMapHelpers.GetMiniMapScreenPosition( l_rect );
-			if( l_pos_data.Item2 ) {
-				Color l_color = link.LeftPortal.BaseColor * Main.mapMinimapAlpha;
-				sb.Draw( tex, l_pos_data.Item1, this.TexAnim.Frame, l_color, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
+			var lPosData = HUDMapHelpers.GetMiniMapPositionAsScreenPosition( lRect );
+			if( lPosData.IsOnScreen ) {
+				Color lColor = link.LeftPortal.BaseColor * Main.mapMinimapAlpha;
+				sb.Draw( tex, lPosData.Item1, this.TexAnim.Frame, lColor, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
 			}
 
-			var r_pos_data = HUDMapHelpers.GetMiniMapScreenPosition( r_rect );
-			if( r_pos_data.Item2 ) {
-				Color r_color = link.RightPortal.BaseColor * Main.mapMinimapAlpha;
-				sb.Draw( tex, r_pos_data.Item1, this.TexAnim.Frame, r_color, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
+			var rPosData = HUDMapHelpers.GetMiniMapPositionAsScreenPosition( rRect );
+			if( rPosData.IsOnScreen ) {
+				Color rColor = link.RightPortal.BaseColor * Main.mapMinimapAlpha;
+				sb.Draw( tex, rPosData.Item1, this.TexAnim.Frame, rColor, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
 			}
 		}
 
@@ -70,19 +70,19 @@ namespace Wormholes {
 			float scale = Main.mapOverlayScale / 1.5f;
 			Texture2D tex = WormholesUI.Tex;
 
-			Rectangle l_rect = new Rectangle( (int)link.LeftPortal.Pos.X, (int)link.LeftPortal.Pos.Y, tex.Width, tex.Height );
-			Rectangle r_rect = new Rectangle( (int)link.RightPortal.Pos.X, (int)link.RightPortal.Pos.Y, tex.Width, tex.Height );
+			Rectangle lRect = new Rectangle( (int)link.LeftPortal.Pos.X, (int)link.LeftPortal.Pos.Y, tex.Width, tex.Height );
+			Rectangle rRect = new Rectangle( (int)link.RightPortal.Pos.X, (int)link.RightPortal.Pos.Y, tex.Width, tex.Height );
 
-			var l_pos_data = HUDMapHelpers.GetOverlayMapScreenPosition( l_rect );
-			if( l_pos_data.Item2 ) {
-				Color l_color = link.LeftPortal.BaseColor * Main.mapOverlayAlpha;
-				sb.Draw( tex, (Vector2)l_pos_data.Item1, this.TexAnim.Frame, l_color, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
+			var lPosData = HUDMapHelpers.GetOverlayMapPositionAsScreenPosition( lRect );
+			if( lPosData.IsOnScreen ) {
+				Color lColor = link.LeftPortal.BaseColor * Main.mapOverlayAlpha;
+				sb.Draw( tex, (Vector2)lPosData.Item1, this.TexAnim.Frame, lColor, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
 			}
 
-			var r_pos_data = HUDMapHelpers.GetOverlayMapScreenPosition( r_rect );
-			if( r_pos_data.Item2 ) {
-				Color r_color = link.RightPortal.BaseColor * Main.mapOverlayAlpha;
-				sb.Draw( tex, r_pos_data.Item1, this.TexAnim.Frame, r_color, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
+			var rPosData = HUDMapHelpers.GetOverlayMapPositionAsScreenPosition( rRect );
+			if( rPosData.IsOnScreen ) {
+				Color rColor = link.RightPortal.BaseColor * Main.mapOverlayAlpha;
+				sb.Draw( tex, rPosData.Item1, this.TexAnim.Frame, rColor, 0f, new Vector2(), scale, SpriteEffects.None, 1f );
 			}
 		}
 
@@ -93,16 +93,16 @@ namespace Wormholes {
 			float scale = Main.mapFullscreenScale / 1.5f;
 			Texture2D tex = WormholesUI.Tex;
 
-			Rectangle l_rect = new Rectangle( (int)link.LeftPortal.Pos.X, (int)link.LeftPortal.Pos.Y, tex.Width, tex.Height );
-			var l_pos_data = HUDMapHelpers.GetFullMapScreenPosition( l_rect );
-			if( l_pos_data.Item2 ) {
-				sb.Draw( tex, l_pos_data.Item1, this.TexAnim.Frame, link.LeftPortal.BaseColor, 0f, new Vector2 { }, scale, SpriteEffects.None, 1f );
+			Rectangle lRect = new Rectangle( (int)link.LeftPortal.Pos.X, (int)link.LeftPortal.Pos.Y, tex.Width, tex.Height );
+			var lPosData = HUDMapHelpers.GetFullMapPositionAsScreenPosition( lRect );
+			if( lPosData.IsOnScreen ) {
+				sb.Draw( tex, lPosData.Item1, this.TexAnim.Frame, link.LeftPortal.BaseColor, 0f, new Vector2 { }, scale, SpriteEffects.None, 1f );
 			}
 
-			Rectangle r_rect = new Rectangle( (int)link.RightPortal.Pos.X, (int)link.RightPortal.Pos.Y, tex.Width, tex.Height );
-			var r_pos_data = HUDMapHelpers.GetFullMapScreenPosition( r_rect );
-			if( r_pos_data.Item2 ) {
-				sb.Draw( tex, r_pos_data.Item1, this.TexAnim.Frame, link.RightPortal.BaseColor, 0f, new Vector2 { }, scale, SpriteEffects.None, 1f );
+			Rectangle rRect = new Rectangle( (int)link.RightPortal.Pos.X, (int)link.RightPortal.Pos.Y, tex.Width, tex.Height );
+			var rPosData = HUDMapHelpers.GetFullMapPositionAsScreenPosition( rRect );
+			if( rPosData.IsOnScreen ) {
+				sb.Draw( tex, rPosData.Item1, this.TexAnim.Frame, link.RightPortal.BaseColor, 0f, new Vector2 { }, scale, SpriteEffects.None, 1f );
 			}
 		}
 	}

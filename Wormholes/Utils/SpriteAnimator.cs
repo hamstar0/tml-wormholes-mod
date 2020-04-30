@@ -27,10 +27,10 @@ namespace Wormholes.Utils {
 
 		////////////////
 
-		public SpriteAnimator( int frame_rate, int frame_count, Texture2D tex, Color color ) {
-			this.FrameRate = frame_rate;
-			this.FrameCount = frame_count;
-			this.BaseHeight = tex.Height / frame_count;
+		public SpriteAnimator( int frameRate, int frameCount, Texture2D tex, Color color ) {
+			this.FrameRate = frameRate;
+			this.FrameCount = frameCount;
+			this.BaseHeight = tex.Height / frameCount;
 			this.CurrentFrameStage = 0;
 			this._frame = new Rectangle( 0, 0, tex.Width, this.BaseHeight );
 			this._myColor = color;

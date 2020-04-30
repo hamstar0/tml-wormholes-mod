@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.Tiles;
@@ -240,7 +239,7 @@ namespace Wormholes {
 			if( this.WormholesFinishedSpawning ) { return; }
 
 			if( WormholeManager.ForceRegenWormholes ) {
-				ErrorLogger.Log( "  Regenerating ALL portals." );
+				LogHelpers.Log( "  Regenerating ALL portals." );
 				this.Links = new List<WormholeLink>( WormholeManager.PortalCount );
 			}
 

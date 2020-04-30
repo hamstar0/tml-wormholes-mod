@@ -86,11 +86,11 @@ namespace Wormholes {
 		}
 
 		public override void NetReceive( BinaryReader reader ) {
-			bool has_correct_id = reader.ReadBoolean();
+			bool hasCorrectId = reader.ReadBoolean();
 			string id = reader.ReadString();
 
-			if( has_correct_id ) {
-				this.HasCorrectID = has_correct_id;
+			if( hasCorrectId ) {
+				this.HasCorrectID = hasCorrectId;
 				this.ID = id;
 
 				var modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>();

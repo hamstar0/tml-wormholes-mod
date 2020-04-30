@@ -46,7 +46,6 @@ namespace Wormholes {
 		////////////////
 
 		public override void Load( TagCompound tag ) {
-			var modworld = ModContent.GetInstance<WormholesWorld>();
 			int wormholes = tag.GetInt( "wormholes_count" );
 
 			this.TownPortalRightPositions = new Dictionary<string, Vector2>();
@@ -58,8 +57,8 @@ namespace Wormholes {
 				this.ChartedLinks.Add( id );
 			}
 
-			int my_portal_count = tag.GetInt( "my_town_portal_count" );
-			for( int i=0; i<my_portal_count; i++ ) {
+			int myPortalCount = tag.GetInt( "my_town_portal_count" );
+			for( int i=0; i<myPortalCount; i++ ) {
 				string worldId = tag.GetString( "my_town_portal_id_" + i );
 				float rightX = tag.GetFloat( "my_town_right_portal_x_" + i );
 				float rightY = tag.GetFloat( "my_town_right_portal_y_" + i );

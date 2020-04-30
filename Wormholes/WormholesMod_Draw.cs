@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using HamstarHelpers.Helpers.Debug;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.ModLoader;
@@ -15,7 +16,7 @@ namespace Wormholes {
 					this.DrawMiniMap( sb );
 				}
 			} catch( Exception e ) {
-				ErrorLogger.Log( "PostDrawInterface: " + e.ToString() );
+				LogHelpers.Warn( e.ToString() );
 				throw e;
 			}
 		}
@@ -27,7 +28,7 @@ namespace Wormholes {
 			try {
 				this.DrawFullMap( Main.spriteBatch );
 			} catch( Exception e ) {
-				ErrorLogger.Log( "PostDrawFullscreenMap: " + e.ToString() );
+				LogHelpers.Warn( e.ToString() );
 				throw e;
 			}
 		}
@@ -38,13 +39,13 @@ namespace Wormholes {
 		private void DrawMiniMap( SpriteBatch sb ) {
 			this.UI.Update();
 
-			WormholesWorld modworld = ModContent.GetInstance<WormholesWorld>();
-			WormholesPlayer curr_modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>();
+			WormholesWorld myworld = ModContent.GetInstance<WormholesWorld>();
+			WormholesPlayer myplayer = Main.LocalPlayer.GetModPlayer<WormholesPlayer>();
 
 			if( !this.Config.DisableNaturalWormholes ) {
-				if( modworld.Wormholes != null ) {
-					for( int i = 0; i < modworld.Wormholes.Links.Count; i++ ) {
-						WormholeLink link = modworld.Wormholes.Links[i];
+				if( myworld.Wormholes != null ) {
+					for( int i = 0; i < myworld.Wormholes.Links.Count; i++ ) {
+						WormholeLink link = myworld.Wormholes.Links[i];
 						if( link == null ) { break; }
 
 						if( Main.mapStyle == 1 ) {
@@ -56,11 +57,11 @@ namespace Wormholes {
 				}
 			}
 			
-			if( curr_modplayer.MyPortal != null ) {
+			if( myplayer.MyPortal != null ) {
 				if( Main.mapStyle == 1 ) {
-					this.UI.DrawMiniMap( curr_modplayer.MyPortal, sb );
+					this.UI.DrawMiniMap( myplayer.MyPortal, sb );
 				} else {
-					this.UI.DrawOverlayMap( curr_modplayer.MyPortal, sb );
+					this.UI.DrawOverlayMap( myplayer.MyPortal, sb );
 				}
 			}
 		}
@@ -69,13 +70,13 @@ namespace Wormholes {
 		private void DrawFullMap( SpriteBatch sb ) {
 			this.UI.Update();
 
-			WormholesWorld modworld = ModContent.GetInstance<WormholesWorld>();
-			WormholesPlayer curr_modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>();
+			WormholesWorld myworld = ModContent.GetInstance<WormholesWorld>();
+			WormholesPlayer myplayer = Main.LocalPlayer.GetModPlayer<WormholesPlayer>();
 
 			if( !this.Config.DisableNaturalWormholes ) {
-				if( modworld.Wormholes != null ) {
-					for( int i = 0; i < modworld.Wormholes.Links.Count; i++ ) {
-						WormholeLink link = modworld.Wormholes.Links[i];
+				if( myworld.Wormholes != null ) {
+					for( int i = 0; i < myworld.Wormholes.Links.Count; i++ ) {
+						WormholeLink link = myworld.Wormholes.Links[i];
 						if( link == null ) { break; }
 
 						this.UI.DrawFullscreenMap( link, sb );
@@ -83,8 +84,8 @@ namespace Wormholes {
 				}
 			}
 
-			if( curr_modplayer.MyPortal != null ) {
-				this.UI.DrawFullscreenMap( curr_modplayer.MyPortal, sb );
+			if( myplayer.MyPortal != null ) {
+				this.UI.DrawFullscreenMap( myplayer.MyPortal, sb );
 			}
 		}
 	}
