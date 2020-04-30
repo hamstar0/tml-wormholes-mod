@@ -1,11 +1,12 @@
-﻿using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Tiles;
-using HamstarHelpers.Helpers.World;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.Tiles;
+using HamstarHelpers.Helpers.World;
+using HamstarHelpers.Helpers.Tiles.Walls;
 
 
 namespace Wormholes {
@@ -170,12 +171,14 @@ namespace Wormholes {
 			int worldX, worldY;
 			bool found = false, isEmpty = false;
 
+			(int minX, int maxX, int minY, int maxY) bounds = WormholesWorld.GetTileBoundsForWormholes();
+
 			do {
 				found = true;
 
 				do {
-					worldX = Main.rand.Next( 64, Main.maxTilesX - 64 );
-					worldY = Main.rand.Next( (int)Main.worldSurface, Main.maxTilesY - 220 );
+					worldX = Main.rand.Next( bounds.minX, bounds.maxX );
+					worldY = Main.rand.Next( bounds.minY, bounds.maxY );
 
 					isEmpty = true;
 					for( int i=worldX; i<worldX+6; i++ ) {
@@ -183,7 +186,7 @@ namespace Wormholes {
 							Tile tile = Framing.GetTileSafely( i, j );
 
 							bool _;
-							isEmpty = !TileHelpers.IsSolid( tile, true, true ) && !tile.lava() && !TileWallHelpers.IsDungeon(tile, out _);
+							isEmpty = !TileHelpers.IsSolid( tile, true, true ) && !tile.lava() && !TileWallGroupIdentityHelpers.IsDungeon(tile, out _);
 							if( !isEmpty ) { break; }
 						}
 						if( !isEmpty ) { break; }

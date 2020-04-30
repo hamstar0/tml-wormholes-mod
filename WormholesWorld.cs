@@ -1,23 +1,47 @@
-﻿using HamstarHelpers.Helpers.Debug;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent.Generation;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.World.Generation;
+using HamstarHelpers.Helpers.Debug;
 
 
 namespace Wormholes {
 	class WormholesWorld : ModWorld {
+		public static (int minTileX, int maxTileX, int minTileY, int maxTileY) GetTileBoundsForWormholes() {
+			int minTileX = 64;
+			int maxTileX = Main.maxTilesX - minTileX;
+			if( Main.maxTilesX < 64 ) {
+				minTileX = 0;
+				maxTileX = Main.maxTilesX;
+			}
+
+			int minTileY = (int)Main.worldSurface;
+			int maxTileY = Main.maxTilesY - 220;
+			if( Main.maxTilesY <= 220 || maxTileY <= minTileX ) {
+				minTileY = 0;
+				maxTileY = Main.maxTilesY;
+			}
+
+			return (minTileX, maxTileX, minTileY, maxTileY);
+		}
+
+		////////////////
+
+
+
 		public WormholeManager Wormholes { get; private set; }
 		public string ID { get; private set; }
 
 		public bool HasCorrectID { get; private set; }
 
 
+
+		////////////////
 
 		public override void Initialize() {
 			var mymod = (WormholesMod)this.mod;

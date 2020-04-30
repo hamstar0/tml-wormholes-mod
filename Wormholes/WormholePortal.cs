@@ -49,20 +49,30 @@ namespace Wormholes {
 
 		////////////////
 
-		public WormholePortal( Vector2 pos, Color color ) {
-			this.IsMisplaced = (pos.X / 16f) < 64f || (pos.X / 16f) > (Main.maxTilesX - 64)
-				|| (pos.Y / 16f) < Main.worldSurface || (pos.Y / 16f) > (Main.maxTilesY - 220);
+		public WormholePortal( Vector2 worldPos, Color color ) {
+			(int minX, int maxX, int minY, int maxY) bounds = WormholesWorld.GetTileBoundsForWormholes();
 
-			pos.X = MathHelper.Clamp( pos.X, 160, (Main.maxTilesX-10) * 16 );
-			pos.Y = MathHelper.Clamp( pos.Y, 160, (Main.maxTilesY-10) * 16 );
+			this.IsMisplaced = (worldPos.X / 16f) < 64f || (worldPos.X / 16f) > bounds.maxX
+				|| (worldPos.Y / 16f) < Main.worldSurface || (worldPos.Y / 16f) > bounds.maxY;
+			
+			if( Main.maxTilesX > 160 ) {
+				worldPos.X = MathHelper.Clamp( worldPos.X, 160, (Main.maxTilesX - 10) * 16 );
+			} else {
+				worldPos.X = MathHelper.Clamp( worldPos.X, 0, Main.maxTilesX * 16 );
+			}
+			if( Main.maxTilesY > 160 ) {
+				worldPos.Y = MathHelper.Clamp( worldPos.Y, 160, (Main.maxTilesY - 10) * 16 );
+			} else {
+				worldPos.Y = MathHelper.Clamp( worldPos.Y, 0, Main.maxTilesY * 16 );
+			}
 //DebugHelpers.Log( "wall of "+color.ToString()+": "+Main.tile[(int)(pos.X/16f)+2, (int)(pos.Y/16f)+4].wall );
 
-			this.Pos = pos;
+			this.Pos = worldPos;
 			this.BaseColor = color;
 			
 			// Clients and single only
 			if( Main.netMode != 2 ) {
-				this.Rect = new Rectangle( (int)pos.X, (int)pos.Y, WormholePortal.Width, WormholePortal.Height );
+				this.Rect = new Rectangle( (int)worldPos.X, (int)worldPos.Y, WormholePortal.Width, WormholePortal.Height );
 				this.Animator = new SpriteAnimator( 1, WormholePortal.FrameCount, WormholePortal.Tex, color );
 			}
 		}

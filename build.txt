@@ -1,6 +1,6 @@
 author = hamstar
-version = 1.10.1
+version = 1.10.1.1
 displayName = Wormholes
-modReferences = HamstarHelpers@5.2.0
+modReferences = HamstarHelpers@5.6.1
 buildIgnore = *.csproj, *.user, *.bat, obj\*, bin\*, .vs\*, .git\*
 homepage = https://forums.terraria.org/index.php?threads/wormholes-and-also-scroll-of-town-portal.52701/
