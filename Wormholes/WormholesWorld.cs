@@ -22,7 +22,7 @@ namespace Wormholes {
 
 			int minTileY = (int)Main.worldSurface;
 			int maxTileY = Main.maxTilesY - 220;
-			if( Main.maxTilesY <= 220 || maxTileY <= minTileX ) {
+			if( Main.maxTilesY <= 220 || maxTileY <= minTileY ) {
 				minTileY = 0;
 				maxTileY = Main.maxTilesY;
 			}
