@@ -1,10 +1,9 @@
-﻿using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Players;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using HamstarHelpers.Helpers.Debug;
 using Wormholes.Items;
 using Wormholes.NetProtocols;
 
@@ -117,36 +116,6 @@ namespace Wormholes {
 
 		////////////////
 		
-		public override void SyncPlayer( int toWho, int fromWho, bool newPlayer ) {
-			var mymod = (WormholesMod)this.mod;
-
-			if( Main.netMode == 2 ) {
-				if( toWho == -1 && fromWho == this.player.whoAmI ) {
-					this.OnServerConnect();
-				}
-			}
-		}
-
-		public override void OnEnterWorld( Player player ) {
-			if( player.whoAmI != Main.myPlayer ) { return; }
-			if( this.player.whoAmI != Main.myPlayer ) { return; }
-
-			var mymod = (WormholesMod)this.mod;
-
-			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Alert( player.name + " joined (" + PlayerIdentityHelpers.GetUniqueId( player ) + ")" );
-			}
-
-			if( Main.netMode == 0 ) {
-				this.OnSingleConnect();
-			}
-			if( Main.netMode == 1 ) {
-				this.OnCurrentClientConnect();
-			}
-		}
-
-		////////////////
-
 		private void OnLocalConnect() {
 			var mymod = (WormholesMod)this.mod;
 			var myworld = ModContent.GetInstance<WormholesWorld>();
@@ -159,7 +128,7 @@ namespace Wormholes {
 		}
 
 
-		private void OnSingleConnect() {
+		internal void OnSingleConnect() {
 			var myworld = ModContent.GetInstance<WormholesWorld>();
 
 			this.OnLocalConnect();
@@ -169,7 +138,7 @@ namespace Wormholes {
 			this.HasEnteredWorld = true;
 		}
 
-		private void OnCurrentClientConnect() {
+		internal void OnCurrentClientConnect() {
 			this.OnLocalConnect();
 
 			WormholesProtocol.QuickRequest();
@@ -177,7 +146,7 @@ namespace Wormholes {
 			this.HasEnteredWorld = true;
 		}
 
-		private void OnServerConnect() { }
+		internal void OnServerConnect() { }
 
 
 		////////////////
