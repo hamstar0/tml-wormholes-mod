@@ -1,7 +1,8 @@
-﻿using HamstarHelpers.Classes.UI.ModConfig;
-using System;
+﻿using System;
 using System.ComponentModel;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
+using HamstarHelpers.Classes.UI.ModConfig;
 
 
 namespace Wormholes {
@@ -11,6 +12,12 @@ namespace Wormholes {
 
 
 	public class WormholesConfig : ModConfig {
+		public static WormholesConfig Instance => ModContent.GetInstance<WormholesConfig>();
+
+
+
+		////////////////
+
 		public override ConfigScope Mode => ConfigScope.ServerSide;
 
 
@@ -42,6 +49,11 @@ namespace Wormholes {
 		[Range( 0, 100 )]
 		[DefaultValue( 27 )]
 		public int HugeWorldPortals = 27;
+
+
+		[Range( 0, 8000 )]
+		[DefaultValue( 128 )]
+		public int MinimumTileDistanceBetweenWormholes = 128;
 
 
 		[DefaultValue( true )]

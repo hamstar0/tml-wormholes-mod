@@ -11,9 +11,7 @@ namespace Wormholes {
 		protected override void TeleportToLeft( Player player ) {
 			base.TeleportToLeft( player );
 
-			var mymod = WormholesMod.Instance;
-
-			if( mymod.Config.TownPortalConsumesOnReturn ) {
+			if( WormholesConfig.Instance.TownPortalConsumesOnReturn ) {
 				this.Close();
 			}
 		}

@@ -42,7 +42,7 @@ namespace Wormholes {
 			WormholesWorld myworld = ModContent.GetInstance<WormholesWorld>();
 			WormholesPlayer myplayer = Main.LocalPlayer.GetModPlayer<WormholesPlayer>();
 
-			if( !this.Config.DisableNaturalWormholes ) {
+			if( !WormholesConfig.Instance.DisableNaturalWormholes ) {
 				if( myworld.Wormholes != null ) {
 					for( int i = 0; i < myworld.Wormholes.Links.Count; i++ ) {
 						WormholeLink link = myworld.Wormholes.Links[i];
@@ -73,7 +73,7 @@ namespace Wormholes {
 			WormholesWorld myworld = ModContent.GetInstance<WormholesWorld>();
 			WormholesPlayer myplayer = Main.LocalPlayer.GetModPlayer<WormholesPlayer>();
 
-			if( !this.Config.DisableNaturalWormholes ) {
+			if( !WormholesConfig.Instance.DisableNaturalWormholes ) {
 				if( myworld.Wormholes != null ) {
 					for( int i = 0; i < myworld.Wormholes.Links.Count; i++ ) {
 						WormholeLink link = myworld.Wormholes.Links[i];

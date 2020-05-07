@@ -37,11 +37,10 @@ namespace Wormholes.Projectiles {
 
 
 		public override void AI() {
-			var mymod = (WormholesMod)this.mod;
 			var modworld = ModContent.GetInstance<WormholesWorld>();
 			var modplayer = Main.player[Main.myPlayer].GetModPlayer<WormholesPlayer>();
 			var rect = this.projectile.getRect();
-			int rand = Main.rand.Next( mymod.Config.ChaosBombWormholeCloseOdds );
+			int rand = Main.rand.Next( WormholesConfig.Instance.ChaosBombWormholeCloseOdds );
 			var proj = this.projectile;
 			
 			if( proj.owner == Main.myPlayer && proj.timeLeft <= 3 ) {
@@ -81,7 +80,6 @@ namespace Wormholes.Projectiles {
 
 
 		public override void Kill( int timeLeft ) {
-			var mymod = (WormholesMod)this.mod;
 			Projectile proj = this.projectile;
 			Main.PlaySound( SoundID.Item14, proj.position );
 			var vec = default( Vector2 );
@@ -127,8 +125,8 @@ namespace Wormholes.Projectiles {
 			if( timeLeft == 0 && proj.owner == Main.myPlayer ) {
 				int tileX = (int)this.projectile.Center.X / 16;
 				int tileY = (int)this.projectile.Center.Y / 16;
-				int radius = mymod.Config.ChaosBombRadius;
-				this.ScatterTiles( tileX, tileY, radius, mymod.Config.ChaosBombScatterRadius );
+				int radius = WormholesConfig.Instance.ChaosBombRadius;
+				this.ScatterTiles( tileX, tileY, radius, WormholesConfig.Instance.ChaosBombScatterRadius );
 				
 				if( Main.netMode != 0 ) {
 					NetMessage.SendData( MessageID.KillProjectile, -1, -1, null, proj.identity, (float)proj.owner, 0f, 0f, 0, 0, 0 );

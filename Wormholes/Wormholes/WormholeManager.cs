@@ -24,23 +24,21 @@ namespace Wormholes {
 		////////////////
 
 		public WormholeManager() {
-			var mymod = WormholesMod.Instance;
-
 			switch( WorldHelpers.GetSize() ) {
 			case WorldSize.SubSmall:
-				WormholeManager.PortalCount = mymod.Config.TinyWorldPortals;
+				WormholeManager.PortalCount = WormholesConfig.Instance.TinyWorldPortals;
 				break;
 			case WorldSize.Small:
-				WormholeManager.PortalCount = mymod.Config.SmallWorldPortals;
+				WormholeManager.PortalCount = WormholesConfig.Instance.SmallWorldPortals;
 				break;
 			case WorldSize.Medium:
-				WormholeManager.PortalCount = mymod.Config.MediumWorldPortals;
+				WormholeManager.PortalCount = WormholesConfig.Instance.MediumWorldPortals;
 				break;
 			case WorldSize.Large:
-				WormholeManager.PortalCount = mymod.Config.LargeWorldPortals;
+				WormholeManager.PortalCount = WormholesConfig.Instance.LargeWorldPortals;
 				break;
 			case WorldSize.SuperLarge:
-				WormholeManager.PortalCount = mymod.Config.HugeWorldPortals;
+				WormholeManager.PortalCount = WormholesConfig.Instance.HugeWorldPortals;
 				break;
 			}
 
@@ -50,15 +48,13 @@ namespace Wormholes {
 		/////////////////
 
 		public bool Load( TagCompound tags ) {
-			var mymod = WormholesMod.Instance;
-
-			if( mymod.Config.DisableNaturalWormholes ) { return false; }
+			if( WormholesConfig.Instance.DisableNaturalWormholes ) { return false; }
 			if( !tags.ContainsKey("wormhole_count") ) { return false; }
 
 			int holes = tags.GetInt( "wormhole_count" );
 			if( holes == 0 ) { return false; }
 
-			if( mymod.Config.DebugModeInfo ) {
+			if( WormholesConfig.Instance.DebugModeInfo ) {
 				LogHelpers.Log( "Loading world ids (" + Main.netMode + "): " + holes );
 			}
 
@@ -73,7 +69,7 @@ namespace Wormholes {
 				}
 
 				string id = tags.GetString( "wormhole_id_" + i );
-				if( mymod.Config.DebugModeInfo ) {
+				if( WormholesConfig.Instance.DebugModeInfo ) {
 					LogHelpers.Log( "  world load id: " + id + " (" + i + ")" );
 				}
 
@@ -97,14 +93,13 @@ namespace Wormholes {
 
 
 		public TagCompound Save() {
-			var mymod = WormholesMod.Instance;
 			string[] ids = new string[WormholeManager.PortalCount];
 			int[] wormLeftX = new int[WormholeManager.PortalCount];
 			int[] wormLeftY = new int[WormholeManager.PortalCount];
 			int[] wormRightX = new int[WormholeManager.PortalCount];
 			int[] wormRightY = new int[WormholeManager.PortalCount];
 
-			if( mymod.Config.DebugModeInfo ) {
+			if( WormholesConfig.Instance.DebugModeInfo ) {
 				LogHelpers.Log( "Save world ids (" + Main.netMode + "): " + WormholeManager.PortalCount );
 			}
 
@@ -132,7 +127,7 @@ namespace Wormholes {
 			for( i = 0; i < this.Links.Count; i++ ) {
 				tags.Set( "wormhole_id_" + i, ids[i] );
 
-				if( mymod.Config.DebugModeInfo ) {
+				if( WormholesConfig.Instance.DebugModeInfo ) {
 					LogHelpers.Log( "  world save id: " + ids[i] + " (" + i + ") = "
 						+ wormLeftX[i] + "," + wormLeftY[i] + " | " + wormRightX[i] + "," + wormRightY[i] );
 				}
@@ -169,6 +164,8 @@ namespace Wormholes {
 			Vector2 randPos;
 			int worldX, worldY;
 			bool found = false, isEmpty = false;
+			int minWldDistSqr = WormholesConfig.Instance.MinimumTileDistanceBetweenWormholes * 16;
+			minWldDistSqr *= minWldDistSqr;
 
 			(int minX, int maxX, int minY, int maxY) bounds = WormholesWorld.GetTileBoundsForWormholes();
 
@@ -199,14 +196,14 @@ namespace Wormholes {
 				for( int i = 0; i < this.Links.Count; i++ ) {
 					var link = this.Links[i];
 
-					float dist = Vector2.Distance( link.LeftPortal.Pos, randPos );
-					if( dist < 2048 ) {
+					float distSqr = Vector2.DistanceSquared( link.LeftPortal.Pos, randPos );
+					if( distSqr < minWldDistSqr ) {
 						found = false;
 						break;
 					}
 
-					dist = Vector2.Distance( link.RightPortal.Pos, randPos );
-					if( dist < 2048 ) {
+					distSqr = Vector2.DistanceSquared( link.RightPortal.Pos, randPos );
+					if( distSqr < minWldDistSqr ) {
 						found = false;
 						break;
 					}
@@ -218,6 +215,13 @@ namespace Wormholes {
 
 
 		public WormholeLink CreateRandomWormholePair( Color color ) {
+			if( (Main.maxTilesX + 4) <= (WormholesConfig.Instance.MinimumTileDistanceBetweenWormholes) ) {
+				return null;
+			}
+			if( (Main.maxTilesY + 4) <= (WormholesConfig.Instance.MinimumTileDistanceBetweenWormholes) ) {
+				return null;
+			}
+
 			int retries = 0;
 			Vector2 randPos1, randPos2;
 
@@ -267,7 +271,6 @@ namespace Wormholes {
 		/////////////////
 
 		public void RunAll( Player player ) {
-			var mymod = WormholesMod.Instance;
 			int who = player.whoAmI;
 
 			if( !this.BlockPortalCountdown.Keys.Contains( who ) ) {
@@ -279,7 +282,7 @@ namespace Wormholes {
 			int blockCountdown = this.BlockPortalCountdown[who];
 			WormholeLink townPortal = player.GetModPlayer<WormholesPlayer>().MyPortal;
 
-			if( !mymod.Config.DisableNaturalWormholes ) {
+			if( !WormholesConfig.Instance.DisableNaturalWormholes ) {
 				for( int i = 0; i < this.Links.Count; i++ ) {
 					WormholeLink link = this.Links[i];
 					if( link == null ) { break; }
@@ -305,9 +308,7 @@ namespace Wormholes {
 		}
 
 		public void DrawAll( WormholeLink townPortal ) {
-			var mymod = WormholesMod.Instance;
-
-			if( !mymod.Config.DisableNaturalWormholes ) {
+			if( !WormholesConfig.Instance.DisableNaturalWormholes ) {
 				for( int i = 0; i < this.Links.Count; i++ ) {
 					WormholeLink link = this.Links[i];
 					if( link == null ) { break; }

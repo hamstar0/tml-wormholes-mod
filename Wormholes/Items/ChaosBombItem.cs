@@ -40,12 +40,10 @@ namespace Wormholes.Items {
 
 	class ChaosBombRecipe : ModRecipe {
 		public ChaosBombRecipe( ChaosBombItem moditem ) : base( moditem.mod ) {
-			var mymod = (WormholesMod)this.mod;
-
 			this.AddTile( 18 );   // Crafting bench
 
 			this.AddRecipeGroup( "WormholesMod:EvacPotions", 1 );
-			this.AddIngredient( ItemID.BouncyBomb, mymod.Config.ChaosBombRecipeBouncyBombCost );
+			this.AddIngredient( ItemID.BouncyBomb, WormholesConfig.Instance.ChaosBombRecipeBouncyBombCost );
 			this.AddIngredient( ItemID.Amethyst, 1 );
 			this.AddIngredient( ItemID.Topaz, 1 );
 			this.AddIngredient( ItemID.Sapphire, 1 );
@@ -54,12 +52,11 @@ namespace Wormholes.Items {
 			this.AddIngredient( ItemID.Diamond, 1 );
 			this.AddIngredient( ItemID.Amber, 1 );
 			//this.AddIngredient( ItemID.Glass, 10 );
-			this.SetResult( moditem, mymod.Config.ChaosBombRecipeQuantity );
+			this.SetResult( moditem, WormholesConfig.Instance.ChaosBombRecipeQuantity );
 		}
 
 		public override bool RecipeAvailable() {
-			var mymod = (WormholesMod)this.mod;
-			return mymod.Config.CraftableTownPortalScrolls;
+			return WormholesConfig.Instance.CraftableTownPortalScrolls;
 		}
 	}
 }

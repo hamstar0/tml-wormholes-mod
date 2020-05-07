@@ -113,7 +113,6 @@ namespace Wormholes {
 
 
 		protected virtual void Teleport( Player player, Vector2 dest ) {
-			var mymod = WormholesMod.Instance;
 			WormholesPlayer myplayer = player.GetModPlayer<WormholesPlayer>();
 
 			if( myplayer.MyPortal == null || (myplayer.MyPortal != null && this.ID != myplayer.MyPortal.ID) ) {
@@ -145,7 +144,7 @@ namespace Wormholes {
 			}
 
 			//Main.PlaySound( 2, player.position, 100 );
-			var snd = SoundID.Item100.WithVolume( mymod.Config.WormholeEntrySoundVolume );
+			var snd = SoundID.Item100.WithVolume( WormholesConfig.Instance.WormholeEntrySoundVolume );
 			Main.PlaySound( snd, player.position );
 		}
 	}

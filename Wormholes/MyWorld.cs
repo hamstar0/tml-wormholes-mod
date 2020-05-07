@@ -44,13 +44,11 @@ namespace Wormholes {
 		////////////////
 
 		public override void Initialize() {
-			var mymod = (WormholesMod)this.mod;
-
 			this.Wormholes = new WormholeManager();
 			this.ID = Guid.NewGuid().ToString( "D" );
 			this.HasCorrectID = false;
 
-			if( mymod.Config.DebugModeReset ) {
+			if( WormholesConfig.Instance.DebugModeReset ) {
 				WormholeManager.ForceRegenWormholes = true;
 			}
 		}
