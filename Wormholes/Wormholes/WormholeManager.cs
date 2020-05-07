@@ -218,12 +218,16 @@ namespace Wormholes {
 
 
 		public WormholeLink CreateRandomWormholePair( Color color ) {
+			int retries = 0;
 			Vector2 randPos1, randPos2;
 
 			do {
+				if( retries++ > 10000 ) {
+					return null;
+				}
 				randPos1 = this.GetRandomClearMapPos();
 				randPos2 = this.GetRandomClearMapPos();
-			} while( Vector2.Distance( randPos1, randPos2 ) < 2048 );
+			} while( Vector2.Distance(randPos1, randPos2) < 2048 );
 
 			return new WormholeLink( color, randPos1, randPos2 );
 		}
@@ -247,7 +251,12 @@ namespace Wormholes {
 				// Skip already-loaded wormholes
 				if( i < this.Links.Count && this.Links[i] != null ) { continue; }
 
-				var link = this.CreateRandomWormholePair( WormholeLink.GetColor(i) );
+				WormholeLink link = this.CreateRandomWormholePair( WormholeLink.GetColor(i) );
+				if( link == null ) {
+					LogHelpers.Alert( "Not enough space to create the indicated quantity of wormholes (made "+i+" of "+WormholeManager.PortalCount+")" );
+					break;
+				}
+
 				this.Links.Add( link );
 			}
 			

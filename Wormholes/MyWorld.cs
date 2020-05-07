@@ -15,7 +15,7 @@ namespace Wormholes {
 		public static (int minTileX, int maxTileX, int minTileY, int maxTileY) GetTileBoundsForWormholes() {
 			int minTileX = 64;
 			int maxTileX = Main.maxTilesX - minTileX;
-			if( Main.maxTilesX < 64 ) {
+			if( Main.maxTilesX < 64 || maxTileX <= minTileX ) {
 				minTileX = 0;
 				maxTileX = Main.maxTilesX;
 			}

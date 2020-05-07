@@ -33,11 +33,15 @@ namespace Wormholes {
 
 		////////////////
 
-		public static void AddWormhole( Color color ) {
+		public static bool AddWormhole( Color color ) {
 			var myworld = ModContent.GetInstance<WormholesWorld>();
 			var link = myworld.Wormholes.CreateRandomWormholePair( color );
+			if( link == null ) {
+				return false;
+			}
 
 			myworld.Wormholes.Links.Add( link );
+			return true;
 		}
 
 		public static void RemoveWormhole( WormholeLink link ) {
